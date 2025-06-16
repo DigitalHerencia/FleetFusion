@@ -1,5 +1,12 @@
 import path from 'path';
 
+const securityHeaders = [
+  {
+    key: 'Content-Security-Policy',
+    value: "default-src 'self'; img-src 'self' https: data:; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.clerk.com https://*.clerk.dev",
+  },
+];
+
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false, // Remove X-Powered-By header
@@ -66,6 +73,10 @@ const nextConfig = {
     // Add loader for better performance
     loader: 'default',    // Disable static imports for better dynamic loading
     unoptimized: false,
+  },
+
+  async headers() {
+    return [{ source: '/:path*', headers: securityHeaders }];
   },
   
   // Turbopack configuration (moved from experimental.turbo)

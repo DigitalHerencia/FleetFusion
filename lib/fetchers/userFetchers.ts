@@ -1,6 +1,6 @@
 'use server';
 
-import { auth } from '@clerk/nextjs/server';
+import { requireAdminForOrg } from '@/lib/auth/utils';
 
 import prisma from '@/lib/database/db';
 import { type UserRole } from '@/types/auth';
@@ -17,19 +17,7 @@ export type UserWithRole = {
 export async function listOrganizationUsers(
   orgId: string
 ): Promise<UserWithRole[]> {
-  const { userId } = await auth();
-  if (!userId) {
-    throw new Error('Unauthorized');
-  }
-
-  const requestingUser = await prisma.user.findUnique({
-    where: { clerkId: userId },
-    select: { organizationId: true },
-  });
-
-  if (!requestingUser || requestingUser.organizationId !== orgId) {
-    throw new Error('Access denied');
-  }
+  await requireAdminForOrg(orgId);
 
   const memberships = await prisma.organizationMembership.findMany({
     where: { organizationId: orgId },

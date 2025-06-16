@@ -1,6 +1,6 @@
 'use server';
 
-import { auth } from '@clerk/nextjs/server';
+import { requireAdminForOrg } from '@/lib/auth/utils';
 
 import prisma from '@/lib/database/db';
 import { CACHE_TTL, getCachedData, setCachedData } from '@/lib/cache/auth-cache';
@@ -13,8 +13,7 @@ import type {
 } from '@/types/admin';
 
 export async function getOrganizationStats(orgId: string): Promise<OrganizationStats> {
-  const { userId } = await auth();
-  if (!userId) throw new Error('Unauthorized');
+  await requireAdminForOrg(orgId);
 
   const cacheKey = `admin:stats:${orgId}`;
   const cached = getCachedData(cacheKey) as OrganizationStats | null;
@@ -40,8 +39,7 @@ export async function getOrganizationStats(orgId: string): Promise<OrganizationS
 }
 
 export async function getOrganizationUsers(orgId: string): Promise<UserManagementData> {
-  const { userId } = await auth();
-  if (!userId) throw new Error('Unauthorized');
+  await requireAdminForOrg(orgId);
   const users = await prisma.user.findMany({
     where: { organizationId: orgId },
     select: {
@@ -65,8 +63,7 @@ export async function getOrganizationUsers(orgId: string): Promise<UserManagemen
 }
 
 export async function getAuditLogs(orgId: string): Promise<AuditLogEntry[]> {
-  const { userId } = await auth();
-  if (!userId) throw new Error('Unauthorized');
+  await requireAdminForOrg(orgId);
   
   // TODO: AuditLog model not yet implemented in schema
   // const logs = await prisma.auditLog.findMany({
@@ -85,8 +82,7 @@ export async function getAuditLogs(orgId: string): Promise<AuditLogEntry[]> {
 }
 
 export async function getBillingInfo(orgId: string): Promise<BillingInfo> {
-  const { userId } = await auth();
-  if (!userId) throw new Error('Unauthorized');
+  await requireAdminForOrg(orgId);
   
   // TODO: Subscription model not yet implemented in schema
   // const sub = await prisma.subscription.findFirst({ where: { organizationId: orgId } });
