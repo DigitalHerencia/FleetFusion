@@ -43,3 +43,23 @@ export const OnboardingStepSchema = z.object({
 export type ProfileSetupFormData = z.infer<typeof ProfileSetupSchema>;
 export type CompanySetupFormData = z.infer<typeof CompanySetupSchema>;
 export type PreferencesFormData = z.infer<typeof PreferencesSchema>;
+
+export const CompleteOnboardingSchema = z.object({
+  firstName: z.string().min(1),
+  lastName: z.string().min(1),
+  email: z.string().email(),
+  role: z.string().min(1),
+  companyName: z.string(),
+  dotNumber: z.string().optional(),
+  mcNumber: z.string().optional(),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  zip: z.string().optional(),
+  phone: z.string().optional(),
+  organizationId: z.string().optional(),
+  inviteCode: z.string().optional(),
+  preferences: z.record(z.any()).optional(),
+});
+
+export type CompleteOnboardingData = z.infer<typeof CompleteOnboardingSchema>;

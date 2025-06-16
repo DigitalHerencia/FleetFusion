@@ -18,7 +18,8 @@ import { EmployeeJoinStep } from './steps/EmployeeJoinStep';
 import { ReviewSubmitStep } from './steps/ReviewSubmitStep';
 
 import type { SystemRole } from '@/types/abac';
-import { completeOnboarding, type CompleteOnboardingData } from '@/lib/actions/onboardingActions';
+import { completeOnboarding } from '@/lib/actions/onboardingActions';
+import type { CompleteOnboardingData } from '@/schemas/onboarding';
 
 export interface OnboardingFormData {
   // Personal Info

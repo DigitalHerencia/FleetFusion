@@ -15,6 +15,11 @@ import type {
 import { SystemRoles, getPermissionsForRole } from '@/types/abac';
 import type { SystemRole } from '@/types/abac';
 import type { OnboardingData, SetClerkMetadataResult } from '@/types/auth';
+import type { UserRole } from '@/types/auth';
+import {
+  CompleteOnboardingSchema,
+  type CompleteOnboardingData,
+} from '@/schemas/onboarding';
 
 // Infer the resolved client type
 type ResolvedClerkClient = Awaited<ReturnType<typeof clerkClient>>;
@@ -189,30 +194,6 @@ export async function setClerkUserMetadata(
   }
 }
 
-// New interface for the stepper onboarding
-export interface CompleteOnboardingData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: SystemRole;
-  
-  // Company Info (for admin)
-  companyName: string;
-  dotNumber: string;
-  mcNumber: string;
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
-  phone: string;
-  
-  // Employee Join (for non-admin)
-  organizationId: string;
-  inviteCode: string;
-  
-  // Common
-  preferences: Record<string, any>;
-}
 
 /**
  * Complete onboarding process with new stepper flow
@@ -224,26 +205,28 @@ export async function completeOnboarding(data: CompleteOnboardingData) {
       throw new Error('User not authenticated');
     }
 
-    const isAdmin = data.role === SystemRoles.ADMIN;
+    const parsed = CompleteOnboardingSchema.parse(data);
+
+    const isAdmin = parsed.role === SystemRoles.ADMIN;
     let organizationId: string;
     let organizationSlug: string;
 
     if (isAdmin) {
       // Admin path: Create new organization
-      const slug = generateSlug(data.companyName);
+      const slug = generateSlug(parsed.companyName);
         // Create organization in database
       const organization = await db.organization.create({
         data: {
           clerkId: `org_${slug}_${Date.now()}`, // Generate a unique clerkId
-          name: data.companyName,
+          name: parsed.companyName,
           slug: slug,
-          dotNumber: data.dotNumber || null,
-          mcNumber: data.mcNumber || null,
-          address: data.address,
-          city: data.city,
-          state: data.state,
-          zip: data.zip,
-          phone: data.phone || null,
+          dotNumber: parsed.dotNumber || null,
+          mcNumber: parsed.mcNumber || null,
+          address: parsed.address,
+          city: parsed.city,
+          state: parsed.state,
+          zip: parsed.zip,
+          phone: parsed.phone || null,
         },
       });
 
@@ -255,18 +238,18 @@ export async function completeOnboarding(data: CompleteOnboardingData) {
         where: { clerkId: user.id },
         update: {
           organizationId: organization.id,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          role: data.role,
+          firstName: parsed.firstName,
+          lastName: parsed.lastName,
+          role: parsed.role as UserRole,
           onboardingComplete: true,
         },
         create: {
           clerkId: user.id,
           organizationId: organization.id,
-          email: data.email,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          role: data.role,
+          email: parsed.email,
+          firstName: parsed.firstName,
+          lastName: parsed.lastName,
+          role: parsed.role as UserRole,
           onboardingComplete: true,
         },
       });
@@ -276,8 +259,8 @@ export async function completeOnboarding(data: CompleteOnboardingData) {
       const organization = await db.organization.findFirst({
         where: {
           OR: [
-            { slug: data.organizationId },
-            { id: data.organizationId }
+            { slug: parsed.organizationId },
+            { id: parsed.organizationId }
           ]
         }
       });
@@ -294,36 +277,36 @@ export async function completeOnboarding(data: CompleteOnboardingData) {
         where: { clerkId: user.id },
         update: {
           organizationId: organization.id,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          role: data.role,
+          firstName: parsed.firstName,
+          lastName: parsed.lastName,
+          role: parsed.role as UserRole,
           onboardingComplete: true,
         },
         create: {
           clerkId: user.id,
           organizationId: organization.id,
-          email: data.email,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          role: data.role,
+          email: parsed.email,
+          firstName: parsed.firstName,
+          lastName: parsed.lastName,
+          role: parsed.role as UserRole,
           onboardingComplete: true,
         },
       });
     }    // Update Clerk user metadata with role and permissions
     const clerkClientInstance = await clerkClient();
-    const userPermissions = getPermissionsForRole(data.role);
+    const userPermissions = getPermissionsForRole(parsed.role as SystemRole);
     
     await clerkClientInstance.users.updateUserMetadata(user.id, {
       privateMetadata: {
         organizationId: organizationSlug, // Use slug for URL routing
-        role: data.role,
+        role: parsed.role as UserRole,
         permissions: userPermissions, // Add permissions array
         onboardingComplete: true,
       },
       publicMetadata: {
         onboardingComplete: true,
-        firstName: data.firstName,
-        lastName: data.lastName,
+        firstName: parsed.firstName,
+        lastName: parsed.lastName,
       },
     });
 

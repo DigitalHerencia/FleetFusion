@@ -19,7 +19,7 @@ export default async function OnboardingLayout({
 
   // If onboarding is complete, redirect to the user's dashboard
   if (user.onboardingComplete && user.organizationId && user.userId) {
-    redirect(`/tenant/${user.organizationId}/dashboard/${user.userId}`);
+    redirect(`/${user.organizationId}/dashboard/${user.userId}`);
   }
 
   // Otherwise, render the onboarding flow
