@@ -51,6 +51,7 @@
 -   **Storage:** Vercel Blob Storage
 -   **Monitoring:** Vercel Analytics
 -   **Testing:** Vitest, React Testing Library, Playwright
+-   **Coverage:** Codecov reports via GitHub Actions
 
 ---
 
