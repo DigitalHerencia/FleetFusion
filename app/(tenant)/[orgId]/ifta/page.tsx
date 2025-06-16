@@ -60,12 +60,12 @@ function getCurrentQuarterAndYear() {
     return { quarter, year }
 }
 
-export default async function IFTAPage({
+export default async function Page({
     params,
 }: {
-    params: { orgId: string; userId?: string }
+    params: Promise<{ orgId: string }>
 }) {
-    const { orgId, userId } = params // Default to current quarter/year, but allow query param override in the future
+    const { orgId } = await params // Default to current quarter/year, but allow query param override in the future
     const { quarter, year } = getCurrentQuarterAndYear()
     const period = `Q${quarter}`
     let iftaData: IftaPeriodData | null = null
