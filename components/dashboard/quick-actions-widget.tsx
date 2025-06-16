@@ -121,53 +121,30 @@ export default function QuickActionsWidget({
                     Quick Actions
                 </CardTitle>
             </CardHeader>
-            <CardContent>
-                {enabledActions.length === 0 ? (
-                    <div className='text-center py-8'>
-                        <Zap className='h-8 w-8 text-muted-foreground mx-auto mb-2' />
-                        <p className='text-sm text-muted-foreground'>
-                            No actions available for your role
-                        </p>
-                    </div>
-                ) : (
-                    <div className='space-y-2'>
-                        {enabledActions.slice(0, 6).map(action => {
-                            const IconComponent =
-                                iconMap[action.icon as keyof typeof iconMap] ||
-                                Zap
-                            const colorClass =
-                                colorMap[
-                                    action.color as keyof typeof colorMap
-                                ] || colorMap["bg-blue-500"]
-
-                            return (
-                                <Link
-                                    key={action.id}
-                                    href={action.href.replace("[orgId]", orgId)}
-                                >
-                                    <Button
-                                        variant='outline'
-                                        className='w-full justify-start h-auto p-3 hover:shadow-sm transition-all'
-                                    >
-                                        <div
-                                            className={`rounded-lg p-2 mr-3 ${colorClass}`}
-                                        >
-                                            <IconComponent className='h-4 w-4' />
-                                        </div>
-                                        <div className='text-left flex-1'>
-                                            <div className='font-medium text-sm'>
-                                                {action.title}
-                                            </div>
-                                            <div className='text-xs text-muted-foreground'>
-                                                {action.description}
-                                            </div>
-                                        </div>
-                                    </Button>
-                                </Link>
-                            )
-                        })}
-                    </div>
-                )}
+            <CardContent className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                {enabledActions.map(action => {
+                    const Icon = iconMap[action.icon as keyof typeof iconMap]
+                    return (
+                        <Link
+                            key={action.id}
+                            href={action.href.replace("[orgId]", orgId)}
+                            passHref
+                        >
+                            <Button
+                                className={`w-full flex flex-col items-start p-4 h-auto rounded-lg shadow-md ${colorMap[action.color as keyof typeof colorMap]}`}
+                                variant='ghost'
+                            >
+                                <div className='flex items-center gap-3'>
+                                    <Icon className='h-6 w-6' />
+                                    <span className='font-semibold'>{action.title}</span>
+                                </div>
+                                <span className='text-xs text-white/80 mt-1'>
+                                    {action.description}
+                                </span>
+                            </Button>
+                        </Link>
+                    )
+                })}
             </CardContent>
         </Card>
     )
