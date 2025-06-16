@@ -131,12 +131,18 @@ export default function QuickActionsWidget({
                             passHref
                         >
                             <Button
-                                className={`w-full flex flex-col items-start p-4 h-auto rounded-lg shadow-md ${colorMap[action.color as keyof typeof colorMap]}`}
+                                className={`w-full flex flex-col items-start p-4 h-auto rounded-lg shadow-md ${
+                                    colorMap[
+                                        action.color as keyof typeof colorMap
+                                    ]
+                                }`}
                                 variant='ghost'
                             >
                                 <div className='flex items-center gap-3'>
                                     <Icon className='h-6 w-6' />
-                                    <span className='font-semibold'>{action.title}</span>
+                                    <span className='font-semibold'>
+                                        {action.title}
+                                    </span>
                                 </div>
                                 <span className='text-xs text-white/80 mt-1'>
                                     {action.description}
