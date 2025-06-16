@@ -495,9 +495,67 @@ export async function assignDriverAction(
       code: 'UNAUTHORIZED',
     };
   }
-  // Simulate assignment logic (replace with real logic as needed)
-  // e.g., update driver assignment in DB
-  return { success: true };
+  const {
+    driverId,
+    loadId,
+    vehicleId,
+    trailerId,
+    assignmentType,
+    scheduledStart,
+    scheduledEnd,
+    instructions,
+    priority,
+  } = parsed.data;
+
+  try {
+    await db.$transaction(async tx => {
+      if (loadId) {
+        await tx.load.update({
+          where: { id: loadId },
+          data: {
+            driverId,
+            vehicleId: vehicleId || null,
+            trailerId: trailerId || null,
+            updatedAt: new Date(),
+            lastModifiedBy: userId,
+          },
+        });
+
+        await tx.loadStatusEvent.create({
+          data: {
+            loadId,
+            status: 'assigned',
+            timestamp: new Date(),
+            notes: instructions || 'Driver assigned',
+            automaticUpdate: false,
+            source: 'dispatcher',
+          },
+        });
+      }
+
+      await tx.driver.update({
+        where: { id: driverId },
+        data: { updatedAt: new Date() },
+      });
+    });
+
+    await logAuditEvent('driver.assigned', 'driver', driverId, {
+      loadId,
+      vehicleId,
+      trailerId,
+      assignmentType,
+      scheduledStart,
+      scheduledEnd,
+      priority,
+    });
+
+    revalidatePath('/[orgId]/drivers', 'page');
+    revalidatePath('/[orgId]/dispatch', 'page');
+
+    return { success: true };
+  } catch (error) {
+    return handleError(error, 'Assign Driver');
+  }
 }
 
 /**
