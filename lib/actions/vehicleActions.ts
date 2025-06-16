@@ -241,7 +241,7 @@ export async function createVehicleAction(
     };
     const vehicle = await db.vehicle.create({ data: vehicleData as any }); // Use 'as any' for now, refine Prisma types later
 
-    revalidatePath(`/dashboard/${currentOrgId}/vehicles`);
+    revalidatePath(`/${currentOrgId}/vehicles`);
     return { success: true, vehicle: toPublicVehicle(vehicle), data: true };
   } catch (error) {
     const result = handleError(error, 'Create Vehicle');
@@ -334,9 +334,9 @@ export async function updateVehicleAction(
       data: updateData as any, // Use 'as any' for now, refine Prisma types later
     });
 
-    revalidatePath(`/dashboard/${existingVehicle.organizationId}/vehicles`);
+    revalidatePath(`/${existingVehicle.organizationId}/vehicles`);
     revalidatePath(
-      `/dashboard/${existingVehicle.organizationId}/vehicles/${vehicleId}`
+      `/${existingVehicle.organizationId}/vehicles/${vehicleId}`
     );
     return { success: true, vehicle: toPublicVehicle(vehicle), data: true };
   } catch (error) {
@@ -384,9 +384,9 @@ export async function updateVehicleStatusAction(
       },
     });
 
-    revalidatePath(`/dashboard/${existingVehicle.organizationId}/vehicles`);
+    revalidatePath(`/${existingVehicle.organizationId}/vehicles`);
     revalidatePath(
-      `/dashboard/${existingVehicle.organizationId}/vehicles/${vehicleId}`
+      `/${existingVehicle.organizationId}/vehicles/${vehicleId}`
     );
     return { success: true, vehicle: toPublicVehicle(updatedVehicle), data: true };
   } catch (error) {
@@ -418,7 +418,7 @@ export async function deleteVehicleAction(
       where: { id: vehicleId },
     });
 
-    revalidatePath(`/dashboard/${vehicle.organizationId}/vehicles`);
+    revalidatePath(`/${vehicle.organizationId}/vehicles`);
     return { success: true, data: true };
   } catch (error) {
     const result = handleError(error, 'Delete Vehicle');
@@ -470,9 +470,9 @@ export async function assignVehicleToDriverAction(
       },
     });
 
-    revalidatePath(`/dashboard/${vehicle.organizationId}/vehicles`);
+    revalidatePath(`/${vehicle.organizationId}/vehicles`);
     revalidatePath(
-      `/dashboard/${vehicle.organizationId}/vehicles/${vehicleId}`
+      `/${vehicle.organizationId}/vehicles/${vehicleId}`
     );
 
     // Return the vehicle (not the load)
