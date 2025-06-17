@@ -7,7 +7,7 @@ export default defineConfig({
     plugins: [tsconfigPaths()],
     test: {
         include: ["tests/**/*.test.ts"],
-        exclude: ["tests/e2e/**"],
+        exclude: ["tests/e2e/**", "node_modules/**"],
         environment: "node",
         globals: true,
         threads: true,
@@ -17,4 +17,3 @@ export default defineConfig({
             reporter: ["text", "html", "json"],
         },
     },
-})
