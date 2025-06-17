@@ -3,14 +3,17 @@
 import { defineConfig } from "vitest/config"
 import tsconfigPaths from "vite-tsconfig-paths"
 
-
 export default defineConfig({
     plugins: [tsconfigPaths()],
     test: {
+        include: ["tests/**/*.test.ts"],
         environment: "node",
         globals: true,
-        include: ["tests/**/*.test.ts"],
-        exclude: ["tests/e2e/**", "node_modules/**"],
+        exclude: ["tests/e2e/**"],
+        coverage: {
+            provider: "v8",
+            reporter: ["text", "html", "json"],
+        }
     },
     plugins: [tsconfigPaths()],
 })
