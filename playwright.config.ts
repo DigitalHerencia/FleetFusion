@@ -4,6 +4,7 @@ import { devices, type PlaywrightTestConfig } from "@playwright/test"
 
 const config = {
     testDir: "./tests",
+    testMatch: "**/*.spec.ts",
     timeout: 90 * 1000, // Increased for complex auth flows
     expect: {
         timeout: 20000, // More time for auth operations
