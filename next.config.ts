@@ -120,12 +120,6 @@ const nextConfig = {
         ignoreDuringBuilds: true,
     },
 
-    // Compiler options for Next.js 15
-    compiler: {
-        // Remove console.log in production
-        removeConsole: process.env.NODE_ENV === "production",
-    },
-
     webpack: (config, { isServer }) => {
         config.resolve.alias = {
             ...(config.resolve.alias || {}),
