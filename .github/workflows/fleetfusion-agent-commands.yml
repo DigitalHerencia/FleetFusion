@@ -1,0 +1,164 @@
+# @format
+
+name: 🤖 FleetFusion Agent Commands
+
+on:
+    issue_comment:
+        types: [created]
+
+jobs:
+    agent-commands:
+        name: FleetFusion Agent
+        runs-on: ubuntu-latest
+        if: >
+            github.event.issue.pull_request &&
+            contains(github.event.comment.body, '@fleetfusion-agent')
+        permissions:
+            contents: read
+            pull-requests: write
+            issues: write
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Process Agent Command
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const comment = context.payload.comment.body;
+                      const prNumber = context.payload.issue.number;
+
+                      // Parse command
+                      let command = 'help';
+                      if (comment.includes('review')) command = 'review';
+                      else if (comment.includes('security')) command = 'security';
+                      else if (comment.includes('patterns')) command = 'patterns';
+                      else if (comment.includes('fix')) command = 'fix';
+                      else if (comment.includes('test')) command = 'test';
+
+                      // Get PR details
+                      const { data: pr } = await github.rest.pulls.get({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        pull_number: prNumber
+                      });
+
+                      let response = `## 🚛 FleetFusion Agent Response\n\n`;
+                      response += `**Command**: \`${command}\`\n`;
+                      response += `**Branch**: \`${pr.head.ref}\`\n\n`;
+
+                      switch(command) {
+                        case 'review':
+                          response += `### 🔍 FleetFusion Code Review\n\n`;
+                          response += `**Multi-Tenant Security Checklist:**\n`;
+                          response += `- [ ] All server actions include \`organizationId\` validation\n`;
+                          response += `- [ ] Database queries filter by \`organizationId\`\n`;
+                          response += `- [ ] Authentication checks use \`await auth()\`\n`;
+                          response += `- [ ] User context validation prevents cross-org access\n`;
+                          response += `- [ ] Error handling with \`handleError()\` utility\n`;
+                          response += `- [ ] Audit logging for compliance tracking\n\n`;
+                          response += `**Component Architecture:**\n`;
+                          response += `- [ ] Server components for data fetching\n`;
+                          response += `- [ ] Client components for interactivity\n`;
+                          response += `- [ ] Proper \`'use client'\` / \`'use server'\` directives\n\n`;
+                          break;
+
+                        case 'security':
+                          response += `### 🔒 Security Analysis\n\n`;
+                          response += `**FleetFusion Security Patterns:**\n\n`;
+                          response += `\`\`\`typescript\n`;
+                          response += `// ✅ Secure server action pattern\n`;
+                          response += `'use server';\n`;
+                          response += `export async function updateLoad(orgId: string, loadId: string, data: UpdateLoadData) {\n`;
+                          response += `  const { userId } = await auth();\n`;
+                          response += `  if (!userId) throw new Error('Unauthorized');\n\n`;
+                          response += `  const user = await getCurrentUser();\n`;
+                          response += `  if (user?.organizationId !== orgId) throw new Error('Forbidden');\n\n`;
+                          response += `  const validated = updateLoadSchema.parse(data);\n\n`;
+                          response += `  return await prisma.load.update({\n`;
+                          response += `    where: { id: loadId, organizationId: orgId },\n`;
+                          response += `    data: validated\n`;
+                          response += `  });\n`;
+                          response += `}\n`;
+                          response += `\`\`\`\n\n`;
+                          break;
+
+                        case 'patterns':
+                          response += `### 🏗️ FleetFusion Architecture Patterns\n\n`;
+                          response += `**1. Server Actions** (\`lib/actions/*.ts\`):\n`;
+                          response += `- Always include \`'use server'\` directive\n`;
+                          response += `- Validate \`organizationId\` before DB operations\n`;
+                          response += `- Use Zod schemas for input validation\n`;
+                          response += `- Include audit logging\n\n`;
+                          response += `**2. Data Fetchers** (\`lib/fetchers/*.ts\`):\n`;
+                          response += `- Used in Server Components only\n`;
+                          response += `- Always filter by \`organizationId\`\n`;
+                          response += `- Implement caching strategies\n\n`;
+                          response += `**3. Components**:\n`;
+                          response += `- Server components for data fetching\n`;
+                          response += `- Client components for user interaction\n`;
+                          response += `- Shared components in \`components/shared/\`\n\n`;
+                          break;
+
+                        case 'fix':
+                          response += `### 🛠️ Auto-Fix Suggestions\n\n`;
+                          response += `**Common FleetFusion Fixes:**\n\n`;
+                          response += `1. **Missing organizationId validation:**\n`;
+                          response += `\`\`\`typescript\n`;
+                          response += `const user = await getCurrentUser();\n`;
+                          response += `if (user?.organizationId !== orgId) {\n`;
+                          response += `  throw new Error('Forbidden');\n`;
+                          response += `}\n`;
+                          response += `\`\`\`\n\n`;
+                          response += `2. **Add to database queries:**\n`;
+                          response += `\`\`\`typescript\n`;
+                          response += `where: { id: resourceId, organizationId: orgId }\n`;
+                          response += `\`\`\`\n\n`;
+                          response += `3. **Error handling:**\n`;
+                          response += `\`\`\`typescript\n`;
+                          response += `} catch (error) {\n`;
+                          response += `  return handleError(error, 'Action Name');\n`;
+                          response += `}\n`;
+                          response += `\`\`\`\n\n`;
+                          break;
+
+                        case 'test':
+                          response += `### 🧪 Testing Recommendations\n\n`;
+                          response += `**FleetFusion Test Patterns:**\n\n`;
+                          response += `\`\`\`typescript\n`;
+                          response += `describe('Multi-tenant isolation', () => {\n`;
+                          response += `  it('should prevent cross-org data access', async () => {\n`;
+                          response += `    const orgA = await createTestOrg();\n`;
+                          response += `    const orgB = await createTestOrg();\n`;
+                          response += `    \n`;
+                          response += `    const vehicleA = await createVehicle(orgA.id);\n`;
+                          response += `    \n`;
+                          response += `    // Should not access orgA's vehicle from orgB\n`;
+                          response += `    await expect(\n`;
+                          response += `      getVehicle(orgB.id, vehicleA.id)\n`;
+                          response += `    ).rejects.toThrow('Forbidden');\n`;
+                          response += `  });\n`;
+                          response += `});\n`;
+                          response += `\`\`\`\n\n`;
+                          break;
+
+                        default:
+                          response += `### 🤖 Available Commands\n\n`;
+                          response += `Use \`@fleetfusion-agent\` followed by:\n\n`;
+                          response += `- \`review\` - Full FleetFusion pattern review\n`;
+                          response += `- \`security\` - Security analysis and patterns\n`;
+                          response += `- \`patterns\` - Architecture pattern guidance\n`;
+                          response += `- \`fix\` - Auto-fix suggestions\n`;
+                          response += `- \`test\` - Testing recommendations\n\n`;
+                          break;
+                      }
+
+                      response += `---\n*FleetFusion DevOps Agent* 🚛🤖\n\n`;
+                      response += `💡 **Need help?** Check our [Architecture Guide](.wiki/Architecture.md) or [Security Patterns](.wiki/Authentication.md)`;
+
+                      await github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: prNumber,
+                        body: response
+                      });
