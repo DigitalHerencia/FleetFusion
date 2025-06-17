@@ -878,7 +878,7 @@ function calculateBasicMetrics(data: any[]) {
 /**
  * Calculate percentage change between two values
  */
-function calculatePercentageChange(previous: number, current: number): number {
+export function calculatePercentageChange(previous: number, current: number): number {
     if (previous === 0) return current > 0 ? 100 : 0
     return ((current - previous) / previous) * 100
 }
@@ -886,7 +886,7 @@ function calculatePercentageChange(previous: number, current: number): number {
 /**
  * Process analytics data with grouping
  */
-function processAnalyticsData(data: any[], groupBy: string) {
+export function processAnalyticsData(data: any[], groupBy: string) {
     const grouped = new Map()
 
     data.forEach(load => {
