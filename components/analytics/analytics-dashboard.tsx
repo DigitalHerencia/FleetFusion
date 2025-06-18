@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { PerformanceMetrics } from './performance-metrics';
+import { PerformanceMetrics } from '@/features/analytics/performance-metrics';
 import { FinancialMetrics } from './financial-metrics';
 import { DriverPerformance } from './driver-performance';
 import { VehicleUtilization } from './vehicle-utilization';
