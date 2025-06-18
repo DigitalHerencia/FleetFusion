@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { toast } from '@/components/ui/use-toast';
+import { toast } from '@/hooks/use-toast';
 import { updateLoadAction } from '@/lib/actions/loadActions';
 import { AddressFields } from '@/components/shared/AddressFields';
 import { ContactFields } from '@/components/shared/ContactFields';

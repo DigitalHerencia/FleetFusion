@@ -1,4 +1,7 @@
 # scripts/deploy-fleetfusion-agent.ps1
+# Purpose: Deploys FleetFusion DevOps Agent configuration and workflows
+# Usage: Run from FleetFusion repository root
+
 Write-Host "🚛 Deploying FleetFusion DevOps Agent..." -ForegroundColor Green
 
 # Check if running in FleetFusion repository
@@ -7,14 +10,39 @@ if (!(Test-Path "package.json") -or !(Select-String -Path "package.json" -Patter
     exit 1
 }
 
-# Create directories
-Write-Host "📁 Creating GitHub workflows directory..." -ForegroundColor Yellow
-New-Item -ItemType Directory -Force -Path ".github\workflows" | Out-Null
-New-Item -ItemType Directory -Force -Path ".github\agents" | Out-Null
+# Verify agent configuration exists
+if (!(Test-Path ".github\agents\fleetfusion-agent.json")) {
+    Write-Host "❌ Agent configuration not found. Ensure .github/agents/fleetfusion-agent.json exists" -ForegroundColor Red
+    exit 1
+}
 
-# Create agent configuration
-Write-Host "🤖 Creating agent configuration..." -ForegroundColor Yellow
-# (Agent config creation code would go here)
+# Verify workflows exist
+$requiredWorkflows = @(
+    ".github\workflows\fleetfusion-conventions.yml",
+    ".github\workflows\fleetfusion-agent-commands.yml"
+)
+
+foreach ($workflow in $requiredWorkflows) {
+    if (!(Test-Path $workflow)) {
+        Write-Host "❌ Required workflow not found: $workflow" -ForegroundColor Red
+        exit 1
+    }
+}
+
+Write-Host "✅ All agent files verified" -ForegroundColor Green
+
+# Validate agent configurations
+Write-Host "🔍 Validating agent configurations..." -ForegroundColor Yellow
+if (Get-Command node -ErrorAction SilentlyContinue) {
+    $validationResult = node ".github\agents\validate-agents.js"
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "❌ Agent configuration validation failed" -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "✅ Agent configurations validated" -ForegroundColor Green
+} else {
+    Write-Host "⚠️  Node.js not found. Skipping agent validation" -ForegroundColor Yellow
+}
 
 # Commit and push
 Write-Host "📤 Deploying to GitHub..." -ForegroundColor Yellow

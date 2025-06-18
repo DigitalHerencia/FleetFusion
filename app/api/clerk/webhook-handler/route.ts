@@ -79,7 +79,9 @@ async function handleClerkEvent(eventType: string, data: any) {
         // case 'organizationMembership.deleted':
         // These are now handled through our custom onboarding flow
         default:
-            console.log(`[Clerk Webhook] Unhandled event: ${eventType}`)
+            if (process.env.NODE_ENV === 'development') {
+                console.log(`[Clerk Webhook] Unhandled event: ${eventType}`)
+            }
             break
     }
 }
@@ -91,11 +93,9 @@ export async function POST(req: NextRequest) {
         const svixId = req.headers.get("svix-id") ?? ""
         const svixTimestamp = req.headers.get("svix-timestamp") ?? ""
         const svixSignature = req.headers.get("svix-signature") ?? ""
-        console.log("[Clerk Webhook] Headers:", {
-            svixId,
-            svixTimestamp,
-            svixSignature,
-        })
+        if (process.env.NODE_ENV === 'development') {
+            console.log("[Clerk Webhook] Received headers")
+        }
         // Verify signature
         const wh = new Webhook(CLERK_WEBHOOK_SECRET)
         let evt: any
@@ -114,9 +114,9 @@ export async function POST(req: NextRequest) {
         }
         const { id } = evt.data
         const eventType = evt.type
-        console.log(
-            `[Clerk Webhook] Processing event: ${eventType} (id: ${id})`
-        )
+        if (process.env.NODE_ENV === 'development') {
+            console.log(`[Clerk Webhook] Processing event: ${eventType}`)
+        }
         await handleClerkEvent(eventType, evt.data)
         // Log the event
         if (typeof id === "string") {
