@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import type { VehicleFormData, Vehicle } from '@/types/vehicles';
-import { createVehicleAction } from '@/lib/actions/vehicleActions';
+import { submitVehicleForm } from '../lib/vehicleForm';
 
 interface Props {
   orgId: string;
@@ -67,20 +67,12 @@ export default function AddVehicleDialog({
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      // Convert form to FormData
-      const formData = new FormData();
-      Object.entries(form).forEach(([key, value]) => {
-        if (value !== undefined) {
-          formData.append(key, String(value));
-        }
-      });
-
-      const result = await createVehicleAction(null, formData);
-      if (result.success && result.data) {
-        onSuccess(result.data as unknown as Vehicle);
-        onOpenChange(false);
-        setForm(initialState);
-      }
+      const vehicle = await submitVehicleForm(orgId, form);
+      onSuccess(vehicle);
+      onOpenChange(false);
+      setForm(initialState);
+    } catch (err) {
+      console.error(err);
     } finally {
       setLoading(false);
     }

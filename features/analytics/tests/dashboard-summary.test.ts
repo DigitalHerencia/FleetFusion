@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 vi.mock('@clerk/nextjs/server', () => ({ auth: () => Promise.resolve({ userId: 'u1' }) }));
-vi.mock('../../lib/cache/auth-cache', () => ({
+vi.mock('../../../lib/cache/auth-cache', () => ({
   getCachedData: () => null,
   setCachedData: vi.fn(),
   CACHE_TTL: { DATA: 1000 }
@@ -21,7 +21,7 @@ const mockDb = {
   complianceAlert: { count: complianceCount }
 };
 
-vi.mock('../../lib/database/db', () => ({ __esModule: true, default: mockDb }));
+vi.mock('../../../lib/database/db', () => ({ __esModule: true, default: mockDb }));
 
 describe('getDashboardSummary', () => {
   beforeEach(() => {
@@ -40,7 +40,7 @@ describe('getDashboardSummary', () => {
     fuelAggregate.mockResolvedValue({ _sum: { gallons: 50 } });
     complianceCount.mockResolvedValue(2);
 
-    const { getDashboardSummary } = await import('../../lib/fetchers/analyticsFetchers');
+    const { getDashboardSummary } = await import('../../../lib/fetchers/analyticsFetchers');
     const summary = await getDashboardSummary('org1', '7d');
     expect(summary.totalLoads).toBe(2);
     expect(summary.completedLoads).toBe(1);

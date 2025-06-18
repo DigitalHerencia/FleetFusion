@@ -1,14 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-import { createComplianceDocument, generateExpirationAlertsAction } from '../lib/actions/complianceActions'
-import { cleanupAuditLogs } from '../lib/actions/auditActions'
-import { createAuditLog } from '../lib/actions/auditLogActions'
-import { getCurrentUser } from '../lib/auth/auth'
+import { createComplianceDocument, generateExpirationAlertsAction } from '../../../lib/actions/complianceActions'
+import { cleanupAuditLogs } from '../../../lib/actions/auditActions'
+import { createAuditLog } from '../../../lib/actions/auditLogActions'
+import { getCurrentUser } from '../../../lib/auth/auth'
 
-vi.mock('../lib/auth/auth', () => ({ getCurrentUser: vi.fn() }))
-vi.mock('../lib/actions/auditLogActions', () => ({ createAuditLog: vi.fn() }))
+vi.mock('../../../lib/auth/auth', () => ({ getCurrentUser: vi.fn() }))
+vi.mock('../../../lib/actions/auditLogActions', () => ({ createAuditLog: vi.fn() }))
 
-vi.mock('../lib/database/db', () => ({
+vi.mock('../../../lib/database/db', () => ({
   __esModule: true,
   default: {
     complianceDocument: {
@@ -28,7 +28,7 @@ vi.mock('../lib/database/db', () => ({
 
 vi.mock('@clerk/nextjs/server', () => ({ auth: vi.fn() }))
 
-import db from '../lib/database/db'
+import db from '../../../lib/database/db'
 import { auth as authModule } from '@clerk/nextjs/server'
 
 describe('compliance domain actions', () => {

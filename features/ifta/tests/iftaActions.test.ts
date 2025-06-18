@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import * as actions from '../lib/actions/iftaActions'
+import * as actions from '../../../lib/actions/iftaActions'
 
 vi.mock('next/cache', () => ({ revalidatePath: vi.fn() }))
-vi.mock('@/lib/database/db', () => ({
+vi.mock('../../../lib/database/db', () => ({
   __esModule: true,
   default: {
     user: {
@@ -28,7 +28,7 @@ vi.mock('@/lib/database/db', () => ({
   }
 }))
 vi.mock('@clerk/nextjs/server', () => ({ auth: () => Promise.resolve({ userId: 'u1' }) }))
-vi.mock('../lib/fetchers/iftaFetchers', () => ({
+vi.mock('../../../lib/fetchers/iftaFetchers', () => ({
   getIftaDataForPeriod: vi.fn().mockResolvedValue({
     period: { quarter: 2, year: 2024 },
     summary: { totalMiles: 100, totalGallons: 10, averageMpg: 10, totalFuelCost: 50 },
@@ -65,7 +65,7 @@ vi.mock('../lib/fetchers/iftaFetchers', () => ({
   })
 }))
 
-const db = await import('@/lib/database/db')
+const db = await import('../../../lib/database/db')
 
 describe('IFTA actions', () => {
   beforeEach(() => {

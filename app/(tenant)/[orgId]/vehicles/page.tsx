@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 
 import { listVehiclesByOrg } from '@/lib/fetchers/vehicleFetchers';
-import VehicleListClient from '@/features/vehicles/vehicle-list-client';
+import VehicleListClient from '@/features/vehicles/components/vehicle-list-client';
 import type { Vehicle as BaseVehicle } from '@/types/vehicles';
 
 // Cache control for auth-required dynamic pages

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { DriverAssignmentDialog } from '@/features/drivers/DriverAssignmentDialog';
+import { DriverAssignmentDialog } from '@/features/drivers/components/DriverAssignmentDialog';
 
 export function AssignmentDialogButton({
   driverId,

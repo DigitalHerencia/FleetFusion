@@ -3,7 +3,7 @@ import { Plus } from 'lucide-react';
 
 import { listDriversByOrg } from '@/lib/fetchers/driverFetchers';
 import { DriverCard } from '@/components/drivers/driver-card';
-import { AddDriverDialog } from '@/features/drivers/AddDriverDialog';
+import { AddDriverDialog } from '@/features/drivers/components/AddDriverDialog';
 import { Button } from '@/components/ui/button';
 import type { DriverFilters } from '@/types/drivers';
 

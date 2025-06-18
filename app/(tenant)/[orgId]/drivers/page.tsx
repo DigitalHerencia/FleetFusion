@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 
-import DriverListPage from '@/features/drivers/DriverListPage';
+import DriverListPage from '@/features/drivers/components/DriverListPage';
 
 // Cache control for auth-required dynamic pages
 export const dynamic = 'force-dynamic';

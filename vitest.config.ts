@@ -6,7 +6,7 @@ import tsconfigPaths from "vite-tsconfig-paths"
 export default defineConfig({
     plugins: [tsconfigPaths()],
     test: {
-        include: ["tests/**/*.test.ts"],
+        include: ["tests/**/*.test.ts", "features/**/tests/**/*.test.ts"],
         exclude: ["tests/e2e/**", "node_modules/**"],
         environment: "node",
         globals: true,
@@ -17,3 +17,4 @@ export default defineConfig({
             reporter: ["text", "html", "json"],
         },
     },
+})

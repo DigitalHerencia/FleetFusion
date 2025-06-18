@@ -19,12 +19,12 @@ import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getDriverById } from '@/lib/fetchers/driverFetchers';
-import { DriverFormFeature } from '@/features/drivers/DriverFormFeature';
+import { DriverFormFeature } from '@/features/drivers/components/DriverFormFeature';
 import { DriverPerformance } from '@/components/analytics/driver-performance';
 import { getDriverAnalytics } from '@/lib/fetchers/analyticsFetchers';
 import { DocumentUploadForm } from '@/components/compliance/DocumentUploadForm';
 import { getDriverHOSStatus } from '@/lib/fetchers/complianceFetchers';
-import { AssignmentDialogButton } from '@/features/drivers/AssignmentDialogButton'; // new client component
+import { AssignmentDialogButton } from '@/features/drivers/components/AssignmentDialogButton'; // new client component
 
 // Helper to safely extract assignment info
 function getAssignmentLabel(assignment: any) {

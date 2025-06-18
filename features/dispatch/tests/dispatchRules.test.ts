@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { validateLoadAssignment } from '../lib/business-rules/dispatch-rules'
+import { validateLoadAssignment } from '../../../lib/business-rules/dispatch-rules'
 
 const mockDb = {
   load: {
@@ -16,7 +16,7 @@ const mockDb = {
   }
 }
 
-vi.mock('@/lib/database/db', () => ({ __esModule: true, default: mockDb }))
+vi.mock('../../../lib/database/db', () => ({ __esModule: true, default: mockDb }))
 
 beforeEach(() => {
   vi.clearAllMocks()

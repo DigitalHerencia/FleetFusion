@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import * as actions from '../lib/actions/vehicleActions'
-import { listVehiclesByOrg } from '../lib/fetchers/vehicleFetchers'
+import * as actions from '../../../lib/actions/vehicleActions'
+import { listVehiclesByOrg } from '../../../lib/fetchers/vehicleFetchers'
 
 vi.mock('next/cache', () => ({ revalidatePath: vi.fn() }))
 
-vi.mock('../lib/database/db', () => ({
+vi.mock('../../../lib/database/db', () => ({
   __esModule: true,
   default: {
     vehicle: {
@@ -20,14 +20,14 @@ vi.mock('../lib/database/db', () => ({
   },
 }))
 
-vi.mock('@/lib/errors/handleError', () => ({ handleError: vi.fn() }))
+vi.mock('../../../lib/errors/handleError', () => ({ handleError: vi.fn() }))
 
 vi.mock('@clerk/nextjs/server', () => ({
   auth: () => Promise.resolve({ userId: 'u1', orgId: 'org1' }),
 }))
 
-vi.mock('../schemas/vehicles', async () => {
-  const actual = await vi.importActual<typeof import('../schemas/vehicles')>('../schemas/vehicles')
+vi.mock('../../../schemas/vehicles', async () => {
+  const actual = await vi.importActual<typeof import('../../../schemas/vehicles')>('../../../schemas/vehicles')
   return {
     __esModule: true,
     ...actual,
@@ -36,7 +36,7 @@ vi.mock('../schemas/vehicles', async () => {
   }
 })
 
-import db from '../lib/database/db'
+import db from '../../../lib/database/db'
 
 describe('vehicles domain', () => {
   beforeEach(() => {
@@ -44,7 +44,7 @@ describe('vehicles domain', () => {
   })
 
   it('validates VIN format', async () => {
-    const schemas = await vi.importActual<typeof import('../schemas/vehicles')>('../schemas/vehicles')
+    const schemas = await vi.importActual<typeof import('../../../schemas/vehicles')>('../../../schemas/vehicles')
     expect(() => schemas.VehicleFormSchema.parse({
       type: 'tractor',
       make: 'Make',
