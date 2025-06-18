@@ -12,6 +12,8 @@ const labels = [
     // Type Labels
     { name: "Bug", color: "d73a49", description: "Something isn't working" },
     { name: "Feature", color: "a2eeef", description: "New feature or request" },
+    { name: "enhancement", color: "84b6eb", description: "Improvement to existing feature" },
+    { name: "question", color: "cc317c", description: "Further information is requested" },
     {
         name: "Documentation",
         color: "0075ca",
@@ -60,6 +62,31 @@ const labels = [
         name: "Has-PR",
         color: "0e8a16",
         description: "Issue has an associated pull request",
+    },
+    {
+        name: "Blocks-PR",
+        color: "d93f0b",
+        description: "This issue blocks a pull request",
+    },
+    {
+        name: "Has-Dependent",
+        color: "bfd4f2",
+        description: "Other issues depend on this one",
+    },
+    {
+        name: "Has-Dependencies",
+        color: "fef2c0",
+        description: "This issue depends on other issues",
+    },
+    {
+        name: "conflict",
+        color: "e11d21",
+        description: "Pull request has merge conflicts",
+    },
+    {
+        name: "needs-fixes",
+        color: "fbca04",
+        description: "Needs fixes before merge (used by FleetFusion agent)",
     },
 ]
 

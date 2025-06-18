@@ -268,8 +268,10 @@ export async function inviteUsersAction(
     }
 
     // Implementation would send invitations via Clerk
-    // For now, we'll log the action
-    console.log('Inviting users for org', orgId, { emails, role });
+    // For now, log count in development only
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Inviting users', { count: emails.length, orgId });
+    }
     
     // Create audit log entry
     await prisma.auditLog.create({
