@@ -1,4 +1,11 @@
 <!-- @format -->
+<!--
+🔄 Quick Reminders:
+• Branch naming: <type>/<description> (e.g., feature/vehicle-tracking, fix/dashboard-crash, docs/api-guide)
+• Use closing keywords in PR descriptions to auto-close issues (e.g., "Closes #123", "Fixes #456")
+• PR title format: type: description (e.g., feat: add GPS tracking for vehicle monitoring)
+-->
+<!-- PR Title Example: feat: implement vehicle location tracking -->
 
 ## 🔄 PR Type
 
@@ -20,7 +27,11 @@
 ## 🔗 Linked Issues
 
 <!-- Use closing keywords to automatically close issues when this PR is merged -->
-<!-- Examples: "Closes #123", "Fixes #456", "Resolves #789" -->
+<!-- Supported keywords: "Closes #123", "Fixes #456", "Resolves #789", "Closes: #123" -->
+<!-- Examples: -->
+<!-- - Closes #123 (single issue) -->
+<!-- - Fixes #456, Resolves #789 (multiple issues) -->
+<!-- - Closes: https://github.com/owner/repo/issues/123 (full URL) -->
 
 ## 🧪 Testing
 
@@ -45,7 +56,9 @@
 -   [ ] Tests added/updated for new functionality
 -   [ ] Documentation updated (if applicable)
 -   [ ] No breaking changes (or properly documented)
--   [ ] Branch named correctly (`type/description`)
+-   [ ] Branch named correctly following convention: `<type>/<description>`
+    -   Examples: `feature/vehicle-tracking`, `fix/dashboard-crash`, `docs/api-guide`
+    -   Supported types: `feature/`, `fix/`, `docs/`, `refactor/`, `test/`, `chore/`, `config/`
 -   [ ] PR title follows semantic format (`type: description`)
 -   [ ] Milestone assigned
 -   [ ] Labels applied
@@ -77,6 +90,23 @@
 ---
 
 <!--
+## Branch Naming Convention:
+Use: <type>/<description>
+- feature/<desc> - New features (e.g., feature/vehicle-tracking)
+- fix/<desc> - Bug fixes (e.g., fix/dashboard-crash)
+- docs/<desc> - Documentation (e.g., docs/api-guide)
+- refactor/<desc> - Code refactoring (e.g., refactor/user-service)
+- test/<desc> - Test additions/updates (e.g., test/vehicle-validation)
+- chore/<desc> - Maintenance tasks (e.g., chore/update-deps)
+- config/<desc> - Configuration changes (e.g., config/database-setup)
+
+## Closing Keywords for Auto-linking Issues:
+- "Closes #123" - Closes issue when PR is merged
+- "Fixes #456" - Same as closes, typically for bug fixes
+- "Resolves #789" - Same as closes, for any resolution
+- Multiple issues: "Fixes #123, Closes #456"
+- Full URL: "Closes: https://github.com/owner/repo/issues/123"
+
 ## PR Title Format Examples:
 - feat: add GPS tracking for vehicle monitoring
 - fix: resolve dashboard crash on vehicle details page
