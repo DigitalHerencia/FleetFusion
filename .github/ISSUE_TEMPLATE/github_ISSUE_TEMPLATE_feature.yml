@@ -1,90 +1,119 @@
-name: "🚀 Feature Request"
-description: "Suggest a new feature or enhancement for FleetFusion"
-labels: ["Feature"]
-assignees: [DigitalHerencia]
+# @format
+
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement for FleetFusion
+title: "[Feature]: "
+labels: ["Feature", "Priority-Medium"]
+assignees:
+    - DigitalHerencia
 body:
-  - type: input
-    id: summary
-    attributes:
-      label: "Feature Summary"
-      description: "Concise description of the feature."
-      placeholder: "Add real-time GPS tracking for vehicles"
-    validations:
-      required: true
+    - type: markdown
+      attributes:
+          value: |
+              Thanks for suggesting a new feature! Please provide detailed information to help us understand your request.
 
-  - type: textarea
-    id: description
-    attributes:
-      label: "Detailed Description"
-      description: "What problem does this solve for FleetFusion users?"
-      placeholder: |
-        Fleet managers need to see where their vehicles are in real-time to:
-        - Optimize routes
-        - Respond to emergencies
-        - Track delivery progress
-    validations:
-      required: true
+    - type: input
+      id: summary
+      attributes:
+          label: Feature Summary
+          description: A brief, clear description of the feature you'd like to see
+          placeholder: "Add GPS tracking visualization for vehicle routes"
+      validations:
+          required: true
 
-  - type: textarea
-    id: acceptance
-    attributes:
-      label: "Acceptance Criteria"
-      description: "List conditions that must be true to consider this complete."
-      placeholder: |
-        - [ ] Vehicle locations update every 30 seconds
-        - [ ] Map displays current position of all active vehicles
-        - [ ] Location history is stored for 30 days
-        - [ ] Geofencing alerts are triggered when vehicles enter/exit zones
-    validations:
-      required: true
+    - type: textarea
+      id: description
+      attributes:
+          label: Detailed Description
+          description: Provide a detailed description of the feature
+          placeholder: |
+              What problem does this solve?
+              How should it work?
+              What would users be able to do?
 
-  - type: textarea
-    id: dependencies
-    attributes:
-      label: "Dependencies / Blockers"
-      description: "Linked issues, external integrations, or other requirements."
-      placeholder: |
-        - Depends on #123 (vehicle management API)
-        - Requires GPS tracking service integration
-        - May need mobile app updates
-    validations:
-      required: false
+              User Story:
+              As a [fleet manager], I want to [see real-time GPS tracking] so that [I can monitor vehicle locations].
+      validations:
+          required: true
 
-  - type: dropdown
-    id: priority
-    attributes:
-      label: "Priority"
-      description: "How important is this feature?"
-      options:
-        - "Priority-Low"
-        - "Priority-Medium"
-        - "Priority-High"
-    validations:
-      required: true
+    - type: dropdown
+      id: priority
+      attributes:
+          label: Priority Level
+          description: How important is this feature?
+          options:
+              - High - Critical for core functionality
+              - Medium - Important enhancement
+              - Low - Nice to have feature
+          default: 1
+      validations:
+          required: true
 
-  - type: dropdown
-    id: milestone
-    attributes:
-      label: "Target Milestone"
-      description: "Which release should include this feature?"
-      options:
-        - "MVP Launch"
-        - "Q3 2025 Release"
-        - "Testing & Automation Hardening"
-        - "Post-Launch Enhancements"
-    validations:
-      required: false
+    - type: dropdown
+      id: component
+      attributes:
+          label: Component/Area
+          description: Which part of FleetFusion would this affect?
+          options:
+              - Dashboard
+              - Vehicle Management
+              - Driver Management
+              - Dispatch
+              - IFTA Compliance
+              - Analytics
+              - Authentication
+              - Multi-tenancy
+              - API
+              - Mobile App
+              - Reporting
+              - Other
+      validations:
+          required: true
 
-  - type: dropdown
-    id: user_type
-    attributes:
-      label: "Primary User"
-      description: "Who will primarily use this feature?"
-      options:
-        - "Fleet Manager"
-        - "Driver"
-        - "Admin"
-        - "Dispatcher"
-        - "All Users"
-    validations:
-      required: false
+    - type: textarea
+      id: acceptance_criteria
+      attributes:
+          label: Acceptance Criteria
+          description: Define what "done" looks like for this feature
+          placeholder: |
+              - [ ] Users can view real-time vehicle locations on a map
+              - [ ] Historical route data is displayed
+              - [ ] Performance is acceptable with 100+ vehicles
+              - [ ] Mobile-responsive design
+      validations:
+          required: false
+
+    - type: textarea
+      id: dependencies
+      attributes:
+          label: Dependencies/Blockers
+          description: Does this feature depend on or block other features?
+          placeholder: |
+              Depends on #123 (GPS integration)
+              Blocks #456 (Advanced reporting)
+      validations:
+          required: false
+
+    - type: checkboxes
+      id: milestone
+      attributes:
+          label: Target Milestone
+          description: Which release should this be included in?
+          options:
+              - label: MVP Launch (June 16, 2025)
+              - label: Q3 2025 Release (July 1, 2025)
+              - label: Testing & Automation Hardening (July 15, 2025)
+              - label: Post-Launch Enhancements (August 30, 2025)
+
+    - type: textarea
+      id: technical_notes
+      attributes:
+          label: Technical Implementation Notes
+          description: Any technical considerations or suggestions
+          placeholder: |
+              - API endpoints needed
+              - Database schema changes
+              - Third-party integrations
+              - Performance considerations
+      validations:
+          required: false

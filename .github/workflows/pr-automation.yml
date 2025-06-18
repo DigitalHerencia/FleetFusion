@@ -1,5 +1,10 @@
 # @format
 
+# Purpose: Handles PR and issue automation like labeling, linking, and priority assignment
+# Triggered by: pull_request (opened, edited, synchronize, reopened), issues (opened, edited, closed, reopened)
+# Features: Auto-labeling, issue linking, dependency tracking, reviewer assignment
+# Note: FleetFusion pattern validation is handled by fleetfusion-conventions.yml to avoid duplication
+
 name: 🔄 PR Automation
 on:
     pull_request:
@@ -19,47 +24,12 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v4.1.6
 
-            # Note: PR title validation is now handled by conventions.yml workflow
-            # to avoid duplication and ensure consistency across all PRs including forks
-
-            - name: Auto-label PR by branch prefix
-              uses: actions/github-script@v7
-              with:
-                  script: |
-                      const { owner, repo, number } = context.issue;
-                      const pr = await github.rest.pulls.get({ owner, repo, pull_number: number });
-                      const branch = pr.data.head.ref;
-
-                      // Map branch prefixes to labels
-                      const branchToLabel = {
-                        'feature/': 'Feature',
-                        'feat/': 'Feature',
-                        'fix/': 'Bug',
-                        'bugfix/': 'Bug',
-                        'docs/': 'Documentation',
-                        'doc/': 'Documentation',
-                        'test/': 'Testing',
-                        'chore/': 'Configuration',
-                        'config/': 'Configuration',
-                        'refactor/': 'Code-Quality'
-                      };
-
-                      for (const [prefix, label] of Object.entries(branchToLabel)) {
-                        if (branch.startsWith(prefix)) {
-                          await github.rest.issues.addLabels({
-                            owner,
-                            repo,
-                            issue_number: number,
-                            labels: [label]
-                          });
-                          break;
-                        }
-                      }
+            # Auto-labeling is handled by fleetfusion-conventions.yml to avoid duplication
 
             - name: Add Has-PR label to referenced issues
-              uses: actions/github-script@v7
+              uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
               with:
                   script: |
                       const { owner, repo, number } = context.issue;
@@ -86,20 +56,37 @@ jobs:
                       }
 
             - name: Auto-request review
-              uses: actions/github-script@v7
+              uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
               with:
                   script: |
                       const { owner, repo, number } = context.issue;
+                      const prAuthor = context.payload.pull_request.user.login;
 
-                      await github.rest.pulls.requestReviewers({
-                        owner,
-                        repo,
-                        pull_number: number,
-                        reviewers: ['DigitalHerencia']
-                      });
+                      // Define potential reviewers
+                      const potentialReviewers = ['DigitalHerencia'];
+
+                      // Filter out the PR author from reviewers
+                      const filteredReviewers = potentialReviewers.filter(reviewer => reviewer !== prAuthor);
+
+                      // Only request review if we have valid reviewers
+                      if (filteredReviewers.length > 0) {
+                        try {
+                          await github.rest.pulls.requestReviewers({
+                            owner,
+                            repo,
+                            pull_number: number,
+                            reviewers: filteredReviewers
+                          });
+                          console.log(`Review requested from: ${filteredReviewers.join(', ')}`);
+                        } catch (error) {
+                          console.log(`Could not request review: ${error.message}`);
+                        }
+                      } else {
+                        console.log('No valid reviewers available (PR author cannot review their own PR)');
+                      }
 
             - name: Auto-assign priority based on labels
-              uses: actions/github-script@v7
+              uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
               with:
                   script: |
                       const { owner, repo, number } = context.issue;
@@ -124,6 +111,38 @@ jobs:
                         });
                       }
 
+            - name: Notify on failure
+              if: failure()
+              uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+              with:
+                  script: |
+                      const prNumber = context.issue.number;
+                      const workflowUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+
+                      const failureMessage = `## 🚨 PR Automation Failed
+
+                      The automated PR processing workflow has failed.
+
+                      **Workflow Run:** [View Logs](${workflowUrl})
+                      **PR:** #${prNumber}
+
+                      This failure may affect:
+                      - Issue linking and labeling
+                      - Reviewer assignment
+                      - Priority assignment
+
+                      Please check the workflow logs and manually perform these actions if needed.
+
+                      ---
+                      *This is an automated notification from FleetFusion DevOps* 🚛⚠️`;
+
+                      await github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: prNumber,
+                        body: failureMessage
+                      });
+
     dependency-tracking:
         name: Dependency Tracking
         runs-on: ubuntu-latest
@@ -135,7 +154,7 @@ jobs:
 
         steps:
             - name: Track PR dependencies
-              uses: actions/github-script@v7
+              uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
               with:
                   script: |
                       const { owner, repo, number } = context.issue;
@@ -186,7 +205,7 @@ jobs:
         steps:
             - name: Auto-label new issues
               if: github.event.action == 'opened'
-              uses: actions/github-script@v7
+              uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
               with:
                   script: |
                       const { owner, repo, number } = context.issue;
@@ -224,7 +243,7 @@ jobs:
 
             - name: Remove Has-PR label when issue is closed
               if: github.event.action == 'closed'
-              uses: actions/github-script@v7
+              uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
               with:
                   script: |
                       const { owner, repo, number } = context.issue;
@@ -236,3 +255,36 @@ jobs:
                       } catch (error) {
                         console.log(`Could not remove Has-PR label: ${error.message}`);
                       }
+
+            - name: Notify on failure
+              if: failure()
+              uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+              with:
+                  script: |
+                      const issueNumber = context.issue.number;
+                      const workflowUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+                      const eventType = github.event_name === 'pull_request' ? 'PR' : 'Issue';
+
+                      const failureMessage = `## 🚨 Dependency Tracking Failed
+
+                      The automated dependency tracking workflow has failed.
+
+                      **Workflow Run:** [View Logs](${workflowUrl})
+                      **${eventType}:** #${issueNumber}
+
+                      This failure may affect:
+                      - Dependency label management
+                      - Priority assignment based on content
+                      - Label cleanup on issue closure
+
+                      Please check the workflow logs and manually review dependencies if needed.
+
+                      ---
+                      *This is an automated notification from FleetFusion DevOps* 🚛⚠️`;
+
+                      await github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: issueNumber,
+                        body: failureMessage
+                      });
