@@ -1,28 +1,27 @@
 'use server';
 
 import { auth } from '@clerk/nextjs/server';
-import { getDashboardSummary } from '@/lib/fetchers/analyticsFetchers';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
+import { getDashboardSummary } from '@/lib/fetchers/analyticsFetchers';
+import { handleError } from '@/lib/errors/handleError';
+import { analyticsReportSchema } from '@/schemas/analytics';
+
+// Follows validation and auth pattern in CONTRIBUTING.md#L596-L618
 
 export async function exportAnalyticsReport(formData: FormData): Promise<Response> {
-  const { userId } = await auth();
-  if (!userId) {
-    return new Response('Unauthorized', { status: 401 });
-  }
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      return new Response('Unauthorized', { status: 401 });
+    }
 
-  const orgId = formData.get('orgId');
-  const timeRange = (formData.get('timeRange') as string) || '30d';
-  const format = (formData.get('format') as string) || 'csv';
-  const driverId = formData.get('driver') as string | null;
+    const parsed = analyticsReportSchema.parse(Object.fromEntries(formData));
 
-  if (!orgId || typeof orgId !== 'string') {
-    return new Response('Organization ID is required', { status: 400 });
-  }
+    const filters = parsed.driver ? { driverId: parsed.driver } : {};
 
-  const filters = driverId ? { driverId } : {};
-  const summary = await getDashboardSummary(orgId, timeRange, filters);
+    const summary = await getDashboardSummary(parsed.orgId, parsed.timeRange, filters);
 
-  const rows = [
+    const rows = [
     ['Metric', 'Value'],
     ['Total Revenue', summary.totalRevenue.toString()],
     ['Total Miles', summary.totalMiles.toString()],
@@ -35,7 +34,7 @@ export async function exportAnalyticsReport(formData: FormData): Promise<Respons
     ],
   ];
 
-  if (format === 'pdf') {
+    if (parsed.format === 'pdf') {
     const doc = await PDFDocument.create();
     const page = doc.addPage();
     const { width, height } = page.getSize();
@@ -58,17 +57,21 @@ export async function exportAnalyticsReport(formData: FormData): Promise<Respons
   }
 
   const escape = (value: string) => `"${value.replace(/"/g, '""')}"`;
-  const csv = rows.map(row => row.map(escape).join(',')).join('\n');
+    const csv = rows.map(row => row.map(escape).join(',')).join('\n');
 
-  const fileName = `analytics-report-${new Date()
-    .toISOString()
-    .split('T')[0]}.${format}`;
+    const fileName = `analytics-report-${new Date()
+      .toISOString()
+      .split('T')[0]}.${parsed.format}`;
 
-  return new Response(csv, {
-    status: 200,
-    headers: {
-      'Content-Type': 'text/csv',
-      'Content-Disposition': `attachment; filename="${fileName}"`,
-    },
-  });
+    return new Response(csv, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/csv',
+        'Content-Disposition': `attachment; filename="${fileName}"`,
+      },
+    });
+  } catch (error) {
+    const result = handleError(error, 'Export Analytics Report');
+    return new Response(result.error || 'Failed to generate report', { status: 400 });
+  }
 }

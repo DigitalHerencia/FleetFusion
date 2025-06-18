@@ -1,9 +1,10 @@
+"use server";
+
 // --- IMPORTANT ENUM SYNC ---
 // When updating VehicleStatus or VehicleType:
 // - Update enums in: types/vehicles.ts, schemas/vehicles.ts, prisma/schema.prisma
 // - Keep all mappings in this file in sync with those enums.
 // ---------------------------
-'use server';
 
 import { revalidatePath } from 'next/cache';
 import { auth } from '@clerk/nextjs/server';
