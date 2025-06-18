@@ -60,13 +60,30 @@ jobs:
               with:
                   script: |
                       const { owner, repo, number } = context.issue;
+                      const prAuthor = context.payload.pull_request.user.login;
 
-                      await github.rest.pulls.requestReviewers({
-                        owner,
-                        repo,
-                        pull_number: number,
-                        reviewers: ['DigitalHerencia']
-                      });
+                      // Define potential reviewers
+                      const potentialReviewers = ['DigitalHerencia'];
+
+                      // Filter out the PR author from reviewers
+                      const filteredReviewers = potentialReviewers.filter(reviewer => reviewer !== prAuthor);
+
+                      // Only request review if we have valid reviewers
+                      if (filteredReviewers.length > 0) {
+                        try {
+                          await github.rest.pulls.requestReviewers({
+                            owner,
+                            repo,
+                            pull_number: number,
+                            reviewers: filteredReviewers
+                          });
+                          console.log(`Review requested from: ${filteredReviewers.join(', ')}`);
+                        } catch (error) {
+                          console.log(`Could not request review: ${error.message}`);
+                        }
+                      } else {
+                        console.log('No valid reviewers available (PR author cannot review their own PR)');
+                      }
 
             - name: Auto-assign priority based on labels
               uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
