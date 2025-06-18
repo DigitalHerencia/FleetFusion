@@ -11,9 +11,9 @@ export default defineConfig({
         environment: "node",
         globals: true,
         threads: true,
-        retry: process.env.CI ? 2 : 0,
-        coverage: {
+        retry: process.env.CI ? 2 : 0,        coverage: {
             provider: "v8",
             reporter: ["text", "html", "json"],
         },
     },
+})
