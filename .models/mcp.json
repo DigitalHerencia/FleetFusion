@@ -1,54 +1,120 @@
-// mcp.json — Secure & Modular FleetFusion MCP Configuration
 {
-  "inputs": [],
-  "servers": {
-    "neon": {
-      "type": "stdio", 
-      "command": "npx",
-      "args": ["-y", "@neondatabase/mcp-server-neon", "start"],
-      "env": {
-        "DATABASE_URL": "${DATABASE_URL}",
-        "NEON_API_KEY": "${NEON_API_KEY}"
-      }
+    "servers": {
+        "vitest-runner": {
+            "type": "stdio",
+            "command": "npx",
+            "args": ["-y", "@madrus/vitest-mcp-server@latest"],
+            "env": {
+                "VITEST_PROJECT_DIR": "${input:vitestProjectDir}"
+            }
+        },
+        "neon": {
+            "type": "stdio",
+            "command": "npx",
+            "args": [
+                "-y",
+                "@neondatabase/mcp-server-neon",
+                "start",
+                "${input:NEON_API_KEY}"
+            ],
+            "env": {
+                "DATABASE_URL": "${input:DATABASE_URL}"
+            }
+        },
+        "clerk": {
+            "type": "stdio",
+            "command": "npx",
+            "args": [
+                "-y",
+                "@clerk/agent-toolkit",
+                "-p",
+                "local-mcp",
+                "--secret-key",
+                "${input:CLERK_SECRET_KEY}"
+            ],
+            "env": {
+                "CLERK_API_KEY": "${input:CLERK_SECRET_KEY}",
+                "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY": "${input:NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}"
+            }
+        },
+        "git": {
+            "type": "stdio",
+            "command": "npx",
+            "args": ["-y", "@cyanheads/git-mcp-server"],
+            "env": {
+                "GIT_WORKING_DIRECTORY": "./"
+            }
+        },
+        "filesystem": {
+            "type": "stdio",
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-filesystem",
+                "D:/WebDev/DevShot/FleetFusion/"
+            ],
+            "env": {
+                "ALLOWED_DIRECTORIES": "${input:ALLOWED_DIRECTORIES}"
+            }
+        },
+        "playwright": {
+            "type": "stdio",
+            "command": "npx",
+            "args": ["@playwright/mcp@latest"]
+        },
+        "github": {
+            "type": "http",
+            "url": "https://api.githubcopilot.com/mcp/"
+        }
     },
-    "clerk": {
-      "type": "stdio",
-      "command": "npx", 
-      "args": ["-y", "@clerk/agent-toolkit", "start"],
-      "env": {
-        "CLERK_SECRET_KEY": "${CLERK_SECRET_KEY}",
-        "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY": "${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}"
-      }
-    },
-    "git": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@cyanheads/git-mcp-server"],
-      "env": {
-        "GIT_WORKING_DIRECTORY": "./"
-      }
-    },
-    "github": {
-      "type": "stdio", 
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}",
-        "GITHUB_REPOSITORY": "DigitalHerencia/FleetFusion"
-      }
-    },
-    "filesystem": {
-      "type": "stdio",
-      "command": "npx", 
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "./"],
-      "env": {
-        "ALLOWED_DIRECTORIES": ["./src", "./app", "./components", "./lib", "./types", "./config", "./.github"]
-      }
-    }
-  },
-  "playwright": {
-    "type": "stdio",
-    "command": "npx",
-    "args": ["@playwright/mcp@latest"]
-  }
+    "inputs": [
+        {
+            "id": "VITEST_PROJECT_DIR",
+            "type": "promptString",
+            "description": "Absolute path to your project's root directory (where package.json and Vitest config files are located).",
+            "password": true
+        },
+        {
+            "id": "NEON_API_KEY",
+            "type": "promptString",
+            "description": "Neon API Key for database access",
+            "password": true
+        },
+        {
+            "id": "DATABASE_URL",
+            "type": "promptString",
+            "description": "Database URL for Neon",
+            "password": true
+        },
+        {
+            "id": "CLERK_SECRET_KEY",
+            "type": "promptString",
+            "description": "Clerk secret key for authentication",
+            "password": true
+        },
+        {
+            "id": "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+            "type": "promptString",
+            "description": "Clerk publishable key for client-side authentication",
+            "password": true
+        },
+        {
+            "id": "GITHUB_TOKEN",
+            "type": "promptString",
+            "description": "GitHub personal access token for GitHub integration",
+            "password": true
+        },
+        {
+            "id": "ALLOWED_DIRECTORIES",
+            "type": "promptString",
+            "description": "Comma-separated list of allowed directories for filesystem access",
+            "default": "./src,./app,./components,./lib,./types,./config,./.github"
+        },
+        {
+            "type": "promptString",
+            "id": "github_token",
+            "description": "GitHub Personal Access Token",
+            "password": true
+        }
+    ]
 }

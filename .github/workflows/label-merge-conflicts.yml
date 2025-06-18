@@ -1,5 +1,9 @@
 # @format
 
+# Purpose: Automatically labels pull requests that have merge conflicts
+# Triggered by: pull_request (synchronize, opened, reopened, edited, ready_for_review)
+# Features: Adds/removes 'conflict' label based on mergeable state
+
 name: "Label PRs with Merge Conflicts"
 
 on:
@@ -11,7 +15,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Check for merge conflicts
-              uses: actions/github-script@v7
+              uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
               with:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
                   script: |
@@ -34,3 +38,31 @@ jobs:
                           });
                         } catch (e) { /* ignore if not present */ }
                       }
+
+            - name: Notify on failure
+              if: failure()
+              uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+              with:
+                  script: |
+                      const prNumber = context.payload.pull_request.number;
+                      const workflowUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+
+                      const failureMessage = `## 🚨 Merge Conflict Detection Failed
+
+                      The automated merge conflict detection workflow has failed.
+
+                      **Workflow Run:** [View Logs](${workflowUrl})
+                      **PR:** #${prNumber}
+
+                      This may be due to GitHub API issues or workflow configuration problems.
+                      You may need to manually check for merge conflicts and apply the 'conflict' label if needed.
+
+                      ---
+                      *This is an automated notification from FleetFusion DevOps* 🚛⚠️`;
+
+                      await github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: prNumber,
+                        body: failureMessage
+                      });

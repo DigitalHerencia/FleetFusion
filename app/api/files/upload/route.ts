@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import { handleUpload, type HandleUploadBody } from '@vercel/blob/client';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
+    const { userId, orgId } = await auth();
+    if (!userId || !orgId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = (await request.json()) as HandleUploadBody;
 
     const jsonResponse = await handleUpload({
@@ -23,9 +29,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           }),
         };
       },
-      onUploadCompleted: async ({ blob, tokenPayload }) => {
+      onUploadCompleted: async ({ blob }) => {
         // Get notified of client upload completion
-        console.log('blob upload completed', blob, tokenPayload);
+        if (process.env.NODE_ENV === 'development') {
+          console.log('Blob upload completed:', { url: blob.url });
+        }
         // Run any logic after the file upload completed
       },
     });

@@ -8,29 +8,29 @@ Welcome to the FleetFusion user documentation. This collection of guides will he
 with FleetFusion and understand how to use its features effectively. The documentation is organized
 into the following sections:
 
--   **Quickstart:** Start here for a basic setup and usage walkthrough – see
-    [Quickstart](../doc/QUICKSTART.md).
+ -   **Quickstart:** Start here for a basic setup and usage walkthrough – see
+    [Quickstart](.wiki/Getting-Started.md#quick-start).
 -   **Role Guides:** Detailed guides for specific user roles:
 
-    -   [Admin Guide](../doc/ROLE_GUIDES/Admin.md)
-    -   [Dispatcher Guide](../doc/ROLE_GUIDES/Dispatcher.md)
-    -   [Driver Guide](../doc/ROLE_GUIDES/Driver.md)
-    -   [Compliance Officer Guide](../doc/ROLE_GUIDES/ComplianceOfficer.md)
+    -   [Admin Guide](.wiki/ROLE_GUIDES/Admin.md)
+    -   [Dispatcher Guide](.wiki/ROLE_GUIDES/Dispatcher.md)
+    -   [Driver Guide](.wiki/ROLE_GUIDES/Driver.md)
+    -   [Compliance Officer Guide](.wiki/ROLE_GUIDES/ComplianceOfficer.md)
 
 -   **Module Guides:** Learn about each major module and feature:
 
-    -   [Dispatch Management Guide](../doc/MODULE_GUIDES/dispatch.md)
-    -   [Vehicle Management Guide](../doc/MODULE_GUIDES/vehicles.md)
-    -   [Driver Management Guide](../doc/MODULE_GUIDES/drivers.md)
-    -   [Compliance Management Guide](../doc/MODULE_GUIDES/compliance.md)
-    -   [IFTA Reporting Guide](../doc/MODULE_GUIDES/ifta.md)
-    -   [Analytics Guide](../doc/MODULE_GUIDES/analytics.md)
-    -   [Settings Guide](../doc/MODULE_GUIDES/settings.md)
+    -   [Dispatch Management Guide](.wiki/MODULE_GUIDES/dispatch.md)
+    -   [Vehicle Management Guide](.wiki/MODULE_GUIDES/vehicles.md)
+    -   [Driver Management Guide](.wiki/MODULE_GUIDES/drivers.md)
+    -   [Compliance Management Guide](.wiki/MODULE_GUIDES/compliance.md)
+    -   [IFTA Reporting Guide](.wiki/MODULE_GUIDES/ifta.md)
+    -   [Analytics Guide](.wiki/MODULE_GUIDES/analytics.md)
+    -   [Settings Guide](.wiki/MODULE_GUIDES/settings.md)
 
 -   **Additional Resources:**
 
-    -   [FAQ](../doc/FAQ.md) – Frequently Asked Questions about FleetFusion.
-    -   [Troubleshooting](../doc/TROUBLESHOOTING.md) – Solutions to common issues and errors.
+    -   [FAQ](.wiki/FAQ.md) – Frequently Asked Questions about FleetFusion.
+    -   [Troubleshooting](.wiki/TROUBLESHOOTING.md) – Solutions to common issues and errors.
 
 # FleetFusion Quickstart Guide
 
@@ -89,7 +89,7 @@ basic tasks to get your fleet management up and running.
       state/province for tax purposes.
     - Check out **Settings** for additional configurations like company preferences or to manage
       roles and company profile information.
-    - Refer to the [Admin Guide](../doc/ROLE_GUIDES/Admin.md) and other role-specific guides for
+    - Refer to the [Admin Guide](.wiki/ROLE_GUIDES/Admin.md) and other role-specific guides for
       specialized tasks and best practices as you start using FleetFusion.
 
 Now you have the basics covered. Your FleetFusion environment is set up with core data, and you're

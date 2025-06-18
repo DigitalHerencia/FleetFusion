@@ -1,100 +1,109 @@
-name: "🐞 Bug Report"
-description: "Report something that isn't working in FleetFusion"
-labels: ["Bug"]
-assignees: [DigitalHerencia]
+# @format
+
+name: 🐛 Bug Report
+description: Report a bug or issue with FleetFusion
+title: "[Bug]: "
+labels: ["Bug", "Priority-Medium"]
+assignees:
+    - DigitalHerencia
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Thank you for helping us improve FleetFusion! Please fill out **all** sections to help us reproduce and fix the issue.
+    - type: markdown
+      attributes:
+          value: |
+              Thanks for taking the time to fill out this bug report! Please provide as much detail as possible.
 
-  - type: input
-    id: summary
-    attributes:
-      label: "Summary"
-      description: "One‑sentence description of the bug."
-      placeholder: "The driver dashboard crashes when loading vehicle assignments"
-    validations:
-      required: true
+    - type: input
+      id: summary
+      attributes:
+          label: Bug Summary
+          description: A brief, clear description of what the bug is
+          placeholder: "Dashboard crashes when accessing vehicle details"
+      validations:
+          required: true
 
-  - type: textarea
-    id: steps
-    attributes:
-      label: "Steps to Reproduce"
-      description: "Provide a numbered list so we can reproduce the issue."
-      placeholder: |
-        1. Log in as a driver
-        2. Navigate to the dashboard
-        3. Click on "My Assignments"
-        4. Observe the crash/error
-    validations:
-      required: true
+    - type: textarea
+      id: description
+      attributes:
+          label: Detailed Description
+          description: Provide a detailed description of the issue
+          placeholder: |
+              Steps to reproduce:
+              1. Navigate to...
+              2. Click on...
+              3. Error occurs...
 
-  - type: textarea
-    id: expected
-    attributes:
-      label: "Expected Behaviour"
-      description: "What should happen?"
-      placeholder: "The assignments should load and display properly"
-    validations:
-      required: true
+              Expected behavior:
+              The dashboard should...
 
-  - type: textarea
-    id: actual
-    attributes:
-      label: "Actual Behaviour"
-      description: "What actually happens?"
-      placeholder: "Page crashes with a 500 error"
-    validations:
-      required: true
+              Actual behavior:
+              Instead, the dashboard...
+      validations:
+          required: true
 
-  - type: dropdown
-    id: severity
-    attributes:
-      label: "Severity"
-      description: "How badly does this impact FleetFusion users?"
-      options:
-        - "Low - Minor inconvenience"
-        - "Medium - Affects functionality"
-        - "High - Major feature broken"
-        - "Critical - App unusable"
-    validations:
-      required: true
+    - type: dropdown
+      id: priority
+      attributes:
+          label: Priority Level
+          description: How urgent is this bug?
+          options:
+              - High - Critical issue, blocks core functionality
+              - Medium - Important but workaround available
+              - Low - Minor issue, cosmetic or edge case
+          default: 1
+      validations:
+          required: true
 
-  - type: dropdown
-    id: priority
-    attributes:
-      label: "Priority"
-      description: "When should this be fixed?"
-      options:
-        - "Priority-Low"
-        - "Priority-Medium"
-        - "Priority-High"
-    validations:
-      required: true
+    - type: dropdown
+      id: component
+      attributes:
+          label: Component
+          description: Which part of FleetFusion is affected?
+          options:
+              - Dashboard
+              - Vehicle Management
+              - Driver Management
+              - Dispatch
+              - IFTA Compliance
+              - Analytics
+              - Authentication
+              - Multi-tenancy
+              - API
+              - Database
+              - Other
+      validations:
+          required: true
 
-  - type: dropdown
-    id: milestone
-    attributes:
-      label: "Target Milestone"
-      description: "Which release should include this fix?"
-      options:
-        - "MVP Launch"
-        - "Q3 2025 Release"
-        - "Testing & Automation Hardening"
-        - "Post-Launch Enhancements"
-    validations:
-      required: false
+    - type: textarea
+      id: environment
+      attributes:
+          label: Environment
+          description: Technical details about your environment
+          placeholder: |
+              - Browser: Chrome 120.0
+              - OS: Windows 11
+              - FleetFusion Version: v1.2.0
+              - Database: Neon PostgreSQL
+      validations:
+          required: false
 
-  - type: textarea
-    id: environment
-    attributes:
-      label: "Environment"
-      description: "Browser, OS, device details"
-      placeholder: |
-        - Browser: Chrome 121
-        - OS: macOS 14
-        - Device: Desktop
-        - URL: https://fleet-fusion.vercel.app/dashboard
-    validations:
-      required: false
+    - type: textarea
+      id: dependencies
+      attributes:
+          label: Dependencies/Blockers
+          description: Does this issue depend on or block other issues?
+          placeholder: |
+              Depends on #123
+              Blocks #456
+      validations:
+          required: false
+
+    - type: checkboxes
+      id: milestone
+      attributes:
+          label: Target Milestone
+          description: Which release should this be included in?
+          options:
+              - label: MVP Launch (June 16, 2025)
+              - label: Q3 2025 Release (July 1, 2025)
+              - label: Testing & Automation Hardening (July 15, 2025)
+              - label: Post-Launch Enhancements (August 30, 2025)

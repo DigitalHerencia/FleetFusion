@@ -7,11 +7,11 @@
 
 ## Document Structure
 
--   **[Technical Specification](../doc/TECHNICAL_SPEC.md)**: Complete system architecture, database design,
+ -   **[Technical Specification](.wiki/TECHNICAL_SPEC.md)**: Complete system architecture, database design,
     API reference, and implementation details
--   **[Clerk Middleware Configuration](../doc/CLERK_MIDDLEWARE_CONFIG.md)**: Authentication setup, role-based
+ -   **[Clerk Middleware Configuration](.wiki/CLERK_MIDDLEWARE_CONFIG.md)**: Authentication setup, role-based
     access control, and security implementation
--   **[Appendix](../doc/APPENDIX.md)**: Database schemas, API reference, component library, deployment
+ -   **[Appendix](.wiki/APPENDIX.md)**: Database schemas, API reference, component library, deployment
     guides, and testing strategies
 
 ## Developer Documentation
@@ -95,7 +95,7 @@ and organization management are handled through Clerk's service, enabling multi-
 -   **Retention & Satisfaction:** Companies continue to use FleetFusion over time (low churn rate) and
     report satisfaction (via feedback or NPS scores) due to time saved and improved oversight.
 
-_See the [Technical Specification](../doc/TECHNICAL_SPEC.md) for the technical architecture and design that
+_See the [Technical Specification](.wiki/TECHNICAL_SPEC.md) for the technical architecture and design that
 support these product requirements._
 
 # FleetFusion Technical Specification
@@ -214,7 +214,7 @@ support these product requirements._
     deployment and can roll back to a previous deployment if a serious issue is discovered.
 
 _For more detailed diagrams, data flows, and integration configurations (e.g., Clerk authentication
-flows, multi-tenancy enforcement, and CI/CD setup), see the [Appendix](../doc/APPENDIX.md)._
+flows, multi-tenancy enforcement, and CI/CD setup), see the [Appendix](.wiki/APPENDIX.md)._
 
 # Appendix
 
@@ -372,6 +372,8 @@ server and client:
     client-side (for example, real-time updates or background refresh of certain data), lightweight
     solutions or the built-in React querying (with useSWR or similar) could be considered, but by
     design the app avoids this for initial page loads.
+-   **Caching Pattern:** Data fetchers leverage `unstable_cache` with explicit `Promise` return types
+    to ensure consistent server-side caching and predictable revalidation.
 
 Below is a simplified data flow diagram demonstrating how data moves in FleetFusion:
 
@@ -459,7 +461,7 @@ aspects of the schema include:
     -   Prisma's schema definitions and TypeScript types help enforce these relationships in code,
         while the database enforces them at runtime.
 
-Developers can refer to the `db/schema.ts` file for the complete and authoritative schema
+Developers can refer to the `prisma/schema.prisma` file for the complete and authoritative schema
 definitions including all fields and relationships. Additionally, migration files (if using
 Prisma's migrations or an external tool) provide a history of schema changes.
 

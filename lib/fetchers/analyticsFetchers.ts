@@ -4,6 +4,7 @@
 
 import { auth } from "@clerk/nextjs/server"
 
+import { unstable_cache } from "next/cache"
 import { CACHE_TTL, getCachedData, setCachedData } from "@/lib/cache/auth-cache"
 import prisma from "@/lib/database/db"
 import type { DashboardSummary } from "@/types/analytics"
@@ -44,7 +45,7 @@ export async function getPerformanceAnalytics(
     organizationId: string,
     timeRange: string = "30d",
     filters: AnalyticsFilters = {}
-) {
+): Promise<any> {
     const { userId } = await auth()
     if (!userId) {
         throw new Error("Unauthorized")
@@ -147,7 +148,7 @@ export async function getFinancialAnalytics(
     organizationId: string,
     timeRange: string = "30d",
     filters: AnalyticsFilters = {}
-) {
+): Promise<any> {
     const { userId } = await auth()
     if (!userId) {
         throw new Error("Unauthorized")
@@ -253,7 +254,7 @@ export async function getDriverAnalytics(
     organizationId: string,
     timeRange: string = "30d",
     filters: AnalyticsFilters = {}
-) {
+): Promise<any> {
     const { userId } = await auth()
     if (!userId) {
         throw new Error("Unauthorized")
@@ -353,7 +354,7 @@ export async function getVehicleAnalytics(
     organizationId: string,
     timeRange: string = "30d",
     filters: AnalyticsFilters = {}
-) {
+): Promise<any> {
     const { userId } = await auth()
     if (!userId) {
         throw new Error("Unauthorized")
@@ -446,7 +447,7 @@ export async function getVehicleAnalytics(
 /**
  * Get dashboard summary data
  */
-export async function getDashboardSummary(
+async function _getDashboardSummary(
     organizationId: string,
     timeRange: string = "30d",
     filters: AnalyticsFilters = {}
@@ -455,12 +456,6 @@ export async function getDashboardSummary(
     if (!userId) {
         throw new Error("Unauthorized")
     }
-
-    const cacheKey = `analytics:dashboard:${organizationId}:${timeRange}:${JSON.stringify(
-        filters
-    )}`
-    const cached = getCachedData(cacheKey) as DashboardSummary | null
-    if (cached) return cached
 
     const { startDate, endDate } = getDateRange(timeRange)
 
@@ -564,9 +559,14 @@ export async function getDashboardSummary(
         safetyScore,
     }
 
-    setCachedData(cacheKey, summary, CACHE_TTL.DATA)
     return summary
 }
+
+export const getDashboardSummary = unstable_cache(
+    _getDashboardSummary,
+    ["analytics-dashboard-summary"],
+    { revalidate: 300, tags: ["dashboard", "analytics"] }
+)
 
 /**
  * Save filter preset for user
@@ -574,7 +574,7 @@ export async function getDashboardSummary(
 export async function saveFilterPreset(
     organizationId: string,
     preset: Omit<FilterPreset, "id" | "createdAt" | "updatedAt">
-) {
+): Promise<any> {
     const { userId } = await auth()
     if (!userId) {
         throw new Error("Unauthorized")
@@ -604,7 +604,7 @@ export async function saveFilterPreset(
 /**
  * Get saved filter presets for user
  */
-export async function getFilterPresets(organizationId: string) {
+export async function getFilterPresets(organizationId: string): Promise<any> {
     const { userId } = await auth()
     if (!userId) {
         throw new Error("Unauthorized")
@@ -639,7 +639,7 @@ export async function getFilterPresets(organizationId: string) {
 export async function getAdvancedAnalytics(
     organizationId: string,
     filters: AnalyticsFilters = {}
-) {
+): Promise<any> {
     const { userId } = await auth()
     if (!userId) {
         throw new Error("Unauthorized")
@@ -1032,7 +1032,7 @@ export async function getGeographicAnalytics(
     organizationId: string,
     timeRange: string = "30d",
     filters: AnalyticsFilters = {}
-) {
+): Promise<any> {
     const { userId } = await auth()
     if (!userId) {
         throw new Error("Unauthorized")
