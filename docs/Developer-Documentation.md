@@ -372,6 +372,8 @@ server and client:
     client-side (for example, real-time updates or background refresh of certain data), lightweight
     solutions or the built-in React querying (with useSWR or similar) could be considered, but by
     design the app avoids this for initial page loads.
+-   **Caching Pattern:** Data fetchers leverage `unstable_cache` with explicit `Promise` return types
+    to ensure consistent server-side caching and predictable revalidation.
 
 Below is a simplified data flow diagram demonstrating how data moves in FleetFusion:
 
