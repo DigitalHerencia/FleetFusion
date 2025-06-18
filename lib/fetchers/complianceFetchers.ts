@@ -14,6 +14,7 @@ import {
 import type { UserContext } from "@/types/auth"
 import { ClerkOrganizationMetadata } from "@/types/auth"
 
+import { unstable_cache } from "next/cache"
 import { CACHE_TTL, getCachedData, setCachedData } from "@/lib/cache/auth-cache"
 import prisma from "@/lib/database/db"
 import { handleError } from "@/lib/errors/handleError"
@@ -42,16 +43,10 @@ function createDefaultOrgMetadata(): ClerkOrganizationMetadata {
 /**
  * Get compliance dashboard overview data
  */
-export async function getComplianceDashboard(organizationId: string) {
+async function _getComplianceDashboard(organizationId: string): Promise<any> {
     const { userId } = await auth()
     if (!userId) {
         throw new Error("Unauthorized")
-    }
-
-    const cacheKey = `compliance:dashboard:${organizationId}`
-    const cached = getCachedData(cacheKey)
-    if (cached) {
-        return cached
     }
 
     try {
@@ -226,13 +221,18 @@ export async function getComplianceDashboard(organizationId: string) {
                     : "100",
         }
 
-        setCachedData(cacheKey, dashboard, CACHE_TTL.KPI)
         return dashboard
     } catch (error) {
         console.error("Error fetching compliance dashboard:", error)
         throw new Error("Failed to fetch compliance dashboard")
     }
 }
+
+export const getComplianceDashboard = unstable_cache(
+    _getComplianceDashboard,
+    ["compliance-dashboard"],
+    { revalidate: 300, tags: ["compliance", "dashboard"] }
+)
 
 export interface DriverComplianceRow {
     id: string
