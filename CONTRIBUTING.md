@@ -30,8 +30,35 @@ FleetFusion uses **GitHub Flow** for all development:
 
 ### Branch Naming
 
--   Use prefixes: `feature/`, `fix/`, `docs/`, `codex/` (for AI-generated changes).
--   Only use `codex/` for branches created by the Codex AI agent.
+Use descriptive branch names with standard prefixes:
+
+**Standard Prefixes:**
+
+-   `feature/` - New features and enhancements
+-   `fix/` - Bug fixes and patches
+-   `docs/` - Documentation updates
+-   `refactor/` - Code refactoring (no functional changes)
+-   `test/` - Test additions/updates
+-   `chore/` - Maintenance, dependencies, build changes
+-   `config/` - Configuration changes
+-   `codex/` - AI-generated changes (for Codex AI agent only)
+
+**Examples:**
+
+-   `feature/vehicle-tracking`
+-   `fix/dashboard-crash`
+-   `docs/api-authentication`
+-   `refactor/user-service`
+-   `test/vehicle-validation`
+-   `chore/update-dependencies`
+-   `config/database-setup`
+
+**Guidelines:**
+
+-   Keep names concise but descriptive
+-   Use kebab-case for descriptions
+-   Only use `codex/` for branches created by the Codex AI agent
+-   Delete branches after merging (auto-deletion enabled)
 
 ## AI Agent Contribution Rules
 
@@ -104,20 +131,27 @@ Before contributing, ensure you have:
 
 ### Branch Naming Convention
 
-Use descriptive branch names following this pattern:
+Use descriptive branch names following this pattern: `<type>/<description>`
 
--   `feature/description-of-feature`
--   `fix/description-of-bug-fix`
--   `docs/description-of-documentation-change`
--   `refactor/description-of-refactor`
--   `test/description-of-test-addition`
--   `config/description-of-configuration-change`
+**Supported Types:**
 
-Examples:
+-   `feature/description-of-feature` - New features and enhancements
+-   `fix/description-of-bug-fix` - Bug fixes and patches
+-   `docs/description-of-documentation-change` - Documentation updates
+-   `refactor/description-of-refactor` - Code refactoring (no functional changes)
+-   `test/description-of-test-addition` - Test additions/updates
+-   `chore/description-of-maintenance` - Maintenance, dependencies, build changes
+-   `config/description-of-configuration-change` - Configuration changes
+
+**Examples:**
 
 -   `feature/driver-compliance-dashboard`
 -   `fix/load-assignment-validation`
 -   `docs/api-reference-updates`
+-   `refactor/database-query-optimization`
+-   `test/vehicle-model-validation`
+-   `chore/dependency-security-updates`
+-   `config/docker-compose-setup`
 -   `config/github-workflows-setup`
 
 ### Commit Message Guidelines
@@ -161,6 +195,54 @@ that was caused by timezone handling issues.
 
 Fixes #456
 ```
+
+### Issue Linking and Closing Keywords
+
+Use closing keywords in PR descriptions and commit messages to automatically close related issues when changes are merged:
+
+**Supported Keywords:**
+
+-   `Closes #123` - General issue closure
+-   `Fixes #456` - Bug fix closure (preferred for bug fixes)
+-   `Resolves #789` - General resolution (preferred for feature requests)
+-   `Closes: #123` - Alternative syntax with colon
+
+**Multiple Issues:**
+
+-   `Fixes #123, Closes #456` - Close multiple issues
+-   `Closes #123 and #456` - Alternative syntax
+
+**Cross-Repository:**
+
+-   `Closes DigitalHerencia/FleetFusion#123` - Close issue in another repo
+-   `Fixes https://github.com/DigitalHerencia/FleetFusion/issues/123` - Full URL
+
+**Examples in Commit Messages:**
+
+```
+feat(tracking): implement real-time vehicle location updates
+
+Added WebSocket connection for live GPS coordinate streaming.
+Includes automatic reconnection and offline buffering.
+
+Closes #234
+```
+
+```
+fix(auth): resolve session timeout handling
+
+Fixed race condition where expired sessions weren't properly
+refreshed, causing users to be incorrectly logged out.
+
+Fixes #567, Closes #568
+```
+
+**Best Practices:**
+
+-   Place closing keywords in commit body or PR description, not the title
+-   Use consistent keywords (`Fixes` for bugs, `Closes` for features/tasks)
+-   Reference issues early in development to show progress
+-   Use `Closes` in final merge commit to ensure automatic closure
 
 ## Coding Standards
 
@@ -513,7 +595,14 @@ Add screenshots for UI changes.
 
 ## Related Issues
 
+<!-- Use closing keywords to automatically close issues when this PR is merged -->
+<!-- Examples: -->
+
 Closes #(issue number)
+
+<!-- Fixes #(issue number) - for bug fixes -->
+<!-- Resolves #(issue number) - for feature requests -->
+<!-- Multiple issues: Fixes #123, Closes #456 -->
 ```
 
 ### Review Process

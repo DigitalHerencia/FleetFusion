@@ -155,11 +155,13 @@ export async function setClerkUserMetadata(
   const actualClient: ResolvedClerkClient = await clerkClient();
 
   try {
-    console.log('🚀 Setting user metadata for custom organization approach:', {
-      userId,
-      organizationSlug,
-      role
-    });
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Setting user metadata for custom organization approach', {
+        userId,
+        organizationSlug,
+        role,
+      });
+    }
 
     // Get permissions for the role
     const userPermissions = getPermissionsForRole(role);
@@ -179,13 +181,13 @@ export async function setClerkUserMetadata(
       },
     });
 
-    console.log('✅ Updated user metadata in Clerk (custom organization approach):', {
-      userId,
-      organizationSlug,
-      role,
-      permissions: userPermissions.length,
-      onboardingComplete: true,
-    });
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Updated user metadata in Clerk', {
+        userId,
+        organizationSlug,
+        role,
+      });
+    }
 
     return { success: true, organizationId: organizationSlug, userId };
   } catch (error: any) {

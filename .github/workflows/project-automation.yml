@@ -1,5 +1,46 @@
 # @format
 
+# Purpose: Manages project board automation, milestone assignment, and issue/PR tracking
+# Triggered by: issues (opened, closed, reopened, assigned, labeled, unlabeled), pull_request (opened, closed, labeled, unlabeled, review_requested)
+# Features: Project board movement, automatic milestone assignment, status tracking
+#
+# COLUMN ID CONFIGURATION:
+# To update project column IDs, use the GitHub GraphQL API to fetch your board's columns.
+# Replace the values in the `columns` object in this workflow accordingly.
+#
+# AUTOMATED METHOD:
+#   Run: node .github/scripts/fetch-project-columns.js
+#   This script will fetch current column IDs and provide update instructions.
+#
+# MANUAL METHOD:
+#   Use the GraphQL query below in GitHub's GraphQL Explorer:
+# Current Column IDs:
+#   - To Do: Y3Vyc29yOnYyOpLOC9kG5qRUb2Rv
+#   - In Progress: Y3Vyc29yOnYyOpLOC9kG5qtJbiBQcm9ncmVzcw==
+#   - Review: Y3Vyc29yOnYyOpLOC9kG5qZSZXZpZXc=
+#   - Done: Y3Vyc29yOnYyOpLOC9kG5qREb25l
+#
+# GraphQL Query Example:
+# query {
+#   repository(owner: "DigitalHerencia", name: "FleetFusion") {
+#     projectsV2(first: 1) {
+#       nodes {
+#         fields(first: 20) {
+#           nodes {
+#             ... on ProjectV2SingleSelectField {
+#               name
+#               options {
+#                 id
+#                 name
+#               }
+#             }
+#           }
+#         }
+#       }
+#     }
+#   }
+# }
+
 name: 📋 Project Board Automation
 on:
     issues:
@@ -21,12 +62,13 @@ jobs:
 
         steps:
             - name: Move cards based on status
-              uses: actions/github-script@v7
+              uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
               with:
                   script: |
                       const { owner, repo } = context.repo;
 
-                      // Project board column IDs (update these with your actual column IDs)
+                      // Project board column IDs - Update these when project structure changes
+                      // See header comments for instructions on fetching current column IDs
                       const columns = {
                         todo: "Y3Vyc29yOnYyOpLOC9kG5qRUb2Rv",           // To Do
                         inProgress: "Y3Vyc29yOnYyOpLOC9kG5qtJbiBQcm9ncmVzcw==", // In Progress  
@@ -34,6 +76,14 @@ jobs:
                         done: "Y3Vyc29yOnYyOpLOC9kG5qREb25l",              // Done
                         blocked: null // Add blocked column ID if you have a Blocked column
                       };
+
+                      // Validate column IDs are configured
+                      const requiredColumns = ['todo', 'inProgress', 'review', 'done'];
+                      const missingColumns = requiredColumns.filter(col => !columns[col]);
+                      if (missingColumns.length > 0) {
+                        console.log(`⚠️  Missing column IDs for: ${missingColumns.join(', ')}`);
+                        console.log('Project board automation will be limited. See workflow header for configuration instructions.');
+                      }
 
                       let itemNumber, itemType, labels = [], state, isDraft = false;
 
@@ -84,7 +134,7 @@ jobs:
                       }
 
             - name: Auto-assign milestones
-              uses: actions/github-script@v7
+              uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
               with:
                   script: |
                       const { owner, repo } = context.repo;
@@ -102,21 +152,36 @@ jobs:
                         owner, repo, state: 'open'
                       });
 
-                      // Simple milestone assignment logic
+                      console.log(`Found ${milestones.data.length} open milestones`);
+
+                      // Milestone assignment logic based on labels and priority
                       let targetMilestone = null;
 
                       if (labels.includes('Priority-High') || labels.includes('Bug')) {
-                        // High priority items go to MVP Launch
-                        targetMilestone = milestones.data.find(m => m.title.includes('MVP Launch'));
-                      } else if (labels.includes('Feature')) {
-                        // Features go to Q3 2025 Release
-                        targetMilestone = milestones.data.find(m => m.title.includes('Q3 2025'));
+                        // High priority items go to MVP Launch (June 16, 2025)
+                        targetMilestone = milestones.data.find(m => 
+                          m.title.includes('MVP Launch') || m.title.includes('June')
+                        );
+                      } else if (labels.includes('Feature') || labels.includes('enhancement')) {
+                        // Features go to Q3 2025 Release (July 1, 2025)
+                        targetMilestone = milestones.data.find(m => 
+                          m.title.includes('Q3 2025') || m.title.includes('July')
+                        );
                       } else if (labels.includes('Documentation')) {
-                        // Docs go to Testing & Automation
-                        targetMilestone = milestones.data.find(m => m.title.includes('Testing & Automation'));
+                        // Docs go to Testing & Automation Hardening (July 15, 2025)
+                        targetMilestone = milestones.data.find(m => 
+                          m.title.includes('Testing') || m.title.includes('Automation')
+                        );
+                      } else if (labels.includes('question') || labels.includes('help wanted')) {
+                        // Questions and help requests go to Post-Launch Enhancements
+                        targetMilestone = milestones.data.find(m => 
+                          m.title.includes('Post-Launch') || m.title.includes('August')
+                        );
                       }
 
                       if (targetMilestone) {
+                        console.log(`Assigning milestone: ${targetMilestone.title}`);
+                        
                         await github.rest.issues.update({
                           owner, repo, issue_number: issueNumber,
                           milestone: targetMilestone.number
@@ -126,4 +191,61 @@ jobs:
                           owner, repo, issue_number: issueNumber,
                           body: `🎯 **Milestone assigned**: ${targetMilestone.title}\n\n_Assigned based on priority and type labels._`
                         });
+                      } else {
+                        console.log('No matching milestone found for this issue');
+                        console.log(`Labels: ${labels.join(', ')}`);
+                        
+                        // Add comment about milestone assignment
+                        await github.rest.issues.createComment({
+                          owner, repo, issue_number: issueNumber,
+                          body: `📋 **Issue processed**: No automatic milestone assigned.\n\nPlease assign manually based on priority and target release.\n\n_Available milestones:_\n${milestones.data.map(m => `- ${m.title}`).join('\n')}`
+                        });
                       }
+
+            - name: Notify on failure
+              if: failure()
+              uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+              with:
+                  script: |
+                      let itemNumber, itemType;
+
+                      if (context.eventName === 'pull_request' || context.eventName === 'pull_request_target') {
+                        itemNumber = context.payload.pull_request.number;
+                        itemType = 'PR';
+                      } else {
+                        itemNumber = context.payload.issue.number;
+                        itemType = 'Issue';
+                      }
+
+                      const workflowUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+
+                      const failureMessage = `## 🚨 Project Board Automation Failed
+
+                      The automated project board and milestone management workflow has failed.
+
+                      **Workflow Run:** [View Logs](${workflowUrl})
+                      **${itemType}:** #${itemNumber}
+                      **Event:** ${context.eventName}
+
+                      This failure may affect:
+                      - Project board column movement
+                      - Automatic milestone assignment
+                      - Project status tracking
+
+                      **Possible causes:**
+                      - Project board configuration changes
+                      - GitHub GraphQL API issues
+                      - Missing or invalid column IDs
+
+                      Please check the workflow logs and manually update project board status if needed.
+                      See workflow header comments for column ID update instructions.
+
+                      ---
+                      *This is an automated notification from FleetFusion DevOps* 🚛⚠️`;
+
+                      await github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: itemNumber,
+                        body: failureMessage
+                      });

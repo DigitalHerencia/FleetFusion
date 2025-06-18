@@ -16,12 +16,12 @@ export async function POST(
   { params }: { params: Promise<{ orgId: string }> }
 ) {
   try {
-    const { userId } = await auth();
-    if (!userId) {
+    const { userId, orgId: currentOrgId } = await auth();
+    const { orgId } = await params;
+    if (!userId || !currentOrgId || currentOrgId !== orgId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { orgId } = await params;
     const body: ScheduleReportRequest = await request.json();
     const { name, description, frequency, recipients, filters, metrics } = body;
 
@@ -47,7 +47,9 @@ export async function POST(
 
     // Here you would typically save to database and set up a cron job
     // For now, we'll just return success
-    console.log('Scheduled report created:', scheduledReport);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Scheduled report created', { id: scheduledReport.id });
+    }
 
     return NextResponse.json({
       success: true,
@@ -68,12 +70,11 @@ export async function GET(
   { params }: { params: Promise<{ orgId: string }> }
 ) {
   try {
-    const { userId } = await auth();
-    if (!userId) {
+    const { userId, orgId: currentOrgId } = await auth();
+    const { orgId } = await params;
+    if (!userId || !currentOrgId || currentOrgId !== orgId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    const { orgId } = await params;
 
     // Mock data for scheduled reports
     // In a real application, you would fetch from database
@@ -115,8 +116,9 @@ export async function DELETE(
   { params }: { params: Promise<{ orgId: string }> }
 ) {
   try {
-    const { userId } = await auth();
-    if (!userId) {
+    const { userId, orgId: currentOrgId } = await auth();
+    const { orgId } = await params;
+    if (!userId || !currentOrgId || currentOrgId !== orgId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -132,7 +134,9 @@ export async function DELETE(
 
     // Mock deletion
     // In a real application, you would delete from database and cancel cron job
-    console.log('Deleting scheduled report:', reportId);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Deleting scheduled report', { reportId });
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
