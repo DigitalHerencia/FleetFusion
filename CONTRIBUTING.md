@@ -90,8 +90,8 @@ Before contributing, ensure you have:
 -   Node.js 18+ installed
 -   Git configured with your GitHub account
 -   Access to the development environment
--   Understanding of the [Architecture](./Architecture.md) and [Getting Started](./Getting-Started.md)
-    guides
+ -   Understanding of the [Architecture](.wiki/Architecture.md) and [Getting Started](.wiki/Getting-Started.md)
+      guides
 
 ### Initial Setup
 
@@ -526,7 +526,7 @@ When adding new features, update relevant documentation:
 
 -   Update [API Reference](./API-Reference.md) for new endpoints
 -   Update [Component Library](./Component-Library.md) for new components
--   Update [Architecture](./Architecture.md) for architectural changes
+ -   Update [Architecture](.wiki/Architecture.md) for architectural changes
 
 ## Pull Request Process
 
