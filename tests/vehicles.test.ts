@@ -1,26 +1,14 @@
 /** @format */
 
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import * as actions from "../lib/actions/vehicleActions"
-import { listVehiclesByOrg } from "../lib/fetchers/vehicleFetchers"
+
+// Use dynamic import for actions and fetchers after mocks are set up
+let actions: typeof import("../lib/actions/vehicleActions")
+let listVehiclesByOrg: typeof import("../lib/fetchers/vehicleFetchers").listVehiclesByOrg
+
+import { mockDbMethods } from "./__mocks__/mockDb"
 
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }))
-
-// Create mocked database instance
-const mockDbMethods = {
-    vehicle: {
-        findFirst: vi.fn(),
-        findUnique: vi.fn(),
-        findMany: vi.fn(),
-        create: vi.fn(),
-        update: vi.fn(),
-        delete: vi.fn(),
-        count: vi.fn(),
-    },
-    load: {
-        create: vi.fn(),
-    },
-}
 
 vi.mock("../lib/database/db", () => ({
     __esModule: true,
@@ -59,8 +47,10 @@ vi.mock("../schemas/vehicles", async () => {
 })
 
 describe("vehicles domain", () => {
-    beforeEach(() => {
+    beforeEach(async () => {
         vi.clearAllMocks()
+        actions = await import("../lib/actions/vehicleActions")
+        listVehiclesByOrg = (await import("../lib/fetchers/vehicleFetchers")).listVehiclesByOrg
     })
 
     it("validates VIN format", async () => {

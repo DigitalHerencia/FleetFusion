@@ -4,10 +4,10 @@
 
 import { auth } from "@clerk/nextjs/server"
 
-import { unstable_cache } from "next/cache"
 import { CACHE_TTL, getCachedData, setCachedData } from "@/lib/cache/auth-cache"
 import prisma from "@/lib/database/db"
 import type { DashboardSummary } from "@/types/analytics"
+import { unstable_cache } from "next/cache"
 
 export interface AnalyticsFilters {
     driverId?: string
@@ -878,7 +878,10 @@ function calculateBasicMetrics(data: any[]) {
 /**
  * Calculate percentage change between two values
  */
-export function calculatePercentageChange(previous: number, current: number): number {
+export async function calculatePercentageChange(
+    previous: number,
+    current: number
+): Promise<number> {
     if (previous === 0) return current > 0 ? 100 : 0
     return ((current - previous) / previous) * 100
 }
@@ -886,7 +889,10 @@ export function calculatePercentageChange(previous: number, current: number): nu
 /**
  * Process analytics data with grouping
  */
-export function processAnalyticsData(data: any[], groupBy: string) {
+export async function processAnalyticsData(
+    data: any[],
+    groupBy: string
+): Promise<any[]> {
     const grouped = new Map()
 
     data.forEach(load => {

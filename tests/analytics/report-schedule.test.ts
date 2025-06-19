@@ -2,7 +2,18 @@ import { describe, it, expect, vi } from 'vitest';
 import { POST } from '../../app/api/analytics/[orgId]/schedule/route';
 import { NextRequest } from 'next/server';
 
-vi.mock('@clerk/nextjs/server', () => ({ auth: () => Promise.resolve({ userId: 'u1' }) }));
+// Patch Clerk auth to always return a valid user and org
+vi.mock('@clerk/nextjs/server', () => ({ auth: () => Promise.resolve({ userId: 'u1', orgId: 'org1' }) }));
+
+// Patch any DB or cache dependencies if needed
+vi.mock('../../lib/database/db', () => ({
+  __esModule: true,
+  default: {
+    reportSchedule: {
+      create: vi.fn().mockResolvedValue({ id: 'report1', nextSendDate: new Date().toISOString() })
+    }
+  }
+}));
 
 function createRequest(body: any) {
   return new NextRequest('http://localhost/api/analytics/org1/schedule', { method: 'POST', body: JSON.stringify(body) });

@@ -1,9 +1,7 @@
 /** @format */
 
 import { beforeEach, describe, expect, it, vi } from "vitest"
-
-// Mock the analytics fetchers module before importing
-const mockGetDriverAnalytics = vi.fn()
+import { mockGetDriverAnalytics } from "../../__mocks__/mockAnalytics"
 
 vi.mock("../../../lib/fetchers/analyticsFetchers", () => ({
     getDriverAnalytics: mockGetDriverAnalytics,

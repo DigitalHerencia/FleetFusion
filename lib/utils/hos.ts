@@ -139,7 +139,7 @@ export function calculateHosStatus(
     }
 
     const violations: HosViolation[] = []
-    if (usedDrive >= DRIVE_LIMIT) {
+    if (usedDrive > DRIVE_LIMIT) {
         violations.push({
             id: "11",
             type: "11_hour",
@@ -150,7 +150,7 @@ export function calculateHosStatus(
             status: "open",
         })
     }
-    if (usedOnDuty >= ON_DUTY_LIMIT) {
+    if (usedOnDuty > ON_DUTY_LIMIT) {
         violations.push({
             id: "14",
             type: "14_hour",
@@ -161,7 +161,7 @@ export function calculateHosStatus(
             status: "open",
         })
     }
-    if (cycleUsed >= CYCLE_LIMIT) {
+    if (cycleUsed > CYCLE_LIMIT) {
         violations.push({
             id: "70",
             type: "70_hour",

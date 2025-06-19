@@ -7,6 +7,12 @@ vi.mock('../../lib/cache/auth-cache', () => ({
   CACHE_TTL: { DATA: 1000 }
 }));
 
+// Patch Next.js unstable_cache to avoid missing cache error
+vi.mock('next/cache', () => ({
+  unstable_cache: (fn: any) => fn,
+  revalidatePath: vi.fn(),
+}));
+
 const loadFindMany = vi.fn();
 const driverCount = vi.fn();
 const vehicleCount = vi.fn();

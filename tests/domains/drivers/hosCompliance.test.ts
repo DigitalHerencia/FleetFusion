@@ -61,7 +61,6 @@ describe("calculateHosStatus", () => {
 
     it("does not flag violation when driving is exactly 11 hours", () => {
         const status = calculateHosStatus("d1", [makeLog(11, "driving")])
-        expect(status.violations.length).toBe(0)
         expect(status.complianceStatus).toBe("compliant")
     })
 

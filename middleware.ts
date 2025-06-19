@@ -182,13 +182,38 @@ function createResponseWithHeaders(
         response.headers.set("x-organization-id", orgId)
     }
 
+    // Environment-aware CSP
+    const isDevelopment = process.env.NODE_ENV === "development"
+    const cspValue = isDevelopment
+        ? [
+              "default-src 'self'",
+              "img-src 'self' data: https: blob:",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clerk.com https://*.clerk.dev https://*.clerk.accounts.dev",
+              "style-src 'self' 'unsafe-inline' https://*.clerk.com https://*.clerk.dev",
+              "connect-src 'self' https://*.clerk.com https://*.clerk.dev https://*.clerk.accounts.dev wss: ws:",
+              "font-src 'self' https://*.clerk.com https://*.clerk.dev",
+              "frame-src 'self' https://*.clerk.com https://*.clerk.dev https://*.clerk.accounts.dev",
+              "worker-src 'self' blob:",
+              "object-src 'none'",
+              "frame-ancestors 'none'",
+          ].join("; ")
+        : [
+              "default-src 'self'",
+              "img-src 'self' data: https:",
+              "script-src 'self' https://*.clerk.com https://*.clerk.dev https://*.clerk.accounts.dev",
+              "style-src 'self' 'unsafe-inline' https://*.clerk.com https://*.clerk.dev",
+              "connect-src 'self' https://*.clerk.com https://*.clerk.dev https://*.clerk.accounts.dev",
+              "font-src 'self' https://*.clerk.com https://*.clerk.dev",
+              "frame-src 'self' https://*.clerk.com https://*.clerk.dev https://*.clerk.accounts.dev",
+              "worker-src 'self'",
+              "object-src 'none'",
+              "frame-ancestors 'none'",
+          ].join("; ")
+
     // Security headers (additional runtime security)
     response.headers.set("X-Robots-Tag", "noindex, nofollow")
     response.headers.set("X-Request-ID", crypto.randomUUID())
-    response.headers.set(
-        "Content-Security-Policy",
-        "default-src 'self'; img-src 'self' data: https:; object-src 'none'; frame-ancestors 'none';"
-    )
+    response.headers.set("Content-Security-Policy", cspValue)
     response.headers.set("X-Frame-Options", "DENY")
     response.headers.set("X-Content-Type-Options", "nosniff")
     response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin")
