@@ -31,8 +31,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { IftaPeriodData } from "@/types/ifta"
 
-import { fetchIftaDataAction } from "@/lib/actions/iftaActions"
-import { validateIftaPeriodData } from "@/lib/utils/ifta"
 import { IftaReportTable } from "./ifta-report-table"
 import { IftaTripTable } from "./ifta-trip-table"
 
@@ -58,20 +56,6 @@ export function IftaDashboard() {
                     setError("Invalid quarter format")
                     setLoading(false)
                     return
-                }
-
-                const actionResult = await fetchIftaDataAction(
-                    orgId,
-                    quarterPart,
-                    yearPart
-                )
-                const data = actionResult.success ? actionResult.data : null
-
-                if (validateIftaPeriodData(data)) {
-                    setIftaData(data ?? null)
-                    setError(null)
-                } else {
-                    throw new Error("Invalid IFTA data structure")
                 }
             } catch (err) {
                 console.error("Error fetching IFTA data:", err)

@@ -49,3 +49,6 @@ next-env.d.ts
 # Custom directories
 .audits/
 .notes/
+
+# Preview.js generated files
+__previewjs__/

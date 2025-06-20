@@ -204,7 +204,7 @@ export function CompanySetupStep({ formData, updateFormData, onNext, onPrev }: C
           </div>
         </div>
 
-        <div className="flex gap-3 pt-4">
+        <div className="flex flex-col gap-3 pt-4">
           <Button 
             type="button" 
             variant="outline" 

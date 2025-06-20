@@ -1,6 +1,7 @@
 /** @format */
 
 // @vitest-environment jsdom
+import React from "react"
 import { screen } from "@testing-library/dom"
 import "@testing-library/jest-dom" // Add this import
 import { render } from "@testing-library/react"
@@ -20,9 +21,18 @@ vi.mock("@/lib/actions/adminActions", () => ({
     })),
 }))
 
+// Mock the UI components
+vi.mock("@/components/ui/card", () => ({
+    Card: ({ children }: any) => <div data-testid="card">{children}</div>,
+    CardHeader: ({ children }: any) => <div data-testid="card-header">{children}</div>,
+    CardTitle: ({ children }: any) => <h3 data-testid="card-title">{children}</h3>,
+    CardContent: ({ children }: any) => <div data-testid="card-content">{children}</div>,
+}))
+
 describe("AdminDashboard", () => {
     it("renders organization stats", async () => {
-        render(await AdminDashboard({ orgId: "org1" }))
+        const Component = await AdminDashboard({ orgId: "org1" })
+        render(Component)
         expect(screen.getByText("Total Users")).toBeInTheDocument()
         expect(screen.getByText("5")).toBeInTheDocument()
     })

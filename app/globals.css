@@ -1,6 +1,8 @@
-/** @format */
-
 @import "tailwindcss";
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);
+@layer theme, base, components, utilities;
 
 @theme {
     --color-background: 240 10% 3.9%;
@@ -56,4 +58,36 @@
     --color-sidebar-accent: 240 5% 18%;
     --color-sidebar-accent-foreground: 0 0% 98%;
     --color-sidebar-ring: 217 91% 65%;
+
+    /* Border radius */
+    --radius-lg: 1rem;
+    --radius-md: 0.5rem;
+    --radius-sm: 0.25rem;
+    --radius-full: 9999px;
+
+    /* Box shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(240 10% 3.9% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(240 10% 3.9% / 0.1), 0 2px 4px -2px hsl(240 10% 3.9% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(240 10% 3.9% / 0.1), 0 4px 6px -4px hsl(240 10% 3.9% / 0.1);
+    --shadow-xl: 0 20px 25px -5px hsl(240 10% 3.9% / 0.1), 0 8px 10px -6px hsl(240 10% 3.9% / 0.1);
+}
+
+/* Clerk CAPTCHA styling */
+.clerk-captcha-container {
+    margin: 0.5rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 78px; /* Standard CAPTCHA height */
+}
+
+/* Ensure Clerk CAPTCHA iframe is styled correctly */
+.clerk-captcha-container iframe {
+    border-radius: 4px;
+    border: 1px solid hsl(var(--color-border));
+}
+
+/* Handle invisible CAPTCHA gracefully */
+.clerk-captcha-container:empty {
+    display: none;
 }

@@ -324,7 +324,7 @@ export function CompanySetupForm({
       </div>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-between pt-4">
+      <div className="flex flex-col justify-between pt-4">
         {onPrevious && (
           <Button
             type="button"

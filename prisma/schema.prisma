@@ -9,86 +9,72 @@ datasource db {
 }
 
 model Organization {
-  id                     String                   @id @default(uuid())
-  clerkId                String                   @unique
-  name                   String
-  slug                   String                   @unique
-  mcNumber               String?                  @map("mc_number")
-  address                String?
-  city                   String?
-  state                  String?
-  zip                    String?
-  phone                  String?
-  email                  String?
-  logoUrl                String?                  @map("logo_url")
-  subscriptionTier       SubscriptionTier         @default(free) @map("subscription_tier")
-  subscriptionStatus     SubscriptionStatus       @default(trial) @map("subscription_status")
-  maxUsers               Int                      @default(5) @map("max_users")
-  maxVehicles            Int                      @default(10) @map("max_vehicles")
-  billingEmail           String?                  @map("billing_email")
-  settings               Json?                    @default("{\"fuelUnit\": \"gallons\", \"timezone\": \"America/Denver\", \"dateFormat\": \"MM/dd/yyyy\", \"distanceUnit\": \"miles\"}")
-  isActive               Boolean                  @default(true) @map("is_active")
-  createdAt              DateTime                 @default(now()) @map("created_at")
-  updatedAt              DateTime                 @updatedAt @map("updated_at")
-  dotNumber              String?
-  auditLogs              AuditLog[]
-  complianceDocuments    ComplianceDocument[]
-  drivers                Driver[]
-  IftaFuelPurchase       IftaFuelPurchase[]
-  iftaReports            IftaReport[]
-  IftaTrip               IftaTrip[]
-  loads                  Load[]
-  users                  User[]
-  vehicles               Vehicle[]
-  memberships            OrganizationMembership[]
-  complianceAlerts       ComplianceAlert[]
-  analyticsFilterPresets AnalyticsFilterPreset[]
-  notifications          Notification[]
-  // Enhanced IFTA relations
-  jurisdictionTaxRates   JurisdictionTaxRate[]
-  iftaReportPDFs         IftaReportPDF[]
-  iftaTaxCalculations    IftaTaxCalculation[]
-  iftaAuditLogs          IftaAuditLog[]
-  iftaPDFGenerationLogs  IftaPDFGenerationLog[]
-  regulatoryAudits       RegulatoryAudit[]
+  id                  String                   @id @default(uuid())
+  clerkId             String?                  @unique @map("clerk_id")
+  name                String
+  slug                String                   @unique
+  mcNumber            String?                  @map("mc_number")
+  address             String?
+  city                String?
+  state               String?
+  zip                 String?
+  phone               String?
+  email               String?
+  logoUrl             String?                  @map("logo_url")
+  subscriptionTier    SubscriptionTier         @default(free) @map("subscription_tier")
+  subscriptionStatus  SubscriptionStatus       @default(trial) @map("subscription_status")
+  maxUsers            Int                      @default(5) @map("max_users")
+  billingEmail        String?                  @map("billing_email")
+  settings            Json?                    @default("{\"fuelUnit\": \"gallons\", \"timezone\": \"America/Denver\", \"dateFormat\": \"MM/dd/yyyy\", \"distanceUnit\": \"miles\"}")
+  isActive            Boolean                  @default(true) @map("is_active")
+  createdAt           DateTime                 @default(now()) @map("created_at")
+  updatedAt           DateTime                 @updatedAt @map("updated_at")
+  dotNumber           String?
+  auditLogs           AuditLog[]
+  complianceAlerts    ComplianceAlert[]
+  complianceDocuments ComplianceDocument[]
+  drivers             Driver[]
+  IftaFuelPurchase    IftaFuelPurchase[]
+  iftaReports         IftaReport[]
+  IftaTrip            IftaTrip[]
+  loads               Load[]
+  memberships         OrganizationMembership[]
+  users               User[]
+  vehicles            Vehicle[]
 
   @@index([slug])
+  @@index([clerkId])
   @@map("organizations")
 }
 
 model User {
-  id                     String                   @id @default(uuid())
-  clerkId                String                   @unique @map("clerk_id")
-  organizationId         String?                  @map("organization_id") // <-- Now nullable
-  email                  String? // <-- Now nullable
-  firstName              String?                  @map("first_name")
-  lastName               String?                  @map("last_name")
-  profileImage           String?                  @map("profile_image")
-  role                   UserRole                 @default(member)
-  permissions            Json?                    @default("[]")
-  isActive               Boolean                  @default(true) @map("is_active")
-  lastLogin              DateTime?                @map("last_login")
-  createdAt              DateTime                 @default(now()) @map("created_at")
-  updatedAt              DateTime                 @updatedAt @map("updated_at")
-  onboardingSteps        Json?                    @default("{}") @map("onboarding_steps")
-  onboardingComplete     Boolean                  @default(false) @map("onboarding_complete")
-  auditLogs              AuditLog[]
-  ComplianceDocument     ComplianceDocument[]     @relation("VerifiedByUser")
-  driver                 Driver?
-  IftaReport             IftaReport[]             @relation("SubmittedByUser")
-  organization           Organization?            @relation(fields: [organizationId], references: [id], onDelete: Cascade) // <-- Make relation optional
-  memberships            OrganizationMembership[]
-  complianceAlerts       ComplianceAlert[]
-  analyticsFilterPresets AnalyticsFilterPreset[]
-  notifications          Notification[]
-  // Enhanced IFTA relations
-  taxRatesCreated        JurisdictionTaxRate[]    @relation("TaxRateCreatedBy")
-  pdfsGenerated          IftaReportPDF[]          @relation("PDFGeneratedBy")
-  taxCalculations        IftaTaxCalculation[]     @relation("TaxCalculatedBy")
-  taxValidations         IftaTaxCalculation[]     @relation("TaxValidatedBy")
-  iftaAuditLogs          IftaAuditLog[]           @relation("IftaAuditUser")
-  iftaPDFGenerationLogs  IftaPDFGenerationLog[]
-  preferences             UserPreferences?
+  id                 String                   @id @default(uuid())
+  clerkId            String                   @unique @map("clerk_id")
+  organizationId     String?                  @map("organization_id")
+  email              String?
+  firstName          String?                  @map("first_name")
+  lastName           String?                  @map("last_name")
+  profileImage       String?                  @map("profile_image")
+  role               UserRole                 @default(viewer)
+  permissions        Json?                    @default("[]")
+  isActive           Boolean                  @default(true) @map("is_active")
+  lastLogin          DateTime?                @map("last_login")
+  createdAt          DateTime                 @default(now()) @map("created_at")
+  updatedAt          DateTime                 @updatedAt @map("updated_at")
+  onboardingSteps    Json?                    @default("{}") @map("onboarding_steps")
+  onboardingComplete Boolean                  @default(false) @map("onboarding_complete")
+  auditLogs          AuditLog[]
+  ComplianceDocument ComplianceDocument[]     @relation("VerifiedByUser")
+  driver             Driver?
+  IftaReport         IftaReport[]             @relation("SubmittedByUser")
+  memberships        OrganizationMembership[]
+  organization       Organization?            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  // Relations for IFTA features
+  iftaPDFGenerationLogs IftaPDFGenerationLog[] @relation("UserIftaPDFGenerationLogs")
+  generatedIftaReportPDFs IftaReportPDF[] @relation("UserGeneratedIftaReportPDFs")
+  calculatedIftaTaxCalculations IftaTaxCalculation[] @relation("CalculatedByUser")
+  validatedIftaTaxCalculations IftaTaxCalculation[] @relation("ValidatedByUser")
 
   @@index([clerkId])
   @@index([organizationId])
@@ -112,8 +98,6 @@ model Vehicle {
   currentOdometer        Int?                 @map("current_odometer")
   lastOdometerUpdate     DateTime?            @map("last_odometer_update")
   fuelType               String?              @map("fuel_type")
-  maxWeight              Int?                 @map("max_weight")
-  maxLength              Decimal?             @map("max_length") @db.Decimal(8, 2)
   lastInspectionDate     DateTime?            @map("last_inspection_date") @db.Date
   insuranceExpiration    DateTime?            @map("insurance_expiration") @db.Date
   notes                  String?
@@ -128,7 +112,6 @@ model Vehicle {
   trailerLoads           Load[]               @relation("TrailerLoads")
   loads                  Load[]               @relation("VehicleLoads")
   organization           Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  complianceAlerts       ComplianceAlert[]
 
   @@unique([organizationId, unitNumber], name: "vehicles_org_unit_unique")
   @@index([organizationId])
@@ -172,7 +155,6 @@ model Driver {
   organization          Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   user                  User?                @relation(fields: [userId], references: [id])
   loads                 Load[]
-  complianceAlerts      ComplianceAlert[]
 
   @@unique([organizationId, employeeId], name: "drivers_org_employee_unique")
   @@index([organizationId])
@@ -213,13 +195,6 @@ model Load {
   actualPickupDate      DateTime?         @map("actual_pickup_date")
   scheduledDeliveryDate DateTime?         @map("scheduled_delivery_date")
   actualDeliveryDate    DateTime?         @map("actual_delivery_date")
-  // Alias fields for code compatibility
-  pickupDate            DateTime?         @map("pickup_date")
-  deliveryDate          DateTime?         @map("delivery_date")
-  origin                Json?             @map("origin_json")
-  destination           Json?             @map("destination_json")
-  cargo                 Json?             @map("cargo_json")
-  equipment             Json?             @map("equipment_json")
   weight                Int?
   pieces                Int?
   commodity             String?
@@ -231,16 +206,16 @@ model Load {
   customFields          Json?             @default("{}") @map("custom_fields")
   createdAt             DateTime          @default(now()) @map("created_at")
   updatedAt             DateTime          @updatedAt @map("updated_at")
-  priority              LoadPriority      @default(medium)
-  tags                  String[]          @default([])
   createdBy             String?           @map("created_by")
   lastModifiedBy        String?           @map("last_modified_by")
+  priority              LoadPriority      @default(medium)
+  tags                  String[]          @default([])
   statusEvents          LoadStatusEvent[]
-  documents             LoadDocument[]
   driver                Driver?           @relation(fields: [driverId], references: [id])
   organization          Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   trailer               Vehicle?          @relation("TrailerLoads", fields: [trailerId], references: [id])
   vehicle               Vehicle?          @relation("VehicleLoads", fields: [vehicleId], references: [id])
+  loadDocuments         LoadDocument[]
 
   @@unique([organizationId, loadNumber], name: "loads_org_load_unique")
   @@index([organizationId])
@@ -267,29 +242,6 @@ model LoadStatusEvent {
 
   @@index([loadId])
   @@map("load_status_events")
-}
-
-model LoadDocument {
-  id           String   @id @default(uuid())
-  loadId       String   @map("load_id")
-  name         String
-  type         String
-  category     String?
-  description  String?
-  isRequired   Boolean  @default(false) @map("is_required")
-  url          String?
-  fileSize     Int?     @map("file_size")
-  mimeType     String?  @map("mime_type")
-  isReceived   Boolean  @default(false) @map("is_received")
-  receivedAt   DateTime? @map("received_at")
-  uploadedAt   DateTime? @map("uploaded_at")
-  uploadedBy   String?  @map("uploaded_by")
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
-  load         Load     @relation(fields: [loadId], references: [id], onDelete: Cascade)
-
-  @@index([loadId])
-  @@map("load_documents")
 }
 
 model ComplianceDocument {
@@ -351,11 +303,9 @@ model IftaReport {
   createdAt       DateTime     @default(now()) @map("created_at")
   updatedAt       DateTime     @updatedAt @map("updated_at")
   supportingDocs  String?      @map("supporting_docs")
+  taxCalculations  IftaTaxCalculation[]
   organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   submittedByUser User?        @relation("SubmittedByUser", fields: [submittedBy], references: [id])
-  // Enhanced IFTA relations
-  reportPDFs      IftaReportPDF[]
-  taxCalculations IftaTaxCalculation[]
 
   @@index([organizationId])
   @@index([submittedBy])
@@ -450,129 +400,158 @@ model IftaFuelPurchase {
   @@map("ifta_fuel_purchases")
 }
 
-// Enhanced IFTA Domain Models for Comprehensive Tax Management
+model ComplianceAlert {
+  id               String       @id @default(uuid())
+  organizationId   String       @map("organization_id")
+  userId           String?      @map("user_id")
+  driverId         String?      @map("driver_id")
+  vehicleId        String?      @map("vehicle_id")
+  type             String
+  severity         String
+  title            String
+  message          String
+  entityType       String
+  entityId         String
+  due_date         DateTime?
+  acknowledged     Boolean      @default(false)
+  acknowledged_by  String?
+  acknowledgedAt   DateTime?    @map("acknowledged_at")
+  resolved         Boolean      @default(false)
+  resolved_by      String?
+  resolved_at      DateTime?
+  resolution_notes String?
+  metadata         Json?        @default("{}")
+  createdAt        DateTime     @default(now()) @map("created_at")
+  updatedAt        DateTime     @updatedAt @map("updated_at")
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-model JurisdictionTaxRate {
+  @@index([organizationId])
+  @@index([userId])
+  @@index([vehicleId])
+  @@index([driverId])
+  @@map("compliance_alerts")
+}
+
+model OrganizationMembership {
   id             String       @id @default(uuid())
   organizationId String       @map("organization_id")
-  jurisdiction   String       @map("jurisdiction") // State/Province code (e.g., 'CA', 'NY', 'TX')
-  taxRate        Decimal      @map("tax_rate") @db.Decimal(8, 6) // Tax rate per gallon
-  effectiveDate  DateTime     @map("effective_date") @db.Date
-  endDate        DateTime?    @map("end_date") @db.Date
-  source         String       @default("MANUAL") @map("source") // 'GOVERNMENT' | 'MANUAL'
-  verifiedDate   DateTime     @map("verified_date") @db.Date
-  isActive       Boolean      @default(true) @map("is_active")
-  notes          String?      @map("notes")
+  userId         String       @map("user_id")
+  role           String
   createdAt      DateTime     @default(now()) @map("created_at")
   updatedAt      DateTime     @updatedAt @map("updated_at")
-  createdBy      String?      @map("created_by")
-  
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  createdByUser  User?        @relation("TaxRateCreatedBy", fields: [createdBy], references: [id])
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([organizationId, jurisdiction, effectiveDate], name: "jurisdiction_rate_unique")
+  @@unique([organizationId, userId], name: "organizationId_userId")
   @@index([organizationId])
-  @@index([jurisdiction])
-  @@index([effectiveDate])
-  @@index([isActive])
-  @@map("jurisdiction_tax_rates")
+  @@index([userId])
+  @@map("organization_memberships")
+}
+
+model LoadDocument {
+  id             String   @id @default(uuid())
+  organizationId String   @map("organization_id")
+  title          String
+  fileUrl        String   @map("file_url")
+  fileName       String   @map("file_name")
+  fileSize       Int?     @map("file_size")
+  mimeType       String?  @map("mime_type")
+  uploadedAt     DateTime @default(now()) @map("uploaded_at")
+  category       String?  @map("category")
+  isRequired     Boolean? @default(false) @map("is_required")
+  loadId         String?  @map("load_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  load           Load?    @relation(fields: [loadId], references: [id])
+}
+
+model RegulatoryAudit {
+  id             String   @id @default(uuid())
+  organizationId String   @map("organization_id")
+  type           String
+  status         String
+  notes          String?
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+}
+
+model IftaPDFGenerationLog {
+  id             String   @id @default(uuid())
+  organizationId String   @map("organization_id")
+  userId         String   @map("user_id")
+  reportType     String   @map("report_type")
+  parameters     Json     @default("{}")
+  status         String   @map("status")
+  filePath       String?  @map("file_path")
+  fileName       String?  @map("file_name")
+  fileSize       Int?     @map("file_size")
+  errorMessage   String?  @map("error_message")
+  startedAt      DateTime @default(now()) @map("started_at")
+  completedAt    DateTime? @map("completed_at")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  user           User?    @relation("UserIftaPDFGenerationLogs", fields: [userId], references: [id])
 }
 
 model IftaReportPDF {
-  id             String       @id @default(uuid())
-  organizationId String       @map("organization_id")
-  reportId       String       @map("report_id")
-  reportType     String       @map("report_type") // 'QUARTERLY' | 'TRIP_LOG' | 'FUEL_SUMMARY' | 'CUSTOM'
-  quarter        String?      @map("quarter") // e.g., 'Q1', 'Q2', etc.
-  year           Int?         @map("year")
-  fileName       String       @map("file_name")
-  filePath       String       @map("file_path")
-  fileSize       Int          @map("file_size")
-  mimeType       String       @default("application/pdf") @map("mime_type")
-  generatedAt    DateTime     @default(now()) @map("generated_at")
-  generatedBy    String       @map("generated_by")
-  isOfficial     Boolean      @default(false) @map("is_official") // Digital signature applied
-  watermark      String?      @map("watermark")
-  downloadCount  Int          @default(0) @map("download_count")
-  lastDownload   DateTime?    @map("last_download")
-  metadata       Json?        @default("{}") @map("metadata")
-  
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  generatedByUser User        @relation("PDFGeneratedBy", fields: [generatedBy], references: [id])
-  iftaReport     IftaReport?  @relation(fields: [reportId], references: [id], onDelete: Cascade)
-
-  @@index([organizationId])
-  @@index([reportId])
-  @@index([reportType])
-  @@index([generatedAt])
-  @@map("ifta_report_pdfs")
+  id             String   @id @default(uuid())
+  organizationId String   @map("organization_id")
+  reportId       String   @map("report_id")
+  reportType     String   @map("report_type")
+  quarter        String?  @map("quarter")
+  year           Int?     @map("year")
+  fileName       String   @map("file_name")
+  filePath       String   @map("file_path")
+  fileSize       Int      @map("file_size")
+  mimeType       String   @map("mime_type")
+  generatedAt    DateTime @default(now()) @map("generated_at")
+  generatedBy    String   @map("generated_by")
+  isOfficial     Boolean  @default(false) @map("is_official")
+  watermark      String?  @map("watermark")
+  downloadCount  Int      @default(0) @map("download_count")
+  lastDownload   DateTime? @map("last_download")
+  metadata       Json?    @map("metadata")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  generatedByUser User?   @relation("UserGeneratedIftaReportPDFs", fields: [generatedBy], references: [id])
 }
 
 model IftaTaxCalculation {
-  id               String       @id @default(uuid())
-  organizationId   String       @map("organization_id")
-  reportId         String       @map("report_id")
-  jurisdiction     String       @map("jurisdiction")
-  totalMiles       Int          @map("total_miles")
-  taxableMiles     Int          @map("taxable_miles")
-  fuelPurchased    Decimal      @map("fuel_purchased") @db.Decimal(10, 3)
-  fuelConsumed     Decimal      @map("fuel_consumed") @db.Decimal(10, 3)
-  taxRate          Decimal      @map("tax_rate") @db.Decimal(8, 6)
-  taxDue           Decimal      @map("tax_due") @db.Decimal(10, 2)
-  taxPaid          Decimal      @default(0) @map("tax_paid") @db.Decimal(10, 2)
-  taxCredits       Decimal      @default(0) @map("tax_credits") @db.Decimal(10, 2)
-  adjustments      Decimal      @default(0) @map("adjustments") @db.Decimal(10, 2)
-  netTaxDue        Decimal      @map("net_tax_due") @db.Decimal(10, 2)
-  calculatedAt     DateTime     @default(now()) @map("calculated_at")
-  calculatedBy     String       @map("calculated_by")
-  isValidated      Boolean      @default(false) @map("is_validated")
-  validatedAt      DateTime?    @map("validated_at")
-  validatedBy      String?      @map("validated_by")
-  
-  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  iftaReport       IftaReport   @relation(fields: [reportId], references: [id], onDelete: Cascade)
-  calculatedByUser User         @relation("TaxCalculatedBy", fields: [calculatedBy], references: [id])
-  validatedByUser  User?        @relation("TaxValidatedBy", fields: [validatedBy], references: [id])
-
-  @@unique([reportId, jurisdiction], name: "report_jurisdiction_unique")
-  @@index([organizationId])
-  @@index([reportId])
-  @@index([jurisdiction])
-  @@index([calculatedAt])
-  @@map("ifta_tax_calculations")
-}
-
-model IftaAuditLog {
-  id               String       @id @default(uuid())
-  organizationId   String       @map("organization_id")
-  entityType       String       @map("entity_type") // 'TRIP' | 'FUEL_PURCHASE' | 'REPORT' | 'TAX_CALCULATION'
-  entityId         String       @map("entity_id")
-  action           String       @map("action") // 'CREATE' | 'UPDATE' | 'DELETE' | 'SUBMIT' | 'APPROVE'
-  oldValues        Json?        @map("old_values")
-  newValues        Json?        @map("new_values")
-  userId           String       @map("user_id")
-  timestamp        DateTime     @default(now()) @map("timestamp")
-  ipAddress        String?      @map("ip_address")
-  userAgent        String?      @map("user_agent")
-  notes            String?      @map("notes")
-  
-  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  user             User         @relation("IftaAuditUser", fields: [userId], references: [id])
-
-  @@index([organizationId])
-  @@index([entityType])
-  @@index([entityId])
-  @@index([userId])
-  @@index([timestamp])
-  @@map("ifta_audit_logs")
+  id             String   @id @default(uuid())
+  organizationId String   @map("organization_id")
+  reportId       String   @map("report_id")
+  jurisdiction   String   @map("jurisdiction")
+  totalMiles     Int      @map("total_miles")
+  taxableMiles   Int      @map("taxable_miles")
+  fuelPurchased  Decimal  @map("fuel_purchased") @db.Decimal(10, 3)
+  fuelConsumed   Decimal  @map("fuel_consumed") @db.Decimal(10, 3)
+  taxRate        Decimal  @map("tax_rate") @db.Decimal(10, 4)
+  taxDue         Decimal  @map("tax_due") @db.Decimal(10, 2)
+  taxPaid        Decimal  @map("tax_paid") @db.Decimal(10, 2)
+  taxCredits     Decimal  @map("tax_credits") @db.Decimal(10, 2)
+  adjustments    Decimal  @default(0) @map("adjustments") @db.Decimal(10, 2)
+  netTaxDue      Decimal  @map("net_tax_due") @db.Decimal(10, 2)
+  calculatedAt   DateTime @default(now()) @map("calculated_at")
+  calculatedBy   String   @map("calculated_by")
+  isValidated    Boolean  @default(false) @map("is_validated")
+  validatedAt    DateTime? @map("validated_at")
+  validatedBy    String?  @map("validated_by")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  report         IftaReport @relation(fields: [reportId], references: [id])
+  calculatedByUser User?   @relation("CalculatedByUser", fields: [calculatedBy], references: [id])
+  validatedByUser  User?   @relation("ValidatedByUser", fields: [validatedBy], references: [id])
 }
 
 enum UserRole {
   admin
+  manager
+  user
   dispatcher
   driver
   compliance
-  member
+  accountant
+  viewer
 }
 
 enum SubscriptionTier {
@@ -603,24 +582,24 @@ enum DriverStatus {
 }
 
 enum LoadStatus {
-  draft
   pending
+  assigned
+  in_transit
+  delivered
+  cancelled
+  draft
   posted
   booked
   confirmed
-  assigned
   dispatched
-  in_transit
   at_pickup
   picked_up
   en_route
   at_delivery
-  delivered
   pod_required
   completed
   invoiced
   paid
-  cancelled
   problem
 }
 
@@ -629,146 +608,4 @@ enum LoadPriority {
   medium
   high
   urgent
-}
-
-model AnalyticsFilterPreset {
-  id             String       @id @default(uuid())
-  organizationId String       @map("organization_id")
-  userId         String       @map("user_id")
-  name           String
-  description    String?
-  filters        Json // Store AnalyticsFilters as JSON
-  isDefault      Boolean      @default(false) @map("is_default")
-  isShared       Boolean      @default(false) @map("is_shared")
-  createdAt      DateTime     @default(now()) @map("created_at")
-  updatedAt      DateTime     @updatedAt @map("updated_at")
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([organizationId, userId, name], name: "analytics_filter_preset_unique")
-  @@index([organizationId])
-  @@index([userId])
-  @@index([isDefault])
-  @@index([isShared])
-  @@map("analytics_filter_presets")
-}
-
-model ComplianceAlert {
-  id                     String                   @id @default(uuid())
-  organizationId         String                   @map("organization_id")
-  userId                 String                   @map("user_id")
-  vehicleId              String?                  @map("vehicle_id")
-  driverId               String?                  @map("driver_id")
-  type                   String
-  status                 String                   @default("active")
-  severity                String                   @default("low")
-  message                String
-  isAcknowledged         Boolean                  @default(false) @map("is_acknowledged")
-  acknowledgedAt         DateTime?                @map("acknowledged_at")
-  createdAt              DateTime                 @default(now()) @map("created_at")
-  updatedAt              DateTime                 @updatedAt @map("updated_at")
-  notes                  String?
-  customFields           Json?                    @default("{}") @map("custom_fields")
-  
-  organization           Organization             @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  user                   User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  vehicle                Vehicle?                 @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
-  driver                 Driver?                  @relation(fields: [driverId], references: [id], onDelete: Cascade)
-
-  @@index([organizationId])
-  @@index([userId])
-  @@index([vehicleId])
-  @@index([driverId])
-  @@index([status])
-  @@map("compliance_alerts")
-}
-
-model OrganizationMembership {
-  id                     String                   @id @default(uuid())
-  organizationId         String                   @map("organization_id")
-  userId                 String                   @map("user_id")
-  role                   String                   @default("member")
-  status                 String                   @default("active")
-  joinedAt              DateTime                 @default(now()) @map("joined_at")
-  leftAt                 DateTime?                @map("left_at")
-  createdAt              DateTime                 @default(now()) @map("created_at")
-  updatedAt              DateTime                 @updatedAt @map("updated_at")
-
-  organization           Organization             @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  user                   User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([organizationId, userId], name: "organizationId_userId")
-  @@index([organizationId])
-  @@index([userId])
-  @@index([status])
-  @@map("organization_memberships")
-}
-
-model Notification {
-  id             String       @id @default(cuid())
-  userId         String?      @map("user_id")
-  organizationId String       @map("organization_id")
-  type           String
-  message        String
-  status         String       @default("unread")
-  readAt         DateTime?    @map("read_at")
-  createdAt      DateTime     @default(now()) @map("created_at")
-  updatedAt      DateTime     @updatedAt @map("updated_at")
-
-  user         User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-
-  @@index([organizationId])
-  @@index([userId])
-  @@index([status])
-  @@map("notifications")
-}
-
-model IftaPDFGenerationLog {
-  id             String       @id @default(uuid())
-  organizationId String       @map("organization_id")
-  userId         String       @map("user_id")
-  reportType     String       @map("report_type") // 'QUARTERLY' | 'TRIP_LOG' | 'FUEL_SUMMARY' | 'CUSTOM'
-  parameters     Json         @map("parameters") // PDFOptions & filters used
-  status         String       @map("status") // 'PENDING' | 'GENERATING' | 'COMPLETED' | 'FAILED'
-  filePath       String?      @map("file_path")
-  fileName       String?      @map("file_name")
-  fileSize       Int?         @map("file_size")
-  errorMessage   String?      @map("error_message")
-  startedAt      DateTime     @default(now()) @map("started_at")
-  completedAt    DateTime?    @map("completed_at")
-  
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([organizationId])
-  @@index([userId])
-  @@index([status])
-  @@index([startedAt])
-  @@map("ifta_pdf_generation_logs")
-}
-
-model UserPreferences {
-  id                  String    @id @default(cuid())
-  userId              String    @unique
-  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  dashboardPreferences Json?
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
-
-  @@index([userId])
-}
-
-model RegulatoryAudit {
-  id             String       @id @default(uuid())
-  organizationId String       @map("organization_id")
-  quarter        String
-  year           Int
-  summary        Json
-  createdAt      DateTime     @default(now()) @map("created_at")
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-
-  @@index([organizationId])
-  @@index([quarter, year])
-  @@map("regulatory_audits")
 }

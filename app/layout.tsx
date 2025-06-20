@@ -1,5 +1,3 @@
-/** @format */
-
 import type React from "react"
 
 import "@/app/globals.css"
@@ -31,19 +29,6 @@ export const metadata: Metadata = {
     icons: "/map-pinned_icon.png",
 }
 
-// Development CSP helper component
-function CSPMetaTags() {
-    if (process.env.NODE_ENV === "development") {
-        return (
-            <meta
-                httpEquiv='Content-Security-Policy'
-                content="default-src 'self'; img-src 'self' data: https: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clerk.com https://*.clerk.dev https://*.clerk.accounts.dev; style-src 'self' 'unsafe-inline' https://*.clerk.com https://*.clerk.dev; connect-src 'self' https://*.clerk.com https://*.clerk.dev https://*.clerk.accounts.dev wss: ws:; font-src 'self' https://*.clerk.com https://*.clerk.dev; frame-src 'self' https://*.clerk.com https://*.clerk.dev https://*.clerk.accounts.dev; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://*.clerk.com https://*.clerk.dev"
-            />
-        )
-    }
-    return null
-}
-
 export default function RootLayout({
     children,
 }: {
@@ -57,7 +42,7 @@ export default function RootLayout({
                 suppressHydrationWarning
             >
                 <head>
-                    <CSPMetaTags />
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 </head>
                 <body className='bg-black font-sans text-white'>
                     <ThemeProvider

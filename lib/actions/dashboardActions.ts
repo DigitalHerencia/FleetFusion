@@ -1,3 +1,5 @@
+/** @format */
+
 "use server"
 
 /** @format */
@@ -554,11 +556,10 @@ export async function markAlertAsRead(orgId: string, alertId: string) {
         },
     })
     if (!alert) throw new Error("Alert not found")
-
     await db.complianceAlert.update({
         where: { id: alertId },
         data: {
-            isAcknowledged: true,
+            acknowledged: true,
             acknowledgedAt: new Date(),
         },
     })

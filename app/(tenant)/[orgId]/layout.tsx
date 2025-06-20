@@ -8,20 +8,21 @@ import { TopNavBar } from "@/components/shared/TopNavBar"
 import { SidebarNav } from "@/components/shared/sidebar/SidebarNav"
 import { useIsMobile } from "@/hooks/use-mobile"
 import type React from "react"
+import { use } from "react"
 
 interface TenantLayoutProps {
     children: React.ReactNode
-    params: { orgId: string }
+    params: Promise<{ orgId: string }>
 }
 /**
  * Client Component for Tenant Layout
  * Receives orgId from server component and uses auth context for userId
  */
-export default async function TenantLayout({
+export default function TenantLayout({
     children,
     params,
 }: TenantLayoutProps) {
-    const { orgId } = await params
+    const { orgId } = use(params)
     const isMobile = useIsMobile()
     const userContext = useUserContext()
     const userId = userContext?.userId || ""
