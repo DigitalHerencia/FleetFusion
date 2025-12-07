@@ -1,44 +1,53 @@
-# Domain Spec: Auth
+# AUTH Domain Specification
 
-## Scope
+## 1. Overview
 
-Authentication (Clerk), authorization (custom RBAC), user/org membership management, invitations.
+The Auth domain handles user authentication, organization onboarding, invitation management, and RBAC enforcement. It integrates with Clerk for identity management and extends it with custom session claims.
 
-## Key Use Cases
+## 2. Directory Structure
 
-- Sign-up, sign-in, MFA (Clerk-managed)
-- Session handling and org resolution
-- Invite members, accept invitations
-- Manage roles and permissions per organization
+This domain is implemented in `src/app/auth/` and contains:
 
-## Data
+- **Schemas:** `schemas/auth.schema.ts`, `schemas/onboarding.schema.ts`, `schemas/invites.schema.ts`
+- **Actions:** `lib/authActions.ts`
+- **Fetchers:** `lib/authFetchers.ts`
+- **RBAC:** `lib/authRBAC.ts`
+- **Components:** `components/*` (InviteForm, OnboardingForm, etc.)
+- **Tests:** `tests/*`
 
-- `User` (clerkId, email, name, imageUrl, deletedAt)
-- `OrganizationMembership` (userId, organizationId, role)
-- `WebhookEvent` (svixId, type, payload)
+## 3. Data Models
 
-## Server Actions (examples)
+- `User`
+- `Organization`
+- `OrganizationMembership`
+- `Invite`
 
-- `send-invite.action.ts`: admin-only; creates invitation record, emails invite.
-- `accept-invite.action.ts`: creates membership, links Clerk user.
-- `update-role.action.ts`: admin/manager; updates `role` with audit log.
+## 4. Key Features & Implementation
 
-## Fetchers
+### 4.1 Sign Up & Sign In
 
-- `get-current-user.ts`: returns user + memberships.
-- `get-org-members.ts`: paginated members with roles.
+- **Pages:** `[[...sign-in]]/page.tsx`, `[[...sign-up]]/page.tsx`
+- **Action:** `signUpWithProfile` (in `authActions.ts`)
+- **Fetcher:** `getCurrentUserWithOrgs` (in `authFetchers.ts`)
 
-## Validation (Zod)
+### 4.2 Onboarding
 
-- Invitation: email (Clerk-valid), role in enum, expiresAt optional.
-- Role update: role enum, target user exists in org.
+- **Page:** `onboarding/page.tsx`
+- **Action:** `completeOnboarding`
+- **Fetcher:** `getOnboardingState`
+- **Validation:** `onboardingSchema`
 
-## Policies
+### 4.3 Invitation Management
 
-- RBAC enforced on every action; admins manage roles; managers manage most except billing.
-- Soft-delete users; keep audit trail.
+- **Pages:** `invites/page.tsx`, `invites/[token]/page.tsx`
+- **Actions:** `createInvite`, `acceptInvite`, `revokeInvite`
+- **Fetcher:** `getPendingInvitesForOrg`, `getInviteByToken`
 
-## UI
+## 5. Testing Strategy
 
-- Server-rendered settings pages; client interactivity for role selectors.
-- Guarded components that check permissions before rendering actions.
+- **Unit Tests:**
+  - `tests/authActions.test.ts` (Sign-up, Onboarding, Invites)
+  - `tests/authFetchers.test.ts` (User queries)
+- **Flow Tests:**
+  - `tests/onboardingFlow.test.ts`
+  - `tests/inviteLifecycle.test.ts`

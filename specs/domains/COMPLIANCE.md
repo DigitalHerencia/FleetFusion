@@ -1,31 +1,47 @@
-# Domain Spec: Compliance
+# COMPLIANCE Domain Specification
 
-## Scope
+## 1. Overview
 
-Document management, expiration tracking, audit readiness.
+The Compliance domain manages document tracking, expiration alerts, and audit-ready document storage for vehicles and drivers.
 
-## Entities
+## 2. Directory Structure
 
-- `Document` (entityType driver/vehicle/org, type, status, expiresAt, storageKey)
-- `ComplianceAlert` (future) for reminders
+This domain is implemented in `src/app/compliance/` and contains:
 
-## Server Actions
+- **Schemas:** `schemas/compliance.schema.ts`
+- **Actions:** `lib/complianceActions.ts`
+- **Fetchers:** `lib/complianceFetchers.ts`
+- **Hooks:** `lib/complianceHooks.ts`
+- **Components:** `components/*` (ComplianceList, ComplianceCard, etc.)
+- **Tests:** `tests/*`
 
-- `upload-document.action.ts`: signed upload URL, metadata persist, link to entity.
-- `renew-document.action.ts`: update expiresAt/status, dismiss alerts.
-- `delete-document.action.ts`: soft delete; keep audit trail.
+## 3. Data Models
 
-## Business Rules
+- `ComplianceDocument`
+- `ExpirationAlert`
 
-- Alerts at 90/60/30/14/7 days.
-- Documents scoped to org and entity; mime/type/size validation.
-- Sensitive docs require role `compliance` or `admin` to view.
+## 4. Key Features & Implementation
 
-## Fetchers
+### 4.1 Document Management
 
-- `list-documents.ts`: filter by entity/type/status; pagination.
-- `get-document.ts`: metadata + signed URL (time-limited).
+- **Actions:** `createDocument`, `updateDocument`, `deleteDocument`, `uploadComplianceFile`
+- **Fetcher:** `getAllComplianceDocuments`, `getComplianceDocumentById`
+- **Validation:** `complianceDocumentSchema`
 
-## UI
+### 4.2 Expiration Alerts
 
-- Compliance dashboard with expiry heatmap; document library with filters.
+- **Action:** `generateExpirationAlerts`
+- **Fetcher:** `getExpirationAlerts`, `getComplianceSummary`
+- **Hooks:** `useRealtimeComplianceAlerts`
+
+### 4.3 Bulk Import
+
+- **Action:** `bulkImportComplianceRecords`
+- **Component:** `ComplianceBulkActions`
+
+## 5. Testing Strategy
+
+- **Unit Tests:**
+  - `tests/complianceActions.test.ts`
+  - `tests/complianceFetchers.test.ts`
+  - `tests/complianceExpirationAlerts.test.ts`

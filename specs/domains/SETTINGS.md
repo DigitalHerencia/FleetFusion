@@ -1,31 +1,49 @@
-# Domain Spec: Settings
+# SETTINGS Domain Specification
 
-## Scope
+## 1. Overview
 
-Org profile, user management, billing/subscription, feature flags.
+The Settings domain manages organization profiles, member roles, subscription management, and feature flags.
 
-## Entities
+## 2. Directory Structure
 
-- `Organization` (profile, subscriptionTier/status)
-- `OrganizationMembership` (role)
-- `FeatureFlag` (future, per-org overrides)
+This domain is implemented in `src/app/settings/` and contains:
 
-## Server Actions
+- **Schemas:** `schemas/settings.schema.ts`
+- **Actions:** `lib/settingsActions.ts`
+- **Fetchers:** `lib/settingsFetchers.ts`
+- **Hooks:** `lib/settingsHooks.ts`
+- **Components:** `components/*` (OrganizationProfileForm, MembersTable, SubscriptionPanel)
+- **Tests:** `tests/*`
 
-- `update-organization.action.ts`: update profile fields; validate DOT/MC formats.
-- `update-subscription.action.ts`: tier change; enforce feature gates immediately.
-- `update-user-role.action.ts`: same as auth but surfaced here.
+## 3. Data Models
 
-## Business Rules
+- `Organization`
+- `OrganizationMembership`
+- `Subscription`
+- `FeatureFlag`
 
-- Tier gates: starter/growth/enterprise map to limits (trucks, dispatchers, drivers, storage, features).
-- Downgrade locks features but preserves data.
+## 4. Key Features & Implementation
 
-## Fetchers
+### 4.1 Organization Profile
 
-- `get-organization.ts`: profile + subscription.
-- `list-members.ts`: list users/roles.
+- **Action:** `updateOrgProfile`
+- **Fetcher:** `getOrgProfile`
+- **Validation:** `orgProfileSchema`
 
-## UI
+### 4.2 Member Management
 
-- Settings shell with tabs: Profile, Users & Roles, Billing, Feature Flags.
+- **Actions:** `updateMemberRole`, `inviteMember`
+- **Fetcher:** `getOrgMembers`
+- **Component:** `MembersTable`
+
+### 4.3 Subscription & Feature Flags
+
+- **Actions:** `updateSubscription`, `updateFeatureFlags`
+- **Fetchers:** `getSubscriptionInfo`, `getFeatureFlags`
+
+## 5. Testing Strategy
+
+- **Unit Tests:**
+  - `tests/settingsActions.test.ts`
+  - `tests/settingsFetchers.test.ts`
+  - `tests/settingsPageview.test.ts`

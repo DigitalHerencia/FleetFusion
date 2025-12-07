@@ -1,23 +1,44 @@
-import { describe, it, expect } from 'vitest';
+import '@testing-library/jest-dom/vitest';
 
-describe('vehiclesPageview', () => {
-  it('list page renders header, filters, list, bulk actions', async () => {
-    expect(true).toBe(true);
+import { render, screen } from '@testing-library/react';
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+
+import { prisma } from '@/lib/prisma';
+
+import VehiclesPage from '../page';
+import {
+  ensureDatabase,
+  resetVehiclesData,
+  seedOrgAndUser,
+  seedVehicle,
+  setTestAuthContext,
+} from './helpers';
+
+describe('vehicles pageview (RSC)', () => {
+  beforeAll(async () => {
+    ensureDatabase();
+    await resetVehiclesData();
+    await seedOrgAndUser();
   });
 
-  it('detail page resolves fetcher + shows vehicle card', async () => {
-    expect(true).toBe(true);
+  beforeEach(async () => {
+    setTestAuthContext('manager');
+    await prisma.vehicle.deleteMany();
   });
 
-  it('new/edit pages mount shared VehicleForm', async () => {
-    expect(true).toBe(true);
+  afterAll(async () => {
+    await resetVehiclesData();
+    await prisma.$disconnect();
   });
 
-  it('skeleton shows during RSC data fetch', async () => {
-    expect(true).toBe(true);
-  });
+  it('renders header and vehicle list from fetcher', async () => {
+    await seedVehicle({ vin: 'VIN-RSC-1', name: 'RSC-1', make: 'Make', model: 'Model' });
 
-  it('error.tsx displays correct domain error state', async () => {
-    expect(true).toBe(true);
+    const Page = await VehiclesPage;
+    render(await Page());
+
+    expect(screen.getByText('Vehicles')).toBeInTheDocument();
+    expect(screen.getByText('RSC-1')).toBeInTheDocument();
+    expect(screen.getByText(/Total:/i)).toBeInTheDocument();
   });
 });

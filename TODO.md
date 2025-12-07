@@ -2,107 +2,166 @@
 
 Backlog derived from `specs` (PRD v2.0, TECH_REQUIREMENTS v2.0, ARCHITECTURE v2.0, SECURITY v2.0, DATA_MODELING v2.0, DESIGN_SYSTEM v2.0, OBSERVABILITY v2.0, DEV_TOOLING v2.0).
 
-## Foundational Platform & Infrastructure
+**Last Audit:** December 7, 2025 | **Confidence Score:** 72% | **Audit Report:** `.agent/AuditReport.md`
 
-- [ ] Establish Next.js 16 App Router skeleton with `(marketing)`, `(auth)`, and tenant `(tenant)/[orgId]` route groups per architecture spec.
-- [ ] Configure TypeScript 5 strict/bundler paths (`@/*`, `@/domains/*`, `@/shared/*`) and Next.js ESLint 9 flat config rules (no `any`, explicit returns, exhaustive deps).
-- [ ] Set up Tailwind CSS 4 with design tokens, typography, animate plugins, and dark-first theme from `DESIGN_SYSTEM.md`.
-- [ ] Stand up Prisma 7 with Neon PostgreSQL connection (serverless driver), migrations folder, and seed pipeline.
-- [ ] Implement middleware for tenant resolution, auth gating, and Prisma middleware to inject `organizationId`.
-- [ ] Wire caching strategy (Next.js cache tags, Upstash Redis for hot caches and rate limiting) and default revalidation hooks in server actions.
-- [ ] Configure Vercel Blob for file storage with signed URLs and 500MB limit enforcement.
+---
 
-## Security & Compliance
+## Foundational
 
-- [ ] Implement Clerk 6 auth session handling and custom RBAC tied to `OrganizationMembership.role` with permission matrix per domain.
-- [ ] Enforce Zod validation on all inputs (server actions, webhooks, APIs) and payload size limits (1MB general, 256KB webhooks).
-- [ ] Verify Svix signatures on Clerk webhooks with idempotency keyed on `svix-id`; log and alert failures.
-- [ ] Add Upstash rate limiting (100 req/min default; tier-aware overrides) in middleware.
-- [ ] Apply tenant isolation safeguards: scoped queries, org-aware cache keys, unique compound indexes.
-- [ ] Configure CSP, secure cookies, HSTS, and secret management via environment managers.
-- [ ] Implement audit logging for sensitive actions (auth changes, role changes, billing, deletes) with 1-year retention.
+### Outstanding
 
-## Data Modeling & Persistence
+- [ ] **INFRA-001** Create `src/middleware.ts` for Clerk auth gating, tenant resolution, and org context injection.
+- [ ] **INFRA-002** Implement `src/lib/server/auth.ts` with `requireOrgContext()` returning `{ orgId, userId, role, permissions }`.
+- [ ] **INFRA-003** Implement `src/lib/server/rbac.ts` with permission matrix and `assertRole()` / `hasPermission()` guards.
+- [ ] **PATH-001** Fix `@/domains/*` path alias (either create `src/domains/` or update `tsconfig.json` mapping).
+- [ ] **CACHE-001** Wire caching strategy (Next.js cache tags, Redis rate limiting) and default revalidation hooks in server actions. _(blocked until INFRA-001/INFRA-002/INFRA-003)_
+- [ ] **BLOB-001** Configure Vercel Blob for signed uploads with 500MB limits and retention policies.
 
-- [ ] Author Prisma schema for core models: Organization, User, OrganizationMembership, Load + LoadStatusEvent, Vehicle, Driver, Document, IftaReport, IftaTrip, IftaFuelPurchase, AuditLog, Notification.
-- [ ] Encode enums (SubscriptionTier/Status, UserRole, LoadStatus, VehicleStatus, DriverStatus, DocumentStatus, IftaReportStatus) per data modeling spec.
-- [ ] Add soft-delete fields and audit stamps (`createdAt`, `updatedAt`, `deletedAt`, `createdById`, `updatedById`) where required.
-- [ ] Create indexes and unique constraints for tenant isolation (e.g., `(organizationId, vin)`, `(organizationId, unitNumber)`, `(organizationId, status)`).
-- [ ] Seed baseline data for dev (roles/permissions, sample org, drivers, vehicles).
+### Completed (Audit Verified)
 
-## Design System & UX
+- [x] Established Next.js 16 App Router skeleton with `(marketing)`, `(auth)`, and domain route groups per architecture spec.
+- [x] Configured TypeScript strict/bundler settings and ESLint 9 flat config with import sorting and accessibility rules.
+- [x] Set up Tailwind CSS 4 token layer, typography, animate plugins, and dark-first theme from `DESIGN_SYSTEM.md`.
+- [x] Stood up Prisma 7 with PostgreSQL datasource and initial migration applied.
 
-- [ ] Implement Tailwind token layer (`:root` CSS variables) and dark-first theme per `DESIGN_SYSTEM.md`.
-- [ ] Generate shadcn/ui primitives (rsc: true) and compose shared UI kit (`Button`, `Card`, `Table`, `Dialog`, `Toast`, navigation shell).
-- [ ] Define typography and spacing scale; integrate Tailwind Typography for prose surfaces.
-- [ ] Add motion patterns via `tailwindcss-animate` with reduced-motion support; ensure WCAG 2.1 AA contrast.
+---
 
-## Observability & Operations
+## Security
 
-- [ ] Enable OpenTelemetry tracing across RSC, server actions, and Prisma instrumentation; propagate correlation IDs (orgId/userId).
-- [ ] Configure Pino structured logging (JSON) with org/user context; redact PII.
-- [ ] Integrate Sentry for front/back error tracking; set sampling and environment tagging.
-- [ ] Build health/readiness routes (`/api/health`, `/api/ready`) checking DB, Clerk, Redis, migrations.
-- [ ] Define dashboards and alerts (error rate, latency, webhook failures) per `OBSERVABILITY.md`.
+### Outstanding
 
-## Developer Tooling & CI/CD
+- [ ] **SEC-001** Implement Clerk session handling and RBAC tied to `OrganizationMembership.role` with permission matrix per domain. _(blocked until INFRA-001/INFRA-002/INFRA-003)_
+- [ ] **SEC-002** Enforce Zod validation on all inputs (server actions, webhooks, APIs) with payload limits (1MB general, 256KB webhooks).
+- [ ] **SEC-003** Verify Svix signatures on Clerk webhooks with idempotency keyed on `svix-id`; log and alert failures.
+- [ ] **SEC-004** Add Redis-backed rate limiting (100 req/min default; tier-aware overrides) in middleware. _(blocked until INFRA-001)_
+- [ ] **SEC-005** Configure CSP, secure cookies, HSTS, and secret management via environment managers.
+- [ ] **SEC-006** Implement audit logging for sensitive actions with 1-year retention (AuditLog model present). _(blocked until INFRA-002/INFRA-003)_
 
-- [ ] Standardize on pnpm + Node 20; add scripts for lint, type-check, test, test:coverage, test:e2e, format, prisma workflows.
-- [ ] Configure Husky + lint-staged (pre-commit: eslint/prettier; optional vitest related; pre-push: test:ci-lite) per `DEV_TOOLING.md`.
-- [ ] Establish Vitest + Playwright harness with fixtures and MSW; target >80% coverage gate.
-- [ ] Add CI pipelines (lint, type-check, tests, build, prisma migrate deploy) and artifact uploads.
-- [ ] Add Dependabot/Renovate configs per global instructions.
+### Completed (Audit Verified)
 
-## Domain Delivery — Auth (PRD §5.2)
+- [x] Applied tenant isolation safeguards in Prisma (organizationId scoping and compound indexes) to enforce multi-tenancy boundaries.
 
-- [ ] AUTH-001 Registration: Clerk sign-up, default org creation, email verification, duplicate email handling.
-- [ ] AUTH-002 Sign-In: Clerk auth with redirect to org dashboard; invalid credential throttling.
-- [ ] AUTH-003 RBAC: Role enforcement for admin/manager/dispatcher/driver/compliance/accountant/viewer with immediate effect on role change.
-- [ ] AUTH-004 Invitations: Create/revoke invitations, 7-day expiry, acceptance flow with org membership creation.
+---
 
-## Domain Delivery — Dispatch (PRD §5.3)
+## Data Modeling
 
-- [ ] DISP-001 Create Load: Form validation (pickup < delivery, required fields), unique load number, status `pending` default.
-- [ ] DISP-002 Dispatch Board: Kanban view grouped by status, drag-and-drop updates, SSE refresh, show driver/vehicle assignments.
-- [ ] DISP-003 Assign Driver: Availability filter by dates, warn on overlapping loads with override, audit assignment history, status to `assigned` + notify driver.
-- [ ] DISP-004 Status Updates: Driver mobile updates (`at_pickup` → `delivered` etc.), timestamp + location capture, SSE push, offline queue/retry.
+### Outstanding
 
-## Domain Delivery — Vehicles (PRD §5.4)
+- [ ] **DATA-001** Seed baseline data for development (roles/permissions, sample org, drivers, vehicles, feature flags).
 
-- [ ] VEH-001 Add Vehicle: Capture VIN/unit/make/model/year/type/plate; VIN validation; duplicate prevention; initial inspection records; trailer attributes.
-- [ ] VEH-002 Maintenance: Schedule types (oil change, DOT, etc.), next service dates, alerts 30/14/7 days, completion logging (date/mileage/cost/notes).
-- [ ] VEH-003 Inspections: Mobile-friendly checklists per vehicle type, defect flagging + manager notification, 6-month retention, block dispatch on critical defects.
+### Completed (Audit Verified)
 
-## Domain Delivery — Drivers (PRD §5.5)
+- [x] Authored comprehensive Prisma schema covering organizations, users, membership, loads, vehicles, drivers, documents, IFTA, notifications, audit logs, and idempotency tokens (with enums, soft deletes, audit stamps, indexes).
 
-- [ ] DRV-001 Add Driver: Capture profile/CDL details; validate CDL format; create compliance docs; link to User for app access.
-- [ ] DRV-002 CDL/Medical Tracking: Store expirations; alerts at 90/60/30/14/7 days; block assignments on expiry; document uploads.
-- [ ] DRV-003 Hours of Service: Track duty statuses; enforce 11h driving/14h on-duty limits; warnings near limits; compliance dashboards.
+---
 
-## Domain Delivery — Compliance (PRD §5.6)
+## Domains
 
-- [ ] COMP-001 Document Management: Upload/organize docs by entity; extract/store expirations; secure access; auditable access logs.
-- [ ] COMP-002 Expiration Alerts: Configurable cadence (90/60/30/14/7); email + in-app notifications; auto-dismiss on renewal; urgency-sorted dashboard.
+### Reference Domain — Vehicles (Blocked by INFRA-001/INFRA-002/INFRA-003)
 
-## Domain Delivery — IFTA (PRD §5.7)
+- [ ] **VEH-SCHEMA** Implement `src/app/vehicles/schemas/vehicles.schema.ts` with full Zod v4 validation. _(blocked)_
+- [ ] **VEH-FETCHERS** Implement `src/app/vehicles/lib/vehiclesFetchers.ts` with `getVehicles()`, `getVehicleBySlug()`, `getVehicleStats()`. _(blocked)_
+- [ ] **VEH-ACTIONS** Implement `src/app/vehicles/lib/vehiclesActions.ts` with `'use server'` create/update/delete/bulkImport and cache revalidation. _(blocked)_
+- [ ] **VEH-TESTS** Replace `src/app/vehicles/tests/*.test.ts` stubs with real assertions using Prisma/auth mocks. _(blocked)_
+- [ ] **VEH-PAGE** Update `src/app/vehicles/page.tsx` to render data from fetchers. _(blocked)_
 
-- [ ] IFTA-001 Trip Mileage: Capture trip details and miles per jurisdiction; validate totals; support manual entry now, GPS later; aggregate per quarter.
-- [ ] IFTA-002 Fuel Purchases: Capture fuel entries with receipts; validate within trip ranges; aggregate by jurisdiction.
-- [ ] IFTA-003 Quarterly Reports: Calculate net tax by jurisdiction; generate IFTA-standard PDF/Excel; track report statuses (draft/final/filed).
+### Other Domain Backlog (All remain scaffold-only; blocked by foundational auth/RBAC)
 
-## Domain Delivery — Analytics (PRD §5.8)
+- [ ] **AUTH-001** Registration: Clerk sign-up, default org creation, email verification, duplicate handling. _(blocked)_
+- [ ] **AUTH-002** Sign-In: Clerk auth with redirect to org dashboard; throttling on invalid credentials. _(blocked)_
+- [ ] **AUTH-003** RBAC: Enforce roles (owner/admin/manager/dispatcher/driver/compliance/accountant/viewer). _(blocked)_
+- [ ] **AUTH-004** Invitations: Create/revoke invitations, expiry, acceptance with membership creation. _(blocked)_
+- [ ] **DISP-001** Create Load with validation, unique numbers, default `pending`. _(blocked)_
+- [ ] **DISP-002** Dispatch Board with Kanban, drag-and-drop, SSE refresh, assignments. _(blocked)_
+- [ ] **DISP-003** Assign Driver with availability checks, overlap warnings, audit history, notifications. _(blocked)_
+- [ ] **DISP-004** Status Updates from mobile with timestamps/location and retry queue. _(blocked)_
+- [ ] **DRV-001** Add Driver with CDL validation, compliance docs, user linkage. _(blocked)_
+- [ ] **DRV-002** CDL/Medical tracking with expiration alerts and assignment blocks. _(blocked)_
+- [ ] **DRV-003** Hours of Service enforcement with limit warnings and dashboards. _(blocked)_
+- [ ] **COMP-001** Document management by entity with access controls and audit logs. _(blocked)_
+- [ ] **COMP-002** Expiration alerts cadence with notifications and dismissal flows. _(blocked)_
+- [ ] **IFTA-001** Trip mileage capture/validation with jurisdiction totals. _(blocked)_
+- [ ] **IFTA-002** Fuel purchase capture within trip ranges and jurisdiction aggregation. _(blocked)_
+- [ ] **IFTA-003** Quarterly reports with tax calculations and export (PDF/Excel). _(blocked)_
+- [ ] **ANLY-001** Analytics dashboard (loads, on-time rate, utilization, revenue) with filters. _(blocked)_
+- [ ] **ANLY-002** Custom reports builder with exports and scheduling. _(blocked)_
+- [ ] **SET-001** Org settings (DOT/MC, company info, branding) with validation. _(blocked)_
+- [ ] **SET-002** User management (list/edit/deactivate) with immediate role enforcement. _(blocked)_
+- [ ] **SET-003** Subscription management with Stripe portal and feature gates. _(blocked)_
 
-- [ ] ANLY-001 Dashboard: Show active loads, on-time rate, fleet utilization, revenue; date filters; near-real-time refresh; drill-down links.
-- [ ] ANLY-002 Custom Reports: Report builder (Growth/Enterprise); filtering/grouping/aggregation; exports (PDF/Excel/CSV); save + scheduled runs.
+### Completed (Audit Verified)
 
-## Domain Delivery — Settings (PRD §5.9)
+- [x] Domain scaffolds exist for auth, dashboard, vehicles, drivers, dispatch, compliance, ifta, analytics, settings, notifications, admin (pages, layouts, placeholders).
 
-- [ ] SET-001 Org Settings: Capture DOT/MC numbers, company info, logo; validate formats; propagate branding across app.
-- [ ] SET-002 User Management: List users/roles/status; add/edit/deactivate; enforce role assignments; immediate access revocation on deactivate.
-- [ ] SET-003 Subscription: Display tier/usage/billing; upgrade/downgrade flows; Stripe portal for payment methods; immediate feature gate updates.
+---
 
-## Quality & Acceptance (PRD §6, TECH §6)
+## Observability
+
+### Outstanding
+
+- [ ] **OBS-001** Implement `src/lib/observability/logger.ts` with Pino structured logging (JSON with orgId/userId context).
+- [ ] **OBS-002** Implement `src/lib/observability/tracing.ts` with OpenTelemetry wrappers for server actions and Prisma.
+- [ ] **OBS-003** Upgrade `/api/ready` to perform real DB, Clerk, and migration checks (currently returns static status).
+- [ ] **OBS-004** Implement metrics instrumentation (request counters, latency histograms, webhook failures) aligned to `OBSERVABILITY.md`.
+
+### Completed (Audit Verified)
+
+- [x] Health/readiness endpoints scaffolded (`/api/health`, `/api/ready`) per platform requirements.
+
+---
+
+## CI / Tooling
+
+### Outstanding
+
+- [ ] **CI-001** Wire Husky hooks to run `pnpm lint-staged` (pre-commit) and ensure scripts execute (current hooks source helper only).
+- [ ] **CI-002** Replace domain unit test stubs with real coverage across all actions/fetchers (blocked until domain logic exists).
+- [ ] **CI-003** Create `e2e/` folder with Playwright smoke tests (health, auth, navigation). _(blocked until INFRA-001/INFRA-002/INFRA-003)_
+- [ ] **CI-004** Add MSW handlers in `tests/mocks/` for Prisma and Clerk mocking. _(blocked until INFRA-002/INFRA-003)_
+
+### Completed (Audit Verified)
+
+- [x] Standardized on pnpm + Node 20 with scripts for lint, type-check, test, coverage, e2e, format, and Prisma workflows.
+- [x] Established Vitest and Playwright configs; generated test scaffolds for all domains.
+- [x] Added CI workflows (lint, type-check, test, build, prisma migrate deploy) with frozen lockfile installs and cached pnpm.
+- [x] Added Dependabot/Renovate automation per global instructions.
+
+---
+
+## Quality & Acceptance
+
+### Outstanding
 
 - [ ] Enforce Definition of Done: code complete, docs updated, WCAG AA, LCP <2.5s/FID <100ms/CLS <0.1 where applicable.
 - [ ] Quality gates in CI: lint, type-check, Vitest (>80% coverage), Playwright critical paths, security scan, Lighthouse/a11y where feasible.
 - [ ] Document user help, API docs, and domain-specific guides alongside features.
+
+---
+
+## 📋 Execution Plan Summary
+
+```
+Phase 1: Foundation Lock-in (INFRA-001 → INFRA-003, PATH-001)
+    ↓
+Phase 2: Security & Data (SEC-*, DATA-001, CACHE-001, BLOB-001)
+    ↓
+Phase 3: Reference Domain (VEH-*)
+    ↓
+Phase 4: Parallel Domains (AUTH/DRV/SET/DISP/COMP/IFTA/ANLY)
+    ↓
+Phase 5: Observability & CI Hardening (OBS-*, CI-*)
+```
+
+**Safe to start now:** INFRA-001 (middleware.ts) has no upstream dependencies.
+
+---
+
+## 📁 Agent Resources
+
+| Resource         | Path                          | Purpose                            |
+| ---------------- | ----------------------------- | ---------------------------------- |
+| Audit Report     | `.agent/AuditReport.md`       | Full workspace audit with findings |
+| Directory Tree   | `.agent/directory-tree.txt`   | Project structure snapshot         |
+| Structure Script | `.agent/create_structure.ps1` | PowerShell scaffold automation     |
+
+_Add new scripts to `.agent/` for batch operations, migrations, and automation._

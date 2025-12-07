@@ -1,34 +1,50 @@
-# Domain Spec: Vehicles
+# VEHICLES Domain Specification
 
-## Scope
+## 1. Overview
 
-Fleet inventory, maintenance, inspections, documents.
+The Vehicles domain manages the fleet inventory, including trucks, trailers, and service vehicles. It handles vehicle lifecycle, maintenance scheduling, inspection logging, and compliance document tracking related to assets.
 
-## Entities
+## 2. Directory Structure
 
-- `Vehicle` (vin, unitNumber, type, status)
-- `Maintenance` (type, scheduled/completed dates, cost, notes)
-- `Inspection` (pre/post-trip, defects)
-- `Document` (registration, insurance, etc.)
+This domain is implemented in `src/app/vehicles/` and contains:
 
-## Server Actions
+- **Schemas:** `schemas/vehicles.schema.ts`
+- **Actions:** `lib/vehiclesActions.ts`
+- **Fetchers:** `lib/vehiclesFetchers.ts`
+- **Hooks:** `lib/vehiclesHooks.ts`
+- **Validation:** `lib/vehiclesValidation.ts`
+- **Components:** `components/*` (VehiclesList, VehicleCard, etc.)
+- **Tests:** `tests/*`
 
-- `create-vehicle.action.ts`: validate VIN, uniqueness per org.
-- `schedule-maintenance.action.ts`: create maintenance, alerts.
-- `complete-maintenance.action.ts`: mark done, update next service.
-- `log-inspection.action.ts`: add inspection, flag defects.
+## 3. Data Models
 
-## Business Rules
+- `Vehicle`
+- `MaintenanceRecord`
+- `Inspection`
+- `VehicleDocument`
 
-- VIN unique per org; unitNumber unique per org.
-- Critical defects block dispatch assignments.
-- Maintenance alerts at 30/14/7 days.
+## 4. Key Features & Implementation
 
-## Fetchers
+### 4.1 Vehicle Management
 
-- `list-vehicles.ts`: filter by status/type, cursor pagination.
-- `get-vehicle.ts`: details with maintenance + inspections.
+- **Action:** `createVehicle`, `updateVehicle`, `deleteVehicle` (in `vehiclesActions.ts`)
+- **Fetcher:** `getAllVehicles`, `getVehicleById` (in `vehiclesFetchers.ts`)
+- **Validation:** `vehicleSchema` (in `vehicles.schema.ts`)
 
-## UI
+### 4.2 Dashboard Integration
 
-- Vehicle table + detail drawer; maintenance timeline; inspection checklist (client component).
+- **Fetcher:** `getVehiclesForDashboard`
+- **Component:** `VehicleCardOptimistic`
+
+### 4.3 Bulk Operations
+
+- **Action:** `bulkImportVehicles`
+- **Component:** `VehiclesBulkActions`
+
+## 5. Testing Strategy
+
+- **Unit Tests:**
+  - `tests/vehiclesActions.test.ts` (CRUD, Validation)
+  - `tests/vehiclesFetchers.test.ts` (Filtering, Pagination)
+  - `tests/vehiclesValidation.test.ts` (Schema rules)
+- **Pageview Tests:** `tests/vehiclesPageview.test.ts` (RSC rendering, Client hydration)

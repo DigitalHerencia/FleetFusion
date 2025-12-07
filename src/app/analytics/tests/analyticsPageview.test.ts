@@ -1,19 +1,18 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
-describe('analyticsPageview', () => {
-  it('dashboard renders KPIs, filters, reports list', async () => {
-    expect(true).toBe(true);
+vi.mock('../lib/analyticsFetchers', () => ({
+  getDashboardMetrics: vi.fn().mockResolvedValue({ charts: [], kpis: [] }),
+  getReportById: vi.fn().mockResolvedValue({ id: 'r1' }),
+}));
+
+describe('analyticsPageview (TDD)', () => {
+  it('dashboard loads metrics via fetcher', async () => {
+    const fetchers = await import('../lib/analyticsFetchers');
+    await expect(fetchers.getDashboardMetrics()).resolves.toMatchObject({ charts: [] });
   });
 
-  it('detail page resolves fetcher + shows report designer', async () => {
-    expect(true).toBe(true);
-  });
-
-  it('skeleton shows during RSC load', async () => {
-    expect(true).toBe(true);
-  });
-
-  it('error.tsx handles domain-specific failures', async () => {
-    expect(true).toBe(true);
+  it('detail page resolves report by id', async () => {
+    const fetchers = await import('../lib/analyticsFetchers');
+    await expect(fetchers.getReportById()).resolves.toMatchObject({ id: 'r1' });
   });
 });

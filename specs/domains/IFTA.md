@@ -1,33 +1,42 @@
-# Domain Spec: IFTA
+# IFTA Domain Specification
 
-## Scope
+## 1. Overview
 
-Trip and fuel logging, quarterly report generation.
+The IFTA domain handles fuel tax reporting, including trip mileage tracking, fuel purchase logging, and quarterly report generation.
 
-## Entities
+## 2. Directory Structure
 
-- `IftaReport` (year, quarter, status)
-- `IftaTrip` (date, vehicle, jurisdiction miles)
-- `IftaFuelPurchase` (date, gallons, amount, jurisdiction)
+This domain is implemented in `src/app/ifta/` and contains:
 
-## Server Actions
+- **Schemas:** `schemas/ifta.schema.ts` (tripSchema, fuelPurchaseSchema, iftaReportSchema)
+- **Actions:** `lib/iftaActions.ts`
+- **Fetchers:** `lib/iftaFetchers.ts`
+- **Hooks:** `lib/iftaHooks.ts`
+- **Components:** `components/*` (IftaTripsList, IftaFuelList, IftaReportCard)
+- **Tests:** `tests/*`
 
-- `create-trip.action.ts`: add trip with jurisdiction miles validation.
-- `log-fuel.action.ts`: add fuel purchase, optional receipt URL.
-- `generate-report.action.ts`: aggregate trips/fuel into quarterly report.
+## 3. Data Models
 
-## Business Rules
+- `IftaTrip`
+- `IftaFuelPurchase`
+- `IftaReport`
 
-- Total miles equals sum of jurisdiction miles.
-- Reports unique per org/year/quarter.
-- Fuel entries must align with trip date ranges.
+## 4. Key Features & Implementation
 
-## Fetchers
+### 4.1 Trip & Fuel Management
 
-- `list-trips.ts`: by vehicle/date range.
-- `list-fuel.ts`: by vehicle/date range.
-- `get-report.ts`: report with aggregates.
+- **Actions:** `createTrip`, `updateTrip`, `deleteTrip`, `createFuelPurchase`, `updateFuelPurchase`, `deleteFuelPurchase`
+- **Fetcher:** `getAllTrips`, `getTripById`, `getAllFuelPurchases`, `getFuelPurchaseById`
 
-## UI
+### 4.2 Quarterly Reports
 
-- Trip log table; fuel log; report summary cards; export to PDF/Excel.
+- **Action:** `generateQuarterlyReport`
+- **Fetcher:** `getQuarterlySummary`, `getRateTables`, `getIftaDashboardSnapshot`
+- **Hooks:** `useIftaReportBuilder`
+
+## 5. Testing Strategy
+
+- **Unit Tests:**
+  - `tests/iftaCalculations.test.ts` (Mileage, Tax computation)
+  - `tests/iftaReports.test.ts` (Report generation, PDF export)
+  - `tests/iftaPageview.test.ts`

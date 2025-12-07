@@ -1,40 +1,50 @@
-# Domain Spec: Dispatch
+# DISPATCH Domain Specification
 
-## Scope
+## 1. Overview
 
-Load lifecycle, board management, assignments, status updates, customer linkage.
+The Dispatch domain manages load creation, assignment, status tracking, and the dispatch board. It coordinates driver and vehicle assignments while enforcing business rules for load lifecycle transitions.
 
-## Entities
+## 2. Directory Structure
 
-- `Load` (status, origin/destination, dates, rate, customerId, driverId, vehicleId)
-- `LoadStatusEvent` (history with timestamps, location)
+This domain is implemented in `src/app/dispatch/` and contains:
 
-## Core Flows
+- **Schemas:** `schemas/dispatch.schema.ts`
+- **Actions:** `lib/dispatchActions.ts`
+- **Fetchers:** `lib/dispatchFetchers.ts`
+- **Hooks:** `lib/dispatchHooks.ts`
+- **Status Rules:** `lib/dispatchStatusRules.ts`
+- **Components:** `components/*` (DispatchBoard, DispatchCard, etc.)
+- **Tests:** `tests/*`
 
-- Create load (pending)
-- Assign driver/vehicle (assigned)
-- Dispatch and track statuses (at_pickup → picked_up → en_route → at_delivery → delivered → pod_required → completed)
-- Cancel/invoice
+## 3. Data Models
 
-## Server Actions
+- `Load`
+- `LoadStatusEvent`
+- `DriverAssignment`
 
-- `create-load.action.ts`: validate, RBAC `dispatch:loads:create`, create load, revalidate board.
-- `assign-load.action.ts`: attach driver/vehicle, update status, emit event.
-- `update-load-status.action.ts`: append status event, enforce transition rules.
-- `delete-load.action.ts`: soft delete with audit log.
+## 4. Key Features & Implementation
 
-## Business Rules
+### 4.1 Load Management
 
-- Enforce valid status transitions (no delivered → pending).
-- Warn on driver double-booking; allow admin override.
-- Pickup < delivery date.
+- **Actions:** `createLoad`, `updateLoad`, `deleteLoad` (in `dispatchActions.ts`)
+- **Fetcher:** `getAllLoads`, `getLoadById` (in `dispatchFetchers.ts`)
+- **Validation:** `loadSchema` (in `dispatch.schema.ts`)
 
-## Fetchers
+### 4.2 Assignment & Status
 
-- `list-loads.ts`: tenant-scoped, filter by status, cursor pagination.
-- `get-load.ts`: detail view with status events and assignments.
+- **Actions:** `assignDriverToLoad`, `updateLoadStatus`
+- **Rules:** `resolveLoadStatus`, `resolveDriverAvailability`, `inferNextStatusTransition` (in `dispatchStatusRules.ts`)
 
-## UI
+### 4.3 Dispatch Board
 
-- RSC board view; SSE for real-time updates; drag-and-drop client for columns.
-- Forms using shadcn forms + RHF + Zod.
+- **Fetcher:** `getDispatchBoardData`
+- **Hooks:** `useRealtimeDispatchStatus`, `useDispatchWebsocket`
+- **Component:** `DispatchBoard.tsx`
+
+## 5. Testing Strategy
+
+- **Unit Tests:**
+  - `tests/dispatchActions.test.ts` (CRUD, Assignment)
+  - `tests/dispatchFetchers.test.ts` (Board data, Pagination)
+  - `tests/dispatchStatusRules.test.ts` (Transition logic)
+- **Pageview Tests:** `tests/dispatchPageview.test.ts`

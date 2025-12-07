@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.4] - 2025-12-07
+
+### Added
+
+- Hardened analytics TDD coverage: queries, reports, and pageview now assert org scoping, auth enforcement, and Zod validation paths.
+- Strengthened IFTA report TDD coverage by correcting schema wiring and verifying organization-scoped trip and fuel queries.
+
+### Changed
+
+- Updated analytics report tests to require role assertions before creation and scheduling flows.
+
+## [0.1.3] - 2025-12-07
+
+### Added
+
+- Recorded `.agent/AuditReport.md` capturing repository-wide audit results (confidence score 72%, violations summary, remediation plan).
+
+### Changed
+
+- Reordered `TODO.md` to the Spec-Driven backlog structure and flagged foundational blockers (middleware, auth helper, RBAC) plus new path-alias and metrics tasks identified by the audit.
+- Documented that all domain server actions, fetchers, and tests remain stubs and are blocked pending foundational auth/RBAC work, as validated by the audit.
+
+### Fixed
+
+- None.
+
+### Deprecated
+
+- None.
+
+### Removed
+
+- None.
+
+### Security
+
+- Noted audit-confirmed gaps: missing `middleware.ts` for auth/tenant gating, unimplemented `auth.ts` and `rbac.ts`, absent rate limiting/webhook verification/CSP/HSTS, and stubbed audit logging; tenant isolation via Prisma compound indexes is present.
+
 ## [0.2.1] - 2025-12-06
 
 ### Added

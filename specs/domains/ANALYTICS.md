@@ -1,28 +1,42 @@
-# Domain Spec: Analytics
+# ANALYTICS Domain Specification
 
-## Scope
+## 1. Overview
 
-Dashboards, KPIs, custom reports.
+The Analytics domain provides KPI dashboards, custom report building, and cross-domain metric aggregation for operational insights.
 
-## Entities
+## 2. Directory Structure
 
-- `Report` (saved config), `Dashboard` (layout), derived metrics from domain tables.
+This domain is implemented in `src/app/analytics/` and contains:
 
-## Server Actions
+- **Schemas:** `schemas/analytics.schema.ts`
+- **Actions:** `lib/analyticsActions.ts`
+- **Fetchers:** `lib/analyticsFetchers.ts`
+- **Hooks:** `lib/analyticsHooks.ts`
+- **Components:** `components/*` (AnalyticsDashboardCards, AnalyticsReportDesigner)
+- **Tests:** `tests/*`
 
-- `create-custom-report.action.ts`: save query definition (whitelisted fields).
-- `schedule-report.action.ts`: set cadence, deliver via email.
+## 3. Data Models
 
-## Business Rules
+- `AnalyticsReport`
+- `KPIDefinition`
 
-- Restrict selectable fields to avoid data leakage; always org-scoped.
-- Large queries must paginate/limit; timeouts with graceful errors.
+## 4. Key Features & Implementation
 
-## Fetchers
+### 4.1 Dashboard & KPIs
 
-- `get-dashboard.ts`: returns KPI set (loads, on-time rate, utilization, revenue est).
-- `run-report.ts`: executes report definition with validation.
+- **Fetcher:** `getAvailableKPIs`, `getAnalyticsDashboardSnapshot`, `getDomainMetrics`
+- **Hooks:** `useRealtimeAnalyticsStream`
+- **Component:** `AnalyticsDashboardCards`
 
-## UI
+### 4.2 Custom Reports
 
-- Dashboard cards (RSC) with live data; client charts for interactivity; date filters.
+- **Actions:** `createCustomReport`, `updateCustomReport`, `deleteCustomReport`, `exportReportToPDF`
+- **Fetcher:** `getReportById`, `getAllReports`, `runAnalyticsQuery`
+- **Hooks:** `useAnalyticsQueryBuilder`, `useReportDesigner`
+
+## 5. Testing Strategy
+
+- **Unit Tests:**
+  - `tests/analyticsQueries.test.ts`
+  - `tests/analyticsReports.test.ts`
+  - `tests/analyticsPageview.test.ts`

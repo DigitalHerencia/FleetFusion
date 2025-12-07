@@ -1,31 +1,48 @@
-# Domain Spec: Drivers
+# DRIVERS Domain Specification
 
-## Scope
+## 1. Overview
 
-Driver roster, credentials, HOS tracking.
+The Drivers domain manages driver profiles, CDL/medical tracking, hours of service monitoring, and mobile workflows for shift management and document uploads.
 
-## Entities
+## 2. Directory Structure
 
-- `Driver` (name, status, cdl info, medical card)
-- `HosLog` (future) for hours-of-service
-- `Document` (cdl, medical card)
+This domain is implemented in `src/app/drivers/` and contains:
 
-## Server Actions
+- **Schemas:** `schemas/drivers.schema.ts`, `schemas/driversMobile.schema.ts`
+- **Actions:** `lib/driversActions.ts`
+- **Fetchers:** `lib/driversFetchers.ts`
+- **Hooks:** `lib/driversHooks.ts`
+- **Mobile Flows:** `lib/driversMobileFlows.ts`
+- **Components:** `components/*` (DriversList, DriverCard, etc.)
+- **Tests:** `tests/*`
 
-- `create-driver.action.ts`: add driver, link user optionally.
-- `update-driver-status.action.ts`: suspend/activate; block assignments when suspended.
-- `log-hos.action.ts` (future): append HOS entries with validations.
+## 3. Data Models
 
-## Business Rules
+- `Driver`
+- `DriverShift`
+- `DriverDocument`
 
-- Enforce CDL format per state; expiration alerts 90/60/30/14/7 days.
-- Suspended/expired drivers cannot be assigned to loads.
+## 4. Key Features & Implementation
 
-## Fetchers
+### 4.1 Driver Management
 
-- `list-drivers.ts`: filter by status; pagination.
-- `get-driver.ts`: profile with docs and assignments.
+- **Actions:** `createDriver`, `updateDriver`, `deleteDriver`, `bulkImportDrivers`
+- **Fetcher:** `getAllDrivers`, `getDriverById`, `getDriverHistory`
+- **Validation:** `driverSchema`
 
-## UI
+### 4.2 Mobile Workflows
 
-- Driver directory with status chips; credential expiry widgets; compliance warnings inline.
+- **Actions:** `startDriverShift`, `endDriverShift`, `syncDriverLocation`, `uploadDriverDocs`
+- **Hooks:** `useRealtimeDriverStatus`, `useDriverAssignments`
+
+### 4.3 Dashboard Integration
+
+- **Fetcher:** `getDriversForDashboard`
+- **Component:** `DriverCardOptimistic`
+
+## 5. Testing Strategy
+
+- **Unit Tests:**
+  - `tests/driversActions.test.ts`
+  - `tests/driversFetchers.test.ts`
+  - `tests/driversMobileFlows.test.ts`
