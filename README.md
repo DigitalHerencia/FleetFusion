@@ -58,12 +58,13 @@
 </p>
 
 ---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js 18+
-- npm 9+
+- Node.js 20+
+- pnpm 8+
 - Neon.tech Postgres or compatible
 - Clerk account
 
@@ -72,9 +73,9 @@
 ```bash
 git clone https://github.com/your-username/fleet-fusion.git
 cd fleet-fusion
-npm install
+pnpm install
 cp .env.example .env.local # Edit with your DATABASE_URL and DIRECT_URL
-npm run dev
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
@@ -84,8 +85,28 @@ Open [http://localhost:3000](http://localhost:3000)
 Install project dependencies before running tests:
 
 ```bash
-npm install
-npm test
+pnpm install
+pnpm test
+```
+
+### Project Structure (App Router)
+
+```
+src/
+  app/
+    (marketing)/              # Public landing page
+    (auth)/sign-in, sign-up/   # Auth group scaffolding (Clerk-ready)
+    (tenant)/[orgId]/          # Tenant workspace with domain routes
+      dispatch/                # Load board placeholder
+      vehicles/                # Fleet readiness placeholder
+      drivers/                 # Driver roster placeholder
+      compliance/              # Document vault placeholder
+      ifta/                    # Fuel + miles placeholder
+      analytics/               # Reporting placeholder
+      settings/                # Org + subscription placeholder
+    api/health, api/ready/     # Health and readiness probes
+  shared/                      # UI primitives, utils, hooks
+  domains/                     # Domain modules (to be filled in)
 ```
 
 ### PDF Storage Provider

@@ -29,100 +29,96 @@ This document defines the technical requirements for the FleetFusion platform re
 
 ### 1.1 Core Framework
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Next.js** | 16.x | React framework with App Router, RSC, Server Actions |
-| **React** | 19.x | UI library with concurrent rendering |
-| **TypeScript** | 5.x | Type-safe JavaScript superset |
+| Technology     | Version | Purpose                                              |
+| -------------- | ------- | ---------------------------------------------------- |
+| **Next.js**    | 16.x    | React framework with App Router, RSC, Server Actions |
+| **React**      | 19.x    | UI library with concurrent rendering                 |
+| **TypeScript** | 5.x     | Type-safe JavaScript superset                        |
 
 ### 1.2 Database & ORM
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **PostgreSQL** | 16.x | Primary relational database |
-| **Neon** | Serverless | Cloud PostgreSQL with branching |
-| **Prisma** | 7.x | Type-safe ORM with migrations |
-| **@neondatabase/serverless** | 1.x | Neon driver for edge compatibility |
+| Technology                   | Version    | Purpose                            |
+| ---------------------------- | ---------- | ---------------------------------- |
+| **PostgreSQL**               | 16.x       | Primary relational database        |
+| **Neon**                     | Serverless | Cloud PostgreSQL with branching    |
+| **Prisma**                   | 7.x        | Type-safe ORM with migrations      |
+| **@neondatabase/serverless** | 1.x        | Neon driver for edge compatibility |
 
 ### 1.3 Authentication & Authorization
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Clerk** | 6.x | Authentication provider |
-| **@clerk/nextjs** | 6.x | Next.js Clerk SDK |
-| **Svix** | 1.x | Webhook verification |
-| **Custom RBAC** | - | Prisma-based roles and permissions |
+| Technology        | Version | Purpose                            |
+| ----------------- | ------- | ---------------------------------- |
+| **Clerk**         | 6.x     | Authentication provider            |
+| **@clerk/nextjs** | 6.x     | Next.js Clerk SDK                  |
+| **Svix**          | 1.x     | Webhook verification               |
+| **Custom RBAC**   | -       | Prisma-based roles and permissions |
 
 ### 1.4 Styling & UI
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Tailwind CSS** | 4.x | Utility-first CSS framework |
-| **tailwindcss-animate** | latest | Animation utilities |
-| **@tailwindcss/typography** | latest | Prose styling |
-| **shadcn/ui** | latest | Radix-based component library |
-| **Radix UI** | latest | Headless UI primitives |
-| **Lucide React** | latest | Icon library |
-| **Framer Motion** | latest | Animation library |
+| Technology                  | Version | Purpose                       |
+| --------------------------- | ------- | ----------------------------- |
+| **Tailwind CSS**            | 4.x     | Utility-first CSS framework   |
+| **tailwindcss-animate**     | latest  | Animation utilities           |
+| **@tailwindcss/typography** | latest  | Prose styling                 |
+| **shadcn/ui**               | latest  | Radix-based component library |
+| **Radix UI**                | latest  | Headless UI primitives        |
+| **Lucide React**            | latest  | Icon library                  |
 
 ### 1.5 Forms & Validation
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Zod** | 4.x | Schema validation |
-| **React Hook Form** | latest | Form state management |
-| **@hookform/resolvers** | latest | Zod integration for RHF |
+| Technology              | Version | Purpose                 |
+| ----------------------- | ------- | ----------------------- |
+| **Zod**                 | 4.x     | Schema validation       |
+| **React Hook Form**     | latest  | Form state management   |
+| **@hookform/resolvers** | latest  | Zod integration for RHF |
 
 ### 1.6 Data Visualization
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Recharts** | latest | React charting library |
-| **@tanstack/react-table** | latest | Data table with sorting, filtering |
+| Technology           | Version | Purpose             |
+| -------------------- | ------- | ------------------- |
+| **ShadCN UI Charts** | latest  | Powered by Recharts |
 
 ### 1.7 File Handling & Documents
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **@vercel/blob** | latest | File storage |
-| **@react-pdf/renderer** | latest | PDF generation |
-| **pdf-lib** | latest | PDF manipulation |
-| **ExcelJS** | latest | Excel generation |
+| Technology              | Version | Purpose          |
+| ----------------------- | ------- | ---------------- |
+| **@vercel/blob**        | latest  | File storage     |
+| **@react-pdf/renderer** | latest  | PDF generation   |
+| **pdf-lib**             | latest  | PDF manipulation |
+| **ExcelJS**             | latest  | Excel generation |
 
 ### 1.8 Development Tools
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **ESLint** | 9.x | Code linting |
-| **Prettier** | 3.x | Code formatting |
-| **PostCSS** | 8.x | CSS processing |
-| **Husky** | latest | Git hooks |
-| **lint-staged** | latest | Pre-commit linting |
+| Technology      | Version | Purpose            |
+| --------------- | ------- | ------------------ |
+| **ESLint**      | 9.x     | Code linting       |
+| **Prettier**    | 3.x     | Code formatting    |
+| **PostCSS**     | 8.x     | CSS processing     |
+| **Husky**       | latest  | Git hooks          |
+| **lint-staged** | latest  | Pre-commit linting |
 
 ### 1.9 Testing
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Vitest** | 3.x | Unit and integration testing |
-| **Playwright** | 1.x | End-to-end testing |
-| **@testing-library/react** | latest | React component testing |
-| **MSW** | latest | API mocking |
+| Technology                 | Version | Purpose                      |
+| -------------------------- | ------- | ---------------------------- |
+| **Vitest**                 | 3.x     | Unit and integration testing |
+| **Playwright**             | 1.x     | End-to-end testing           |
+| **@testing-library/react** | latest  | React component testing      |
+| **MSW**                    | latest  | API mocking                  |
 
 ### 1.10 Monitoring & Observability
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Sentry** | latest | Error tracking |
-| **Vercel Analytics** | latest | Performance analytics |
-| **OpenTelemetry** | latest | Distributed tracing |
-| **Pino** | latest | Structured logging |
+| Technology           | Version | Purpose               |
+| -------------------- | ------- | --------------------- |
+| **Vercel Analytics** | latest  | Performance analytics |
+| **OpenTelemetry**    | latest  | Distributed tracing   |
 
 ### 1.11 Rate Limiting & Caching
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Upstash Redis** | latest | Rate limiting, caching |
-| **@upstash/ratelimit** | latest | Rate limit library |
+| Technology             | Version | Purpose                |
+| ---------------------- | ------- | ---------------------- |
+| **Upstash Redis**      | latest  | Rate limiting, caching |
+| **@upstash/ratelimit** | latest  | Rate limit library     |
 
 ---
 
@@ -156,6 +152,7 @@ This document defines the technical requirements for the FleetFusion platform re
 ```
 
 **Principles:**
+
 - Default to React Server Components (RSC)
 - Use `"use client"` only for interactive components
 - Fetch data in server components, not useEffect
@@ -204,6 +201,7 @@ export async function createLoadAction(data: z.infer<typeof createLoadSchema>) {
 ```
 
 **Pattern:**
+
 1. Authenticate user (Clerk session)
 2. Authorize action (RBAC check)
 3. Validate input (Zod schema)
@@ -211,40 +209,113 @@ export async function createLoadAction(data: z.infer<typeof createLoadSchema>) {
 5. Revalidate cache (Next.js ISR)
 6. Return result (type-safe response)
 
-### 2.3 Domain-Driven Design Structure
+### 2.3 Standard Next.js App Router RSC Architecture
 
 ```
-src/
-├── app/                          # Next.js App Router
+├── app/                          # Next.js App Router (Routes & RSC)
 │   ├── (auth)/                   # Auth route group
 │   │   ├── sign-in/
+│   │   │   └── page.tsx
 │   │   ├── sign-up/
+│   │   │   └── page.tsx
 │   │   └── layout.tsx
+│   │
 │   ├── (marketing)/              # Public pages
-│   │   ├── page.tsx              # Landing page
+│   │   ├── about/
+│   │   │   └── page.tsx
+│   │   ├── features/
+│   │   │   └── page.tsx
+│   │   ├── contact/
+│   │   │   └── page.tsx
+│   │   ├── privacy/
+│   │   │   └── page.tsx
+│   │   ├── terms/
+│   │   │   └── page.tsx
+│   │   ├── refund/
+│   │   │   └── page.tsx
 │   │   ├── pricing/
+│   │   │   └── page.tsx
 │   │   └── layout.tsx
-│   └── (tenant)/                 # Protected tenant routes
-│       └── [orgId]/
-│           ├── dashboard/
-│           ├── dispatch/
-│           ├── vehicles/
-│           ├── drivers/
-│           ├── compliance/
-│           ├── ifta/
-│           ├── analytics/
-│           ├── settings/
-│           └── layout.tsx
+│   │
+│   ├── (tenant)/                 # Protected tenant routes
+│   │   └── [ordIdSlug]/
+│   │       ├── dashboard/
+│   │       │   ├── page.tsx
+│   │       │   └── loading.tsx
+│   │       ├── dispatch/
+│   │       │   ├── page.tsx
+│   │       │   ├── [loadIdSlug]/
+│   │       │   │   └── page.tsx
+│   │       │   └── _components/  # Route-specific components
+│   │       │       ├── load-board.tsx
+│   │       │       └── load-form.tsx
+│   │       ├── vehicles/
+│   │       ├── drivers/
+│   │       ├── compliance/
+│   │       ├── ifta/
+│   │       ├── analytics/
+│   │       ├── settings/
+│   │       └── layout.tsx
+│   │
+│   ├── api/                      # API routes
+│   │   └── clerk/
+│   │       └── webhook-handler/
+│   │           └── route.ts
+│   │
+│   ├── globals.css
+│   ├── layout.tsx                # Root layout
+│   └── page.tsx                  # Landing page
 │
-├── domains/                      # Domain modules
+├── components/                   # Shared UI components
+│   ├── ui/                       # shadcn/ui components
+│   │   ├── button.tsx
+│   │   ├── card.tsx
+│   │   ├── dialog.tsx
+│   │   └── ...
+│   ├── forms/                    # Reusable form components
+│   │   ├── form-field.tsx
+│   │   └── form-wrapper.tsx
+│   ├── layouts/                  # Layout components
+│   │   ├── header.tsx
+│   │   ├── sidebar.tsx
+│   │   └── footer.tsx
+│   └── providers/                # Client providers
+│       ├── theme-provider.tsx
+│       └── query-provider.tsx
+│
+├── features/                     # Feature modules (business logic)
 │   ├── auth/
-│   │   ├── actions/              # Server actions
-│   │   ├── components/           # Domain-specific UI
-│   │   ├── hooks/                # Client hooks
-│   │   ├── lib/                  # Domain logic
-│   │   ├── schemas/              # Zod schemas
-│   │   └── types/                # Domain types
+│   │   ├── actions/
+│   │   │   ├── sign-in.ts
+│   │   │   └── sign-out.ts
+│   │   ├── components/
+│   │   │   ├── sign-in-form.tsx
+│   │   │   └── user-menu.tsx
+│   │   ├── hooks/
+│   │   │   └── use-current-user.ts
+│   │   ├── lib/
+│   │   │   └── session.ts
+│   │   └── schemas/
+│   │       └── auth.schema.ts
+│   │
 │   ├── dispatch/
+│   │   ├── actions/
+│   │   │   ├── create-load.ts
+│   │   │   ├── update-load.ts
+│   │   │   └── delete-load.ts
+│   │   ├── components/
+│   │   │   ├── load-card.tsx
+│   │   │   └── load-status-badge.tsx
+│   │   ├── hooks/
+│   │   │   └── use-load-mutations.ts
+│   │   ├── lib/
+│   │   │   ├── load-queries.ts
+│   │   │   └── load-utils.ts
+│   │   ├── schemas/
+│   │   │   └── load.schema.ts
+│   │   └── types/
+│   │       └── load.types.ts
+│   │
 │   ├── vehicles/
 │   ├── drivers/
 │   ├── compliance/
@@ -252,35 +323,50 @@ src/
 │   ├── analytics/
 │   └── settings/
 │
-├── shared/                       # Shared code
-│   ├── components/               # Pure UI components (shadcn)
-│   │   ├── ui/                   # shadcn/ui components
-│   │   └── common/               # App-wide components
-│   ├── hooks/                    # Shared React hooks
-│   ├── lib/                      # Shared utilities
-│   │   ├── auth/                 # Auth utilities
-│   │   ├── database/             # Prisma client
-│   │   ├── utils/                # Helper functions
-│   │   └── errors/               # Error handling
-│   ├── types/                    # Shared types
-│   └── schemas/                  # Shared schemas
+├── lib/                          # Core utilities & clients
+│   ├── db/
+│   │   ├── client.ts             # Prisma client
+│   │   └── middleware.ts         # Tenant isolation
+│   ├── auth/
+│   │   ├── clerk.ts              # Clerk helpers
+│   │   └── rbac.ts               # RBAC helpers
+│   ├── validations/              # Shared validation schemas
+│   ├── utils/
+│   │   ├── cn.ts                 # Class name helper
+│   │   ├── format.ts             # Formatters
+│   │   └── error.ts              # Error handling
+│   └── constants.ts              # App constants
 │
-├── infrastructure/               # Infrastructure code
-│   ├── api/                      # API route handlers
-│   ├── webhooks/                 # Webhook handlers
-│   ├── jobs/                     # Background jobs
-│   └── middleware/               # Edge middleware
+├── hooks/                        # Shared React hooks
+│   ├── use-media-query.ts
+│   ├── use-debounce.ts
+│   └── use-toast.ts
+│
+├── types/                        # Shared TypeScript types
+│   ├── globals.d.ts
+│   └── common.types.ts
+│
+├── config/                       # Configuration files
+│   ├── site.ts                   # Site metadata
+│   └── navigation.ts             # Navigation config
 │
 ├── prisma/                       # Database
 │   ├── schema.prisma
 │   ├── migrations/
 │   └── seed.ts
 │
-└── tests/                        # Test suites
-    ├── unit/                     # Vitest unit tests
-    ├── integration/              # Vitest integration tests
-    ├── e2e/                      # Playwright E2E tests
-    └── fixtures/                 # Test data
+└── __tests__/                    # Test suites
+    ├── unit/                     # Unit tests (co-located allowed)
+    ├── integration/              # Integration tests
+    │   └── features/
+    │       └── dispatch/
+    │           └── create-load.test.ts
+    ├── e2e/                      # E2E tests
+    │   └── dispatch/
+    │       └── load-board.spec.ts
+    └── __fixtures__/             # Test data & factories
+        ├── db.ts
+        └── users.ts
 ```
 
 ### 2.4 Multi-Tenant Data Isolation
@@ -325,7 +411,7 @@ model Organization {
   slug              String   @unique
   subscriptionTier  SubscriptionTier @default(starter)
   subscriptionStatus SubscriptionStatus @default(trial)
-  
+
   memberships       OrganizationMembership[]
   // ... other relations
 }
@@ -336,10 +422,10 @@ model OrganizationMembership {
   userId          String
   organizationId  String
   role            UserRole     @default(member)
-  
+
   user            User         @relation(fields: [userId])
   organization    Organization @relation(fields: [organizationId])
-  
+
   @@unique([userId, organizationId])
 }
 
@@ -353,9 +439,9 @@ async function checkPermission(
     where: { userId_organizationId: { userId, organizationId } },
     include: { organization: true },
   });
-  
+
   if (!membership) return false;
-  
+
   const rolePermissions = ROLE_PERMISSIONS[membership.role];
   return rolePermissions.includes(permission);
 }
@@ -399,27 +485,23 @@ import nextPlugin from '@next/eslint-plugin-next';
 import reactPlugin from 'eslint-plugin-react';
 import hooksPlugin from 'eslint-plugin-react-hooks';
 
-export default tseslint.config(
-  eslint.configs.recommended,
-  ...tseslint.configs.strictTypeChecked,
-  {
-    plugins: {
-      '@next/next': nextPlugin,
-      'react': reactPlugin,
-      'react-hooks': hooksPlugin,
-    },
-    rules: {
-      // Enforce explicit return types
-      '@typescript-eslint/explicit-function-return-type': 'error',
-      // No any
-      '@typescript-eslint/no-explicit-any': 'error',
-      // Enforce exhaustive deps
-      'react-hooks/exhaustive-deps': 'error',
-      // No console.log in production
-      'no-console': ['error', { allow: ['warn', 'error'] }],
-    },
-  }
-);
+export default tseslint.config(eslint.configs.recommended, ...tseslint.configs.strictTypeChecked, {
+  plugins: {
+    '@next/next': nextPlugin,
+    react: reactPlugin,
+    'react-hooks': hooksPlugin,
+  },
+  rules: {
+    // Enforce explicit return types
+    '@typescript-eslint/explicit-function-return-type': 'error',
+    // No any
+    '@typescript-eslint/no-explicit-any': 'error',
+    // Enforce exhaustive deps
+    'react-hooks/exhaustive-deps': 'error',
+    // No console.log in production
+    'no-console': ['error', { allow: ['warn', 'error'] }],
+  },
+});
 ```
 
 ### 3.3 Prettier Configuration
@@ -446,6 +528,7 @@ export default tseslint.config(
 ```
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation
@@ -455,10 +538,12 @@ export default tseslint.config(
 - `chore`: Maintenance
 
 **Scopes:**
+
 - `auth`, `dispatch`, `vehicles`, `drivers`, `compliance`, `ifta`, `analytics`, `settings`
 - `ui`, `api`, `db`, `infra`, `ci`
 
 **Example:**
+
 ```
 feat(dispatch): add drag-and-drop load board
 
@@ -473,6 +558,7 @@ Closes #123
 ### 3.5 Code Organization Rules
 
 **File Naming:**
+
 - Components: `PascalCase.tsx` (e.g., `LoadCard.tsx`)
 - Hooks: `use-kebab-case.ts` (e.g., `use-load-status.ts`)
 - Actions: `kebab-case.action.ts` (e.g., `create-load.action.ts`)
@@ -481,6 +567,7 @@ Closes #123
 - Utils: `kebab-case.ts` (e.g., `format-date.ts`)
 
 **Import Order:**
+
 1. React/Next.js imports
 2. Third-party libraries
 3. Shared imports (`@/shared/*`)
@@ -504,62 +591,62 @@ import { LoadForm } from './LoadForm';
 
 ### 4.1 Hosting (Vercel)
 
-| Resource | Configuration |
-|----------|---------------|
-| **Framework** | Next.js 16 |
-| **Region** | US East (iad1) primary |
-| **Functions** | Node.js 20 runtime |
-| **Edge Functions** | Middleware, auth checks |
-| **Build** | Turbopack |
-| **Analytics** | Vercel Analytics + Speed Insights |
+| Resource           | Configuration                     |
+| ------------------ | --------------------------------- |
+| **Framework**      | Next.js 16                        |
+| **Region**         | US East (iad1) primary            |
+| **Functions**      | Node.js 20 runtime                |
+| **Edge Functions** | Middleware, auth checks           |
+| **Build**          | Turbopack                         |
+| **Analytics**      | Vercel Analytics + Speed Insights |
 
 ### 4.2 Database (Neon)
 
-| Resource | Configuration |
-|----------|---------------|
-| **Provider** | Neon Serverless PostgreSQL |
-| **Version** | PostgreSQL 16 |
-| **Compute** | Auto-scaling (0.25 - 4 CU) |
-| **Storage** | Auto-scaling |
-| **Branching** | Dev/staging branches per PR |
+| Resource       | Configuration                       |
+| -------------- | ----------------------------------- |
+| **Provider**   | Neon Serverless PostgreSQL          |
+| **Version**    | PostgreSQL 16                       |
+| **Compute**    | Auto-scaling (0.25 - 4 CU)          |
+| **Storage**    | Auto-scaling                        |
+| **Branching**  | Dev/staging branches per PR         |
 | **Connection** | Pooled via @neondatabase/serverless |
 
 ### 4.3 Authentication (Clerk)
 
-| Resource | Configuration |
-|----------|---------------|
-| **Provider** | Clerk |
-| **Features** | Email/password, social OAuth, MFA |
-| **Webhooks** | User sync to database |
-| **Custom Claims** | organizationId, role |
-| **Session Duration** | 7 days |
+| Resource             | Configuration                     |
+| -------------------- | --------------------------------- |
+| **Provider**         | Clerk                             |
+| **Features**         | Email/password, social OAuth, MFA |
+| **Webhooks**         | User sync to database             |
+| **Custom Claims**    | organizationId, role              |
+| **Session Duration** | 7 days                            |
 
 ### 4.4 File Storage (Vercel Blob)
 
-| Resource | Configuration |
-|----------|---------------|
-| **Provider** | Vercel Blob |
+| Resource      | Configuration                |
+| ------------- | ---------------------------- |
+| **Provider**  | Vercel Blob                  |
 | **Use Cases** | Documents, images, POD files |
-| **Max Size** | 500MB per file |
-| **CDN** | Vercel Edge Network |
+| **Max Size**  | 500MB per file               |
+| **CDN**       | Vercel Edge Network          |
 
 ### 4.5 Rate Limiting (Upstash)
 
-| Resource | Configuration |
-|----------|---------------|
-| **Provider** | Upstash Redis |
-| **Limits** | 100 req/min per user (default) |
-| **Algorithms** | Sliding window |
-| **Bypass** | Enterprise tier |
+| Resource       | Configuration                  |
+| -------------- | ------------------------------ |
+| **Provider**   | Upstash Redis                  |
+| **Limits**     | 100 req/min per user (default) |
+| **Algorithms** | Sliding window                 |
+| **Bypass**     | Enterprise tier                |
 
 ### 4.6 Monitoring
 
-| Service | Purpose |
-|---------|---------|
-| **Sentry** | Error tracking, performance |
-| **Vercel Analytics** | Web vitals, usage |
-| **Axiom** | Log aggregation |
-| **BetterStack** | Uptime monitoring |
+| Service              | Purpose                     |
+| -------------------- | --------------------------- |
+| **Sentry**           | Error tracking, performance |
+| **Vercel Analytics** | Web vitals, usage           |
+| **Axiom**            | Log aggregation             |
+| **BetterStack**      | Uptime monitoring           |
 
 ---
 
@@ -576,7 +663,7 @@ import { prisma } from '@/shared/lib/database/client';
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET!;
-  
+
   // Verify webhook signature
   const headerPayload = headers();
   const svix_id = headerPayload.get('svix-id');
@@ -604,7 +691,7 @@ export async function POST(req: Request) {
 
   if (eventType === 'user.created' || eventType === 'user.updated') {
     const { id, email_addresses, first_name, last_name, image_url } = evt.data;
-    
+
     await prisma.$transaction(async (tx) => {
       await tx.user.upsert({
         where: { clerkId: id },
@@ -622,7 +709,7 @@ export async function POST(req: Request) {
           imageUrl: image_url,
         },
       });
-      
+
       await tx.webhookEvent.create({
         data: {
           type: eventType,
@@ -636,13 +723,13 @@ export async function POST(req: Request) {
 
   if (eventType === 'user.deleted') {
     const { id } = evt.data;
-    
+
     await prisma.$transaction(async (tx) => {
       await tx.user.update({
         where: { clerkId: id },
         data: { deletedAt: new Date() },
       });
-      
+
       await tx.webhookEvent.create({
         data: {
           type: eventType,
@@ -665,10 +752,10 @@ export async function POST(req: Request) {
 interface StripeIntegration {
   // Checkout
   createCheckoutSession(orgId: string, tier: SubscriptionTier): Promise<string>;
-  
+
   // Portal
   createBillingPortalSession(orgId: string): Promise<string>;
-  
+
   // Webhooks
   handleSubscriptionUpdated(event: Stripe.Event): Promise<void>;
   handlePaymentFailed(event: Stripe.Event): Promise<void>;
@@ -685,11 +772,11 @@ interface EmailService {
   sendWelcomeEmail(user: User): Promise<void>;
   sendInvitationEmail(invitation: Invitation): Promise<void>;
   sendPasswordResetEmail(user: User, token: string): Promise<void>;
-  
+
   // Alerts
   sendComplianceAlert(alert: ComplianceAlert): Promise<void>;
   sendExpirationReminder(document: Document): Promise<void>;
-  
+
   // Reports
   sendScheduledReport(report: Report): Promise<void>;
 }
@@ -796,10 +883,10 @@ test.describe('Dispatch - Create Load', () => {
 
   test('should create a new load from the dispatch board', async ({ page }) => {
     await page.goto('/org_123/dispatch');
-    
+
     // Click "New Load" button
     await page.getByRole('button', { name: 'New Load' }).click();
-    
+
     // Fill form
     await page.getByLabel('Customer').fill('ACME Logistics');
     await page.getByLabel('Origin City').fill('Chicago');
@@ -807,10 +894,10 @@ test.describe('Dispatch - Create Load', () => {
     await page.getByLabel('Destination City').fill('Detroit');
     await page.getByLabel('Destination State').selectOption('MI');
     await page.getByLabel('Rate').fill('2500');
-    
+
     // Submit
     await page.getByRole('button', { name: 'Create Load' }).click();
-    
+
     // Verify
     await expect(page.getByText('Load created successfully')).toBeVisible();
     await expect(page.getByText('ACME Logistics')).toBeVisible();
@@ -820,12 +907,12 @@ test.describe('Dispatch - Create Load', () => {
 
 ### 6.5 Coverage Requirements
 
-| Category | Target | Enforcement |
-|----------|--------|-------------|
-| Unit Tests | > 80% | CI gate |
-| Integration Tests | > 60% | CI gate |
-| E2E Tests | Critical paths | CI gate |
-| Mutation Testing | > 70% | Quarterly |
+| Category          | Target         | Enforcement |
+| ----------------- | -------------- | ----------- |
+| Unit Tests        | > 80%          | CI gate     |
+| Integration Tests | > 60%          | CI gate     |
+| E2E Tests         | Critical paths | CI gate     |
+| Mutation Testing  | > 70%          | Quarterly   |
 
 ---
 
@@ -866,74 +953,21 @@ test.describe('Dispatch - Create Load', () => {
 
 ### 7.2 GitHub Actions Workflow
 
-```yaml
-# .github/workflows/ci.yml
-name: CI
+See [CI_CD.md](./CI_CD.md) for detailed pipeline specifications.
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
-      - run: pnpm type-check
-
-  test:
-    runs-on: ubuntu-latest
-    needs: lint
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_PASSWORD: test
-        ports:
-          - 5432:5432
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
-      - uses: actions/setup-node@v4
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm prisma migrate deploy
-      - run: pnpm test:coverage
-      - uses: codecov/codecov-action@v3
-
-  e2e:
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
-      - uses: actions/setup-node@v4
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps
-      - run: pnpm test:e2e
-      - uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: playwright-report
-          path: playwright-report/
-```
+- **Lint & Type Check**: `.github/workflows/lint.yml`
+- **CI (Test & Build)**: `.github/workflows/ci.yml`
+- **E2E Tests**: `.github/workflows/e2e.yml`
+- **Release**: `.github/workflows/release.yml`
 
 ### 7.3 Environment Configuration
 
-| Environment | Branch | Database | Purpose |
-|-------------|--------|----------|---------|
-| Development | feature/* | Neon branch | Developer testing |
-| Preview | PR | Neon branch | PR review |
-| Staging | main | Neon staging | Pre-production |
-| Production | release/* | Neon main | Live traffic |
+| Environment | Branch     | Database     | Purpose           |
+| ----------- | ---------- | ------------ | ----------------- |
+| Development | feature/\* | Neon branch  | Developer testing |
+| Preview     | PR         | Neon branch  | PR review         |
+| Staging     | main       | Neon staging | Pre-production    |
+| Production  | release/\* | Neon main    | Live traffic      |
 
 ### 7.4 Feature Flags
 
@@ -943,11 +977,11 @@ const featureFlags = {
   // Release flags
   NEW_DISPATCH_BOARD: process.env.FF_NEW_DISPATCH_BOARD === 'true',
   IFTA_V2: process.env.FF_IFTA_V2 === 'true',
-  
+
   // Ops flags
   MAINTENANCE_MODE: process.env.FF_MAINTENANCE_MODE === 'true',
   READ_ONLY_MODE: process.env.FF_READ_ONLY_MODE === 'true',
-  
+
   // Experiment flags
   AI_LOAD_SUGGESTIONS: process.env.FF_AI_LOAD_SUGGESTIONS === 'true',
 };
@@ -957,15 +991,15 @@ const featureFlags = {
 
 ## Appendix A: Dependency Matrix
 
-| Dependency | Min Version | Peer Dependencies |
-|------------|-------------|-------------------|
-| next | 16.0.0 | react@19, react-dom@19 |
-| @clerk/nextjs | 6.0.0 | next@15+ |
-| prisma | 7.0.0 | @prisma/client@7 |
-| tailwindcss | 4.0.0 | postcss@8 |
-| zod | 4.0.0 | - |
-| vitest | 3.0.0 | - |
-| playwright | 1.40.0 | - |
+| Dependency    | Min Version | Peer Dependencies      |
+| ------------- | ----------- | ---------------------- |
+| next          | 16.0.0      | react@19, react-dom@19 |
+| @clerk/nextjs | 6.0.0       | next@15+               |
+| prisma        | 7.0.0       | @prisma/client@7       |
+| tailwindcss   | 4.0.0       | postcss@8              |
+| zod           | 4.0.0       | -                      |
+| vitest        | 3.0.0       | -                      |
+| playwright    | 1.40.0      | -                      |
 
 ---
 

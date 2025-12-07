@@ -1,0 +1,80 @@
+# This file defines who owns which parts of the codebase.
+
+# GitHub will automatically request reviews from these owners.
+
+# ------------------------------------------------------------------------------
+
+# 🌍 Global Owners
+
+# ------------------------------------------------------------------------------
+
+- @DigitalHerencia
+
+# ------------------------------------------------------------------------------
+
+# ⚙️ DevOps & Configuration
+
+# ------------------------------------------------------------------------------
+
+/.github/ @DigitalHerencia
+/package.json @DigitalHerencia
+/pnpm-lock.yaml @DigitalHerencia
+/next.config.ts @DigitalHerencia
+/tsconfig.json @DigitalHerencia
+
+# ------------------------------------------------------------------------------
+
+# 🗄️ Database & Backend
+
+# ------------------------------------------------------------------------------
+
+/prisma/ @DigitalHerencia
+
+# ------------------------------------------------------------------------------
+
+# 📚 Documentation & Specs
+
+# ------------------------------------------------------------------------------
+
+/specs/ @DigitalHerencia
+/\*.md @DigitalHerencia
+
+# ------------------------------------------------------------------------------
+
+# 🧩 Core Infrastructure (Shared)
+
+# ------------------------------------------------------------------------------
+
+/src/lib/ @DigitalHerencia
+/src/components/ @DigitalHerencia
+/src/app/api/ @DigitalHerencia
+/src/app/globals.css @DigitalHerencia
+
+# ------------------------------------------------------------------------------
+
+# 🏢 Domains (Feature Teams)
+
+# ------------------------------------------------------------------------------
+
+# Auth & Onboarding
+
+/src/app/auth/ @DigitalHerencia
+/src/app/(marketing)/ @DigitalHerencia
+
+# Operations (Dispatch, Vehicles, Drivers)
+
+/src/app/dispatch/ @DigitalHerencia
+/src/app/vehicles/ @DigitalHerencia
+/src/app/drivers/ @DigitalHerencia
+
+# Compliance & Reporting
+
+/src/app/compliance/ @DigitalHerencia
+/src/app/ifta/ @DigitalHerencia
+/src/app/analytics/ @DigitalHerencia
+
+# Administration
+
+/src/app/admin/ @DigitalHerencia
+/src/app/settings/ @DigitalHerencia
+/src/app/notifications/ @DigitalHerencia

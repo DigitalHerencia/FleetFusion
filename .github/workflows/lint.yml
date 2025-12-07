@@ -1,0 +1,38 @@
+name: 🔍 Lint & Type Check
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  lint:
+    name: Lint, Format & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 📦 Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: ⎔ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: 📦 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 💅 Check Formatting
+        run: pnpm format:check
+
+      - name: 🚨 Lint Code
+        run: pnpm lint
+
+      - name: 📐 Type Check
+        run: pnpm type-check

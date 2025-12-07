@@ -1,0 +1,1 @@
+// Stub for route.ts

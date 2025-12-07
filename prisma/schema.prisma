@@ -1,0 +1,1050 @@
+// prisma/schema.prisma
+
+// -----------------------------------------------------------------------------
+// Generator & Datasource
+// -----------------------------------------------------------------------------
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// -----------------------------------------------------------------------------
+// Enums
+// -----------------------------------------------------------------------------
+
+enum UserStatus {
+  ACTIVE
+  INVITED
+  SUSPENDED
+}
+
+enum MembershipRole {
+  OWNER
+  ADMIN
+  MANAGER
+  DISPATCHER
+  DRIVER_MANAGER
+  COMPLIANCE_MANAGER
+  ANALYST
+  BILLING
+  MEMBER
+}
+
+enum MembershipStatus {
+  PENDING
+  ACTIVE
+  REVOKED
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  SOFT_DELETE
+  RESTORE
+  LOGIN
+  LOGOUT
+  IMPORT
+  EXPORT
+  SYSTEM
+}
+
+enum VehicleStatus {
+  ACTIVE
+  IN_SHOP
+  OUT_OF_SERVICE
+  SOLD
+  ARCHIVED
+}
+
+enum VehicleType {
+  TRACTOR
+  TRAILER
+  STRAIGHT_TRUCK
+  SERVICE_VEHICLE
+  OTHER
+}
+
+enum DriverStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  TERMINATED
+}
+
+enum LoadStatus {
+  DRAFT
+  PLANNED
+  ASSIGNED
+  AT_PICKUP
+  IN_TRANSIT
+  AT_DROPOFF
+  DELIVERED
+  CANCELED
+}
+
+enum ComplianceStatus {
+  VALID
+  EXPIRING_SOON
+  EXPIRED
+  EXEMPT
+}
+
+enum ComplianceDocumentType {
+  VEHICLE_REGISTRATION
+  INSURANCE
+  CDL
+  MEDICAL_CARD
+  PERMIT
+  IFTA_LICENCE
+  OTHER
+}
+
+enum IftaReportStatus {
+  DRAFT
+  GENERATED
+  SUBMITTED
+  ARCHIVED
+}
+
+enum NotificationChannel {
+  IN_APP
+  EMAIL
+  SMS
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+  READ
+}
+
+enum NotificationType {
+  SYSTEM
+  ALERT
+  REMINDER
+  DIGEST
+}
+
+enum FeatureFlagScope {
+  GLOBAL
+  ORGANIZATION
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+}
+
+enum AnalyticsEventType {
+  DASHBOARD_VIEW
+  REPORT_RUN
+  EXPORT_RUN
+  PAGE_VIEW
+  CUSTOM
+}
+
+enum FileStorageProvider {
+  LOCAL
+  VERCEL_BLOB
+}
+
+// -----------------------------------------------------------------------------
+// Core Auth & Multi-Tenancy
+// -----------------------------------------------------------------------------
+
+model User {
+  id         String     @id @default(cuid())
+  // Typically mirrors Clerk user id; normalized by normalizeClerkUser
+  externalId String?    @unique
+  email      String?
+  firstName  String?
+  lastName   String?
+  avatarUrl  String?
+  status     UserStatus @default(ACTIVE)
+
+  memberships          OrganizationMembership[]
+  auditLogs            AuditLog[]               @relation("AuditActor")
+  createdOrganizations Organization[]           @relation("OrgCreatedBy")
+  updatedOrganizations Organization[]           @relation("OrgUpdatedBy")
+
+  notifications           Notification[]            @relation("NotificationUser")
+  notificationPreferences NotificationPreference[]
+  notificationDigests     NotificationDigestEntry[]
+  fileUploads             FileUpload[]              @relation("FileUploadedBy")
+
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  analyticsQueries AnalyticsQuery[]
+  analyticsReports AnalyticsReport[]
+  analyticsEvents  AnalyticsEvent[]
+}
+
+model Organization {
+  id       String  @id @default(cuid())
+  slug     String  @unique
+  name     String
+  timezone String  @default("America/Denver")
+  isActive Boolean @default(true)
+
+  // Metadata (billing integration, etc)
+  billingCustomerId String?
+  metadata          Json?
+
+  memberships     OrganizationMembership[]
+  profiles        OrganizationProfile[]
+  subscriptions   Subscription[]
+  featureFlags    FeatureFlag[]
+  roles           Role[]
+  systemDocuments SystemDocument[]
+  auditLogs       AuditLog[]               @relation("AuditOrganization")
+
+  vehicles                 Vehicle[]
+  drivers                  Driver[]
+  loads                    Load[]
+  driverShifts             DriverShift[]
+  complianceDocs           ComplianceDocument[]
+  iftaTrips                IftaTrip[]
+  iftaFuel                 IftaFuelPurchase[]
+  iftaReports              IftaReport[]
+  analyticsQueries         AnalyticsQuery[]
+  analyticsReports         AnalyticsReport[]
+  analyticsEvents          AnalyticsEvent[]
+  notifications            Notification[]
+  notificationRoutingRules NotificationRoutingRule[]
+  files                    FileUpload[]
+
+  createdBy   User?   @relation("OrgCreatedBy", fields: [createdById], references: [id])
+  createdById String?
+  updatedBy   User?   @relation("OrgUpdatedBy", fields: [updatedById], references: [id])
+  updatedById String?
+
+  createdAt                  DateTime                    @default(now())
+  updatedAt                  DateTime                    @updatedAt
+  deletedAt                  DateTime?
+  vehicleInspections         VehicleInspection[]
+  vehicleMaintenances        VehicleMaintenance[]
+  vehicleDocuments           VehicleDocument[]
+  driverLocationEvents       DriverLocationEvent[]
+  driverDocuments            DriverDocument[]
+  loadAssignments            LoadAssignment[]
+  loadStatusEvents           LoadStatusEvent[]
+  complianceExpirationAlerts ComplianceExpirationAlert[]
+  complianceRecordImports    ComplianceRecordImport[]
+  notificationDigestEntries  NotificationDigestEntry[]
+
+  @@index([slug])
+}
+
+model OrganizationMembership {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+
+  role   MembershipRole   @default(MEMBER)
+  status MembershipStatus @default(PENDING)
+
+  // ABAC / claims support
+  // e.g. per-org preferences or claims blob
+  claims Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId, userId])
+  @@index([userId])
+}
+
+// -----------------------------------------------------------------------------
+// RBAC & Admin Models
+// -----------------------------------------------------------------------------
+
+model Role {
+  id             String        @id @default(cuid())
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
+  name           String
+  description    String?
+
+  permissions RolePermission[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@unique([organizationId, name])
+}
+
+model RolePermission {
+  id            String @id @default(cuid())
+  role          Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId        String
+  // Permission key matches your permissionMatrix entries
+  permissionKey String
+
+  createdAt DateTime @default(now())
+
+  @@unique([roleId, permissionKey])
+}
+
+model SystemDocument {
+  id             String        @id @default(cuid())
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
+  title          String
+  slug           String
+  content        Json
+  category       String? // e.g., "RBAC", "SCHEMA", "RUNBOOK"
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@unique([organizationId, slug])
+}
+
+// -----------------------------------------------------------------------------
+// Audit & Idempotency
+// -----------------------------------------------------------------------------
+
+model AuditLog {
+  id             String        @id @default(cuid())
+  organization   Organization? @relation("AuditOrganization", fields: [organizationId], references: [id])
+  organizationId String?
+  actor          User?         @relation("AuditActor", fields: [actorId], references: [id])
+  actorId        String?
+
+  action     AuditAction
+  entityType String
+  entityId   String?
+
+  // Before/after snapshots or diff
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([organizationId, entityType, entityId])
+  @@index([actorId])
+}
+
+model IdempotencyToken {
+  id          String    @id @default(cuid())
+  token       String    @unique
+  // Hash of body/payload for Clerk webhook or other external POST
+  requestHash String
+  usedAt      DateTime?
+  expiresAt   DateTime
+
+  createdAt DateTime @default(now())
+
+  @@index([expiresAt])
+}
+
+// -----------------------------------------------------------------------------
+// Vehicles Domain
+// -----------------------------------------------------------------------------
+
+model Vehicle {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  name        String?
+  vin         String?
+  plateNumber String?
+  plateState  String?
+  type        VehicleType?  @default(TRACTOR)
+  status      VehicleStatus @default(ACTIVE)
+  year        Int?
+  make        String?
+  model       String?
+
+  // Attributes used in analytics & compliance
+  odometer  Int?
+  fuelType  String?
+  axleCount Int?
+
+  maintenanceRecords VehicleMaintenance[]
+  inspections        VehicleInspection[]
+  loads              Load[]               @relation("LoadVehicle")
+  trips              IftaTrip[]
+  documents          VehicleDocument[]
+
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  deletedAt           DateTime?
+  loadAssignments     LoadAssignment[]
+  complianceDocuments ComplianceDocument[]
+  iftaFuelPurchases   IftaFuelPurchase[]
+
+  @@unique([organizationId, vin], map: "vehicle_org_vin_unique")
+  @@index([organizationId, status])
+}
+
+model VehicleInspection {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  vehicle        Vehicle      @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  vehicleId      String
+  // Mobile inspection schema, checklists, findings
+  checklist      Json
+  defectsFound   Boolean      @default(false)
+  notes          String?
+
+  inspectedAt   DateTime @default(now())
+  inspectedById String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VehicleMaintenance {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  vehicle        Vehicle      @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  vehicleId      String
+
+  description String
+  costCents   Int?
+  vendor      String?
+  performedAt DateTime
+  nextDueAt   DateTime?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VehicleDocument {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  vehicle        Vehicle      @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  vehicleId      String
+
+  complianceDocument   ComplianceDocument? @relation(fields: [complianceDocumentId], references: [id])
+  complianceDocumentId String?
+
+  title        String
+  type         ComplianceDocumentType
+  file         FileUpload?            @relation(fields: [fileUploadId], references: [id])
+  fileUploadId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// -----------------------------------------------------------------------------
+// Drivers Domain
+// -----------------------------------------------------------------------------
+
+model Driver {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  firstName String
+  lastName  String
+  email     String?
+  phone     String?
+  status    DriverStatus @default(ACTIVE)
+
+  licenseNumber String?
+  licenseState  String?
+  licenseExpiry DateTime?
+
+  shifts         DriverShift[]
+  locationEvents DriverLocationEvent[]
+  loads          Load[]                @relation("LoadDriver")
+  trips          IftaTrip[]
+  documents      DriverDocument[]
+
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  deletedAt           DateTime?
+  loadAssignments     LoadAssignment[]
+  complianceDocuments ComplianceDocument[]
+  iftaFuelPurchases   IftaFuelPurchase[]
+
+  @@index([organizationId, status])
+}
+
+model DriverShift {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  driver         Driver       @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  driverId       String
+
+  startedAt DateTime
+  endedAt   DateTime?
+  summary   String?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId, driverId, startedAt])
+}
+
+model DriverLocationEvent {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  driver         Driver       @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  driverId       String
+
+  latitude       Float
+  longitude      Float
+  recordedAt     DateTime @default(now())
+  speedKph       Float?
+  headingDegrees Float?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([organizationId, driverId, recordedAt])
+}
+
+model DriverDocument {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  driver         Driver       @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  driverId       String
+
+  complianceDocument   ComplianceDocument? @relation(fields: [complianceDocumentId], references: [id])
+  complianceDocumentId String?
+
+  title        String
+  type         ComplianceDocumentType
+  file         FileUpload?            @relation(fields: [fileUploadId], references: [id])
+  fileUploadId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// -----------------------------------------------------------------------------
+// Dispatch Domain
+// -----------------------------------------------------------------------------
+
+model Load {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  reference String // human-friendly load number
+  status    LoadStatus @default(DRAFT)
+
+  // Basic routing fields
+  pickupAddress      String?
+  pickupCity         String?
+  pickupState        String?
+  pickupScheduledAt  DateTime?
+  dropoffAddress     String?
+  dropoffCity        String?
+  dropoffState       String?
+  dropoffScheduledAt DateTime?
+
+  // Financials
+  rateCents Int?
+  currency  String? @default("USD")
+
+  vehicle   Vehicle? @relation("LoadVehicle", fields: [vehicleId], references: [id])
+  vehicleId String?
+  driver    Driver?  @relation("LoadDriver", fields: [driverId], references: [id])
+  driverId  String?
+
+  assignments  LoadAssignment[]
+  statusEvents LoadStatusEvent[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@unique([organizationId, reference])
+  @@index([organizationId, status])
+}
+
+model LoadAssignment {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  load           Load         @relation(fields: [loadId], references: [id], onDelete: Cascade)
+  loadId         String
+  driver         Driver?      @relation(fields: [driverId], references: [id])
+  driverId       String?
+  vehicle        Vehicle?     @relation(fields: [vehicleId], references: [id])
+  vehicleId      String?
+
+  assignedAt   DateTime  @default(now())
+  unassignedAt DateTime?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([organizationId, loadId])
+}
+
+model LoadStatusEvent {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  load           Load         @relation(fields: [loadId], references: [id], onDelete: Cascade)
+  loadId         String
+  status         LoadStatus
+  occurredAt     DateTime     @default(now())
+  notes          String?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([organizationId, loadId, occurredAt])
+}
+
+// -----------------------------------------------------------------------------
+// Compliance Domain
+// -----------------------------------------------------------------------------
+
+model ComplianceDocument {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  type        ComplianceDocumentType
+  status      ComplianceStatus       @default(VALID)
+  title       String
+  description String?
+
+  vehicle   Vehicle? @relation(fields: [vehicleId], references: [id])
+  vehicleId String?
+  driver    Driver?  @relation(fields: [driverId], references: [id])
+  driverId  String?
+
+  issueDate      DateTime?
+  effectiveDate  DateTime?
+  expirationDate DateTime?
+
+  file         FileUpload? @relation(fields: [fileUploadId], references: [id])
+  fileUploadId String?
+
+  alerts ComplianceExpirationAlert[]
+
+  metadata Json?
+
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  deletedAt        DateTime?
+  vehicleDocuments VehicleDocument[]
+  driverDocuments  DriverDocument[]
+
+  @@index([organizationId, status, expirationDate])
+}
+
+model ComplianceExpirationAlert {
+  id             String             @id @default(cuid())
+  organization   Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+  document       ComplianceDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  documentId     String
+
+  severity    String // e.g., "INFO", "WARNING", "CRITICAL"
+  state       String // internal alert state
+  triggeredAt DateTime  @default(now())
+  resolvedAt  DateTime?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([organizationId, documentId])
+}
+
+// Useful for tracking large imports for audits/debug
+model ComplianceRecordImport {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  source         String? // file name, S3 key, etc.
+  rowCount       Int?
+  processedCount Int?
+  errorCount     Int?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+}
+
+// -----------------------------------------------------------------------------
+// IFTA Domain
+// -----------------------------------------------------------------------------
+
+model IftaTrip {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  vehicleId String
+  driver    Driver? @relation(fields: [driverId], references: [id])
+  driverId  String?
+
+  tripNumber        String
+  startedAt         DateTime
+  endedAt           DateTime?
+  totalMiles        Float?
+  // Jurisdiction breakdown matrix (miles per state/province)
+  jurisdictionMiles Json?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId, tripNumber])
+  @@index([organizationId, vehicleId])
+}
+
+model IftaFuelPurchase {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  vehicleId String
+  driver    Driver? @relation(fields: [driverId], references: [id])
+  driverId  String?
+
+  purchaseDate DateTime
+  jurisdiction String // state/province code
+  gallons      Float
+  amountCents  Int
+  currency     String   @default("USD")
+  vendor       String?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId, vehicleId, purchaseDate])
+}
+
+model IftaReport {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  year    Int
+  quarter Int
+  status  IftaReportStatus @default(DRAFT)
+
+  // Aggregated jurisdiction matrix: miles, gallons, tax due
+  summary         Json
+  pdfFile         FileUpload? @relation(fields: [pdfFileUploadId], references: [id])
+  pdfFileUploadId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId, year, quarter])
+}
+
+model IftaRateTable {
+  id            String   @id @default(cuid())
+  jurisdiction  String // state/province code
+  effectiveDate DateTime
+  ratePerGallon Float
+
+  createdAt DateTime @default(now())
+
+  @@unique([jurisdiction, effectiveDate])
+}
+
+// -----------------------------------------------------------------------------
+// Analytics Domain
+// -----------------------------------------------------------------------------
+
+model AnalyticsQuery {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  name        String
+  description String?
+  // JSON definition built by analyticsQuerySchema / query builder
+  definition  Json
+
+  createdBy   User?   @relation(fields: [createdById], references: [id])
+  createdById String?
+
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  analyticsReports AnalyticsReport[]
+
+  @@unique([organizationId, name])
+}
+
+model AnalyticsReport {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  name        String
+  description String?
+  query       AnalyticsQuery @relation(fields: [queryId], references: [id])
+  queryId     String
+
+  // Layout, visualization config, filters, etc.
+  config Json
+
+  createdBy   User?   @relation(fields: [createdById], references: [id])
+  createdById String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId, name])
+}
+
+model AnalyticsEvent {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  user      User?              @relation(fields: [userId], references: [id])
+  userId    String?
+  eventType AnalyticsEventType
+  context   String? // e.g., "dashboard", "reports"
+  metadata  Json?
+
+  occurredAt DateTime @default(now())
+
+  @@index([organizationId, eventType, occurredAt])
+}
+
+// -----------------------------------------------------------------------------
+// Settings & Subscription Domain
+// -----------------------------------------------------------------------------
+
+model OrganizationProfile {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  legalName    String?
+  dbaName      String?
+  dotNumber    String?
+  mcNumber     String?
+  addressLine1 String?
+  addressLine2 String?
+  city         String?
+  state        String?
+  postalCode   String?
+  country      String?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId])
+}
+
+model Subscription {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  planKey    String // matches planFeatureMatrix keys
+  status     SubscriptionStatus @default(TRIALING)
+  renewsAt   DateTime?
+  canceledAt DateTime?
+
+  externalSubscriptionId String? // Stripe or other provider
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId, status])
+}
+
+model FeatureFlag {
+  id             String        @id @default(cuid())
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
+
+  key   String
+  value Boolean          @default(false)
+  scope FeatureFlagScope @default(ORGANIZATION)
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId, key])
+}
+
+// -----------------------------------------------------------------------------
+// Notifications Domain
+// -----------------------------------------------------------------------------
+
+model Notification {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  user   User?   @relation("NotificationUser", fields: [userId], references: [id])
+  userId String?
+
+  type    NotificationType
+  channel NotificationChannel
+  status  NotificationStatus  @default(PENDING)
+
+  title   String
+  body    String
+  payload Json?
+
+  readAt   DateTime?
+  sentAt   DateTime?
+  failedAt DateTime?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([organizationId, userId, status])
+}
+
+model NotificationPreference {
+  id     String @id @default(cuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  // Per-channel preferences
+  emailEnabled Boolean @default(true)
+  smsEnabled   Boolean @default(false)
+  inAppEnabled Boolean @default(true)
+
+  // Per-category / per-notification-type overrides
+  // matches notificationPreferenceSchema shape
+  categories Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId])
+}
+
+model NotificationRoutingRule {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  type    NotificationType
+  channel NotificationChannel
+  // Routing metadata: targets, escalation policy, etc.
+  config  Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([organizationId, type, channel])
+}
+
+model NotificationDigestEntry {
+  id             String       @id @default(cuid())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  // Snapshot of notification(s) that will be included in a digest email/push
+  payload      Json
+  scheduledFor DateTime
+  sentAt       DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([organizationId, userId, scheduledFor])
+}
+
+// -----------------------------------------------------------------------------
+// File Uploads / Storage
+// -----------------------------------------------------------------------------
+
+model FileUpload {
+  id             String        @id @default(cuid())
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId String?
+
+  provider   FileStorageProvider @default(VERCEL_BLOB)
+  storageKey String // blob key, path, url token
+  url        String // accessible URL
+
+  fileName  String
+  mimeType  String
+  sizeBytes Int
+
+  // Generic relation info for analytics/debug
+  relatedEntity   String?
+  relatedEntityId String?
+
+  uploadedBy   User?   @relation("FileUploadedBy", fields: [uploadedById], references: [id])
+  uploadedById String?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  // Relations from domain documents
+  complianceDocuments ComplianceDocument[]
+  vehicleDocuments    VehicleDocument[]
+  driverDocuments     DriverDocument[]
+  iftaReports         IftaReport[]
+
+  @@index([organizationId])
+}
+
+// -----------------------------------------------------------------------------
+// Docs / Knowledge (for in-app docs system)
+// -----------------------------------------------------------------------------
+
+model DocsNavigationNode {
+  id         String  @id @default(cuid())
+  // This is optional; you may not use it immediately, but it matches docsNavigation.ts behavior nicely
+  slug       String  @unique
+  parentSlug String?
+  title      String
+  section    String? // user-docs, product-guides, admin-guides, reference
+  path       String // `/docs/...` path
+  order      Int     @default(0)
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

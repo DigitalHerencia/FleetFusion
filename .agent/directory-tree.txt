@@ -1,0 +1,743 @@
+📦FleetFusion
+ ┣ 📂.agent
+ ┃ ┣ 📜create_structure.ps1
+ ┃ ┗ 📜directory-tree.txt
+ ┣ 📂.git
+ ┣ 📂.github
+ ┃ ┣ 📂instructions
+ ┃ ┃ ┣ 📜agents.md
+ ┃ ┃ ┣ 📜copilot-commit.md
+ ┃ ┃ ┣ 📜copilot-instructions.md
+ ┃ ┃ ┣ 📜copilot-pr.md
+ ┃ ┃ ┗ 📜copilot-review.md
+ ┃ ┣ 📂ISSUE_TEMPLATE
+ ┃ ┃ ┣ 📜bug_report.md
+ ┃ ┃ ┣ 📜feature_request.md
+ ┃ ┃ ┗ 📜general.md
+ ┃ ┣ 📂workflows
+ ┃ ┃ ┣ 📜ci.yml
+ ┃ ┃ ┣ 📜e2e.yml
+ ┃ ┃ ┣ 📜lint.yml
+ ┃ ┃ ┗ 📜release.yml
+ ┃ ┣ 📜CODEOWNERS
+ ┃ ┣ 📜dependabot.yml
+ ┃ ┣ 📜PULL_REQUEST_TEMPLATE.md
+ ┃ ┗ 📜SECURITY.md
+ ┣ 📂.husky
+ ┃ ┗ 📂_
+ ┃ ┃ ┣ 📜.gitignore
+ ┃ ┃ ┣ 📜applypatch-msg
+ ┃ ┃ ┣ 📜commit-msg
+ ┃ ┃ ┣ 📜h
+ ┃ ┃ ┣ 📜husky.sh
+ ┃ ┃ ┣ 📜post-applypatch
+ ┃ ┃ ┣ 📜post-checkout
+ ┃ ┃ ┣ 📜post-commit
+ ┃ ┃ ┣ 📜post-merge
+ ┃ ┃ ┣ 📜post-rewrite
+ ┃ ┃ ┣ 📜pre-applypatch
+ ┃ ┃ ┣ 📜pre-auto-gc
+ ┃ ┃ ┣ 📜pre-commit
+ ┃ ┃ ┣ 📜pre-merge-commit
+ ┃ ┃ ┣ 📜pre-push
+ ┃ ┃ ┣ 📜pre-rebase
+ ┃ ┃ ┗ 📜prepare-commit-msg
+ ┣ 📂.vscode
+ ┃ ┣ 📜extensions.json
+ ┃ ┗ 📜settings.json
+ ┣ 📂prisma
+ ┃ ┣ 📂migrations
+ ┃ ┣ 📜schema.prisma
+ ┃ ┗ 📜seed.ts
+ ┣ 📂public
+ ┃ ┣ 📜09b931e1-ec51-4130-add4-39337908a058.png
+ ┃ ┣ 📜black_logo.png
+ ┃ ┣ 📜blue_cover.png
+ ┃ ┣ 📜cockpit_bg.png
+ ┃ ┣ 📜landing_hero.png
+ ┃ ┣ 📜map-pinned_icon.png
+ ┃ ┣ 📜mountain_bg.png
+ ┃ ┣ 📜readme_hero.jpeg
+ ┃ ┣ 📜route_icon.png
+ ┃ ┣ 📜social-card.png
+ ┃ ┣ 📜sunset_bg.png
+ ┃ ┣ 📜sunset_hero.png
+ ┃ ┣ 📜sunset_loading.png
+ ┃ ┣ 📜tiers_bg.png
+ ┃ ┣ 📜trucksz_splash.png
+ ┃ ┣ 📜twighlight_loading.png
+ ┃ ┣ 📜valley_bg.png
+ ┃ ┣ 📜white_logo.png
+ ┃ ┗ 📜winding_bg.png
+ ┣ 📂specs
+ ┃ ┣ 📂domains
+ ┃ ┃ ┣ 📜ADMIN.md
+ ┃ ┃ ┣ 📜ANALYTICS.md
+ ┃ ┃ ┣ 📜AUTH.md
+ ┃ ┃ ┣ 📜COMPLIANCE.md
+ ┃ ┃ ┣ 📜DISPATCH.md
+ ┃ ┃ ┣ 📜DRIVERS.md
+ ┃ ┃ ┣ 📜IFTA.md
+ ┃ ┃ ┣ 📜NOTIFICATIONS.md
+ ┃ ┃ ┣ 📜SETTINGS.md
+ ┃ ┃ ┗ 📜VEHICLES.md
+ ┃ ┣ 📜ARCHITECTURE.md
+ ┃ ┣ 📜CI_CD.md
+ ┃ ┣ 📜DATA_MODELING.md
+ ┃ ┣ 📜DESIGN_SYSTEM.md
+ ┃ ┣ 📜DEV_TOOLING.md
+ ┃ ┣ 📜OBSERVABILITY.md
+ ┃ ┣ 📜PRD.md
+ ┃ ┣ 📜SECURITY.md
+ ┃ ┗ 📜TECH_REQUIREMENTS.md
+ ┣ 📂src
+ ┃ ┣ 📂app
+ ┃ ┃ ┣ 📂about
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂admin
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜AdminHeader.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜AdminMobile.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜AdminSkeleton.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DatabaseStatusCards.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DocumentsTable.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜OrganizationsTable.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜RolesTable.tsx
+ ┃ ┃ ┃ ┣ 📂database
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂documents
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂lib
+ ┃ ┃ ┃ ┃ ┣ 📜adminActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜adminFetchers.ts
+ ┃ ┃ ┃ ┃ ┗ 📜adminRBAC.ts
+ ┃ ┃ ┃ ┣ 📂organizations
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂roles
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂schemas
+ ┃ ┃ ┃ ┃ ┗ 📜admin.schema.ts
+ ┃ ┃ ┃ ┣ 📂styles
+ ┃ ┃ ┃ ┃ ┗ 📜modules.css
+ ┃ ┃ ┃ ┣ 📂tests
+ ┃ ┃ ┃ ┃ ┣ 📜adminActions.test.ts
+ ┃ ┃ ┃ ┃ ┣ 📜adminPageview.test.ts
+ ┃ ┃ ┃ ┃ ┗ 📜adminRBAC.test.ts
+ ┃ ┃ ┃ ┣ 📂types
+ ┃ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┃ ┣ 📜error.tsx
+ ┃ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┃ ┣ 📜loading.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂analytics
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜AnalyticsChartRenderer.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜AnalyticsDashboardCards.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜AnalyticsFilters.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜AnalyticsHeader.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜AnalyticsReportDesigner.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜AnalyticsReportsTable.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜AnalyticsSkeleton.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜AnalyticsTableRenderer.tsx
+ ┃ ┃ ┃ ┣ 📂lib
+ ┃ ┃ ┃ ┃ ┣ 📜analyticsActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜analyticsFetchers.ts
+ ┃ ┃ ┃ ┃ ┗ 📜analyticsHooks.ts
+ ┃ ┃ ┃ ┣ 📂reports
+ ┃ ┃ ┃ ┃ ┣ 📂[slug]
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂edit
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂schemas
+ ┃ ┃ ┃ ┃ ┗ 📜analytics.schema.ts
+ ┃ ┃ ┃ ┣ 📂styles
+ ┃ ┃ ┃ ┃ ┗ 📜modules.css
+ ┃ ┃ ┃ ┣ 📂tests
+ ┃ ┃ ┃ ┃ ┣ 📜analyticsPageview.test.ts
+ ┃ ┃ ┃ ┃ ┣ 📜analyticsQueries.test.ts
+ ┃ ┃ ┃ ┃ ┗ 📜analyticsReports.test.ts
+ ┃ ┃ ┃ ┣ 📂types
+ ┃ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┃ ┣ 📜error.tsx
+ ┃ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┃ ┣ 📜loading.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂api
+ ┃ ┃ ┃ ┣ 📂clerk
+ ┃ ┃ ┃ ┃ ┗ 📂webhook-handler
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜route.ts
+ ┃ ┃ ┃ ┣ 📂health
+ ┃ ┃ ┃ ┃ ┗ 📜route.ts
+ ┃ ┃ ┃ ┗ 📂ready
+ ┃ ┃ ┃ ┃ ┗ 📜route.ts
+ ┃ ┃ ┣ 📂auth
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜AuthHeader.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜AuthMobile.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜AuthSkeleton.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜InviteAcceptForm.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜InviteForm.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜OnboardingForm.tsx
+ ┃ ┃ ┃ ┣ 📂invites
+ ┃ ┃ ┃ ┃ ┣ 📂[token]
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂lib
+ ┃ ┃ ┃ ┃ ┣ 📜authActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜authFetchers.ts
+ ┃ ┃ ┃ ┃ ┗ 📜authRBAC.ts
+ ┃ ┃ ┃ ┣ 📂onboarding
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂schemas
+ ┃ ┃ ┃ ┃ ┣ 📜auth.schema.ts
+ ┃ ┃ ┃ ┃ ┣ 📜invites.schema.ts
+ ┃ ┃ ┃ ┃ ┗ 📜onboarding.schema.ts
+ ┃ ┃ ┃ ┣ 📂sign-out
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂styles
+ ┃ ┃ ┃ ┃ ┗ 📜modules.css
+ ┃ ┃ ┃ ┣ 📂tests
+ ┃ ┃ ┃ ┃ ┣ 📜authActions.test.ts
+ ┃ ┃ ┃ ┃ ┣ 📜inviteLifecycle.test.ts
+ ┃ ┃ ┃ ┃ ┗ 📜onboardingFlow.test.ts
+ ┃ ┃ ┃ ┣ 📂types
+ ┃ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┃ ┣ 📂[[...sign-in]]
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂[[...sign-up]]
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📜error.tsx
+ ┃ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┃ ┗ 📜loading.tsx
+ ┃ ┃ ┣ 📂compliance
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜ComplianceBulkActions.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜ComplianceCard.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜ComplianceCardOptimistic.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜ComplianceDetailClient.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜ComplianceFilters.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜ComplianceForm.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜ComplianceHeader.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜ComplianceList.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜ComplianceMobile.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜ComplianceSkeleton.tsx
+ ┃ ┃ ┃ ┣ 📂documents
+ ┃ ┃ ┃ ┃ ┣ 📂new
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┗ 📂[slug]
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂edit
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂lib
+ ┃ ┃ ┃ ┃ ┣ 📜complianceActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜complianceFetchers.ts
+ ┃ ┃ ┃ ┃ ┗ 📜complianceHooks.ts
+ ┃ ┃ ┃ ┣ 📂schemas
+ ┃ ┃ ┃ ┃ ┗ 📜compliance.schema.ts
+ ┃ ┃ ┃ ┣ 📂styles
+ ┃ ┃ ┃ ┃ ┗ 📜modules.css
+ ┃ ┃ ┃ ┣ 📂tests
+ ┃ ┃ ┃ ┃ ┣ 📜complianceActions.test.ts
+ ┃ ┃ ┃ ┃ ┣ 📜complianceExpirationAlerts.test.ts
+ ┃ ┃ ┃ ┃ ┗ 📜complianceFetchers.test.ts
+ ┃ ┃ ┃ ┣ 📂types
+ ┃ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┃ ┣ 📜error.tsx
+ ┃ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┃ ┣ 📜loading.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂contact
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂dashboard
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜DashboardFilters.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DashboardHeader.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DashboardKPIs.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DashboardMobile.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DashboardNotificationsPanel.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DashboardOptimistic.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DashboardQuickActions.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DashboardRealtimeStatus.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DashboardSkeleton.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜DashboardTabs.tsx
+ ┃ ┃ ┃ ┣ 📂lib
+ ┃ ┃ ┃ ┃ ┣ 📜dashboardActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜dashboardFetchers.ts
+ ┃ ┃ ┃ ┃ ┣ 📜dashboardHooks.ts
+ ┃ ┃ ┃ ┃ ┣ 📜dashboardRules.ts
+ ┃ ┃ ┃ ┃ ┗ 📜dashboardValidation.ts
+ ┃ ┃ ┃ ┣ 📂schemas
+ ┃ ┃ ┃ ┃ ┗ 📜dashboard.schema.ts
+ ┃ ┃ ┃ ┣ 📂styles
+ ┃ ┃ ┃ ┃ ┗ 📜modules.css
+ ┃ ┃ ┃ ┣ 📂tests
+ ┃ ┃ ┃ ┃ ┣ 📜dashboardActions.test.ts
+ ┃ ┃ ┃ ┃ ┣ 📜dashboardFetchers.test.ts
+ ┃ ┃ ┃ ┃ ┣ 📜dashboardHooks.test.ts
+ ┃ ┃ ┃ ┃ ┣ 📜dashboardPageview.test.ts
+ ┃ ┃ ┃ ┃ ┗ 📜dashboardRules.test.ts
+ ┃ ┃ ┃ ┣ 📂types
+ ┃ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┃ ┣ 📜error.tsx
+ ┃ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┃ ┣ 📜loading.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂dispatch
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜DispatchBoard.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DispatchBulkActions.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DispatchCard.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DispatchCardOptimistic.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DispatchDetailClient.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DispatchFilters.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DispatchForm.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DispatchHeader.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DispatchMobile.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜DispatchSkeleton.tsx
+ ┃ ┃ ┃ ┣ 📂lib
+ ┃ ┃ ┃ ┃ ┣ 📜dispatchActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜dispatchFetchers.ts
+ ┃ ┃ ┃ ┃ ┣ 📜dispatchHooks.ts
+ ┃ ┃ ┃ ┃ ┗ 📜dispatchStatusRules.ts
+ ┃ ┃ ┃ ┣ 📂logs
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂new
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂schemas
+ ┃ ┃ ┃ ┃ ┗ 📜dispatch.schema.ts
+ ┃ ┃ ┃ ┣ 📂styles
+ ┃ ┃ ┃ ┃ ┗ 📜modules.css
+ ┃ ┃ ┃ ┣ 📂tests
+ ┃ ┃ ┃ ┃ ┣ 📜dispatchActions.test.ts
+ ┃ ┃ ┃ ┃ ┣ 📜dispatchFetchers.test.ts
+ ┃ ┃ ┃ ┃ ┣ 📜dispatchPageview.test.ts
+ ┃ ┃ ┃ ┃ ┗ 📜dispatchStatusRules.test.ts
+ ┃ ┃ ┃ ┣ 📂types
+ ┃ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┃ ┣ 📂[slug]
+ ┃ ┃ ┃ ┃ ┣ 📂edit
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📜error.tsx
+ ┃ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┃ ┣ 📜loading.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂docs
+ ┃ ┃ ┃ ┣ 📂admin-guides
+ ┃ ┃ ┃ ┃ ┣ 📂billing
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┣ 📂feature-flags
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┣ 📂org-settings
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┣ 📂users-and-roles
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜DocsBreadcrumbs.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DocsContent.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜DocsSidebar.tsx
+ ┃ ┃ ┃ ┣ 📂content
+ ┃ ┃ ┃ ┃ ┣ 📂admin-guides
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜billing.md
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜feature-flags.md
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜org-settings.md
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜users-and-roles.md
+ ┃ ┃ ┃ ┃ ┣ 📂product-guides
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜dispatching.md
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜driver-management.md
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜fleet-management.md
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ifta-reporting.md
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜notifications.md
+ ┃ ┃ ┃ ┃ ┣ 📂reference
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜configuration.md
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜observability.md
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜security.md
+ ┃ ┃ ┃ ┃ ┣ 📂user-docs
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜analytics.md
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜compliance.md
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜daily-operations.md
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜getting-started.md
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜onboarding.md
+ ┃ ┃ ┃ ┃ ┣ 📜index.md
+ ┃ ┃ ┃ ┃ ┗ 📜overview.md
+ ┃ ┃ ┃ ┣ 📂lib
+ ┃ ┃ ┃ ┃ ┗ 📜docsNavigation.ts
+ ┃ ┃ ┃ ┣ 📂product-guides
+ ┃ ┃ ┃ ┃ ┣ 📂dispatching
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┣ 📂driver-management
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┣ 📂fleet-management
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┣ 📂ifta-reporting
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┣ 📂notifications
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂schemas
+ ┃ ┃ ┃ ┃ ┗ 📜docs.schema.ts
+ ┃ ┃ ┃ ┣ 📂styles
+ ┃ ┃ ┃ ┃ ┗ 📜modules.css
+ ┃ ┃ ┃ ┣ 📂tests
+ ┃ ┃ ┃ ┃ ┗ 📜docsNavigation.test.ts
+ ┃ ┃ ┃ ┣ 📂types
+ ┃ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┃ ┣ 📂user-docs
+ ┃ ┃ ┃ ┃ ┣ 📂analytics
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┣ 📂compliance
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┣ 📂daily-operations
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┣ 📂getting-started
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┣ 📂onboarding
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂utils
+ ┃ ┃ ┃ ┃ ┗ 📜mdx-components.tsx
+ ┃ ┃ ┃ ┣ 📜error.tsx
+ ┃ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┃ ┣ 📜loading.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂drivers
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜DriverCard.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DriverCardOptimistic.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DriverDetailClient.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DriverDocsUpload.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DriverLoadsList.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DriverMobileHeader.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DriversBulkActions.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DriversFilters.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DriversHeader.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DriversList.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜DriversMobile.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜DriverStatusPanel.tsx
+ ┃ ┃ ┃ ┣ 📂lib
+ ┃ ┃ ┃ ┃ ┣ 📜driversActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜driversFetchers.ts
+ ┃ ┃ ┃ ┃ ┣ 📜driversHooks.ts
+ ┃ ┃ ┃ ┃ ┗ 📜driversMobileFlows.ts
+ ┃ ┃ ┃ ┣ 📂new
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂schemas
+ ┃ ┃ ┃ ┃ ┣ 📜drivers.schema.ts
+ ┃ ┃ ┃ ┃ ┗ 📜driversMobile.schema.ts
+ ┃ ┃ ┃ ┣ 📂styles
+ ┃ ┃ ┃ ┃ ┗ 📜modules.css
+ ┃ ┃ ┃ ┣ 📂tests
+ ┃ ┃ ┃ ┃ ┣ 📜driversActions.test.ts
+ ┃ ┃ ┃ ┃ ┣ 📜driversFetchers.test.ts
+ ┃ ┃ ┃ ┃ ┗ 📜driversMobileFlows.test.ts
+ ┃ ┃ ┃ ┣ 📂types
+ ┃ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┃ ┣ 📂[slug]
+ ┃ ┃ ┃ ┃ ┣ 📂edit
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📜error.tsx
+ ┃ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┃ ┣ 📜loading.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂features
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂ifta
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜IftaDetailClient.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜IftaFilters.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜IftaFuelList.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜IftaHeader.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜IftaMobile.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜IftaReportCard.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜IftaReportCardOptimistic.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜IftaSkeleton.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜IftaTripsList.tsx
+ ┃ ┃ ┃ ┣ 📂fuel
+ ┃ ┃ ┃ ┃ ┣ 📂new
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┣ 📂[slug]
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂edit
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂lib
+ ┃ ┃ ┃ ┃ ┣ 📜iftaActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜iftaFetchers.ts
+ ┃ ┃ ┃ ┃ ┗ 📜iftaHooks.ts
+ ┃ ┃ ┃ ┣ 📂schemas
+ ┃ ┃ ┃ ┃ ┣ 📂fuelPurchaseSchema
+ ┃ ┃ ┃ ┃ ┣ 📂iftaFiltersSchema
+ ┃ ┃ ┃ ┃ ┣ 📂iftaQuarterSchema
+ ┃ ┃ ┃ ┃ ┣ 📂iftaReportSchema
+ ┃ ┃ ┃ ┃ ┣ 📂tripSchema
+ ┃ ┃ ┃ ┃ ┗ 📜compliance.schema.ts
+ ┃ ┃ ┃ ┣ 📂styles
+ ┃ ┃ ┃ ┃ ┗ 📜modules.css
+ ┃ ┃ ┃ ┣ 📂tests
+ ┃ ┃ ┃ ┃ ┣ 📜iftaCalculations.test.ts
+ ┃ ┃ ┃ ┃ ┣ 📜iftaPageview.test.ts
+ ┃ ┃ ┃ ┃ ┗ 📜iftaReports.test.ts
+ ┃ ┃ ┃ ┣ 📂trips
+ ┃ ┃ ┃ ┃ ┣ 📂new
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┣ 📂[slug]
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂edit
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂types
+ ┃ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┃ ┣ 📜error.tsx handles domain failures
+ ┃ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂notifications
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜NotificationCard.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜NotificationFilters.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜NotificationList.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜NotificationMobile.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜NotificationPreferencesForm.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜NotificationSkeleton.tsx
+ ┃ ┃ ┃ ┣ 📂lib
+ ┃ ┃ ┃ ┃ ┣ 📜notificationActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜notificationFetchers.ts
+ ┃ ┃ ┃ ┃ ┗ 📜notificationsEngine.ts
+ ┃ ┃ ┃ ┣ 📂preferences
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂schemas
+ ┃ ┃ ┃ ┃ ┗ 📜notifications.schema.ts
+ ┃ ┃ ┃ ┣ 📂styles
+ ┃ ┃ ┃ ┃ ┗ 📜modules.css
+ ┃ ┃ ┃ ┣ 📂tests
+ ┃ ┃ ┃ ┃ ┣ 📜notificationPreferences.test.ts
+ ┃ ┃ ┃ ┃ ┣ 📜notificationRouting.test.ts
+ ┃ ┃ ┃ ┃ ┗ 📜notificationsPageview.test.ts
+ ┃ ┃ ┃ ┣ 📂types
+ ┃ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┃ ┣ 📜error.tsx
+ ┃ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┃ ┣ 📜loading.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂pricing
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂privacy
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂refund
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂services
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂settings
+ ┃ ┃ ┃ ┣ 📂billing
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜FeatureFlagsTable.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜MembersTable.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜OrganizationProfileForm.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜SettingsHeader.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜SettingsMobile.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜SettingsSkeleton.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜SubscriptionPanel.tsx
+ ┃ ┃ ┃ ┣ 📂feature-flags
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂lib
+ ┃ ┃ ┃ ┃ ┣ 📜settingsActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜settingsFetchers.ts
+ ┃ ┃ ┃ ┃ ┗ 📜settingsHooks.ts
+ ┃ ┃ ┃ ┣ 📂organization
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂schemas
+ ┃ ┃ ┃ ┃ ┗ 📜settings.schema.ts
+ ┃ ┃ ┃ ┣ 📂styles
+ ┃ ┃ ┃ ┃ ┗ 📜modules.css
+ ┃ ┃ ┃ ┣ 📂tests
+ ┃ ┃ ┃ ┃ ┣ 📜settingsActions.test.ts
+ ┃ ┃ ┃ ┃ ┣ 📜settingsFetchers.test.ts
+ ┃ ┃ ┃ ┃ ┗ 📜settingsPageview.test.ts
+ ┃ ┃ ┃ ┣ 📂types
+ ┃ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┃ ┣ 📂users
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📜error.tsx
+ ┃ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┃ ┣ 📜loading.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂terms
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📂vehicles
+ ┃ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┃ ┣ 📜VehicleCard.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜VehicleCardOptimistic.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜VehicleDetailClient.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜VehiclesBulkActions.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜VehiclesFilters.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜VehiclesHeader.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜VehiclesList.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜VehiclesMobile.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜VehiclesSkeleton.tsx
+ ┃ ┃ ┃ ┣ 📂lib
+ ┃ ┃ ┃ ┃ ┣ 📜vehiclesActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜vehiclesFetchers.ts
+ ┃ ┃ ┃ ┃ ┣ 📜vehiclesHooks.ts
+ ┃ ┃ ┃ ┃ ┗ 📜vehiclesValidation.ts
+ ┃ ┃ ┃ ┣ 📂new
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📂schemas
+ ┃ ┃ ┃ ┃ ┗ 📜vehicles.schema.ts
+ ┃ ┃ ┃ ┣ 📂styles
+ ┃ ┃ ┃ ┃ ┗ 📜modules.css
+ ┃ ┃ ┃ ┣ 📂tests
+ ┃ ┃ ┃ ┃ ┣ 📜vehiclesActions.test.ts
+ ┃ ┃ ┃ ┃ ┣ 📜vehiclesFetchers.test.ts
+ ┃ ┃ ┃ ┃ ┣ 📜vehiclesPageview.test.ts
+ ┃ ┃ ┃ ┃ ┗ 📜vehiclesValidation.test.ts
+ ┃ ┃ ┃ ┣ 📂types
+ ┃ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┃ ┣ 📂[slug]
+ ┃ ┃ ┃ ┃ ┣ 📂edit
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┃ ┣ 📜error.tsx
+ ┃ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┃ ┣ 📜loading.tsx
+ ┃ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┃ ┣ 📜error.tsx
+ ┃ ┃ ┣ 📜global.css
+ ┃ ┃ ┣ 📜globals.css
+ ┃ ┃ ┣ 📜layout.tsx
+ ┃ ┃ ┣ 📜loading.tsx
+ ┃ ┃ ┗ 📜page.tsx
+ ┃ ┣ 📂components
+ ┃ ┃ ┣ 📂layouts
+ ┃ ┃ ┃ ┣ 📜AppLayout.tsx
+ ┃ ┃ ┃ ┣ 📜AuthLayoutShell.tsx
+ ┃ ┃ ┃ ┣ 📜DashboardLayoutShell.tsx
+ ┃ ┃ ┃ ┣ 📜DocsLayoutShell.tsx
+ ┃ ┃ ┃ ┣ 📜DomainLayoutShell.tsx
+ ┃ ┃ ┃ ┗ 📜MarketingLayout.tsx
+ ┃ ┃ ┣ 📂nav
+ ┃ ┃ ┃ ┣ 📜MainNav.tsx
+ ┃ ┃ ┃ ┣ 📜OrgSwitcher.tsx
+ ┃ ┃ ┃ ┣ 📜SidebarNav.tsx
+ ┃ ┃ ┃ ┗ 📜UserMenu.tsx
+ ┃ ┃ ┣ 📂providers
+ ┃ ┃ ┃ ┣ 📜clerk-provider.tsx
+ ┃ ┃ ┃ ┣ 📜theme-provider.tsx
+ ┃ ┃ ┃ ┗ 📜toast-provider.tsx
+ ┃ ┃ ┗ 📂ui
+ ┃ ┃ ┃ ┣ 📜accordion.tsx
+ ┃ ┃ ┃ ┣ 📜alert-dialog.tsx
+ ┃ ┃ ┃ ┣ 📜alert.tsx
+ ┃ ┃ ┃ ┣ 📜aspect-ratio.tsx
+ ┃ ┃ ┃ ┣ 📜avatar.tsx
+ ┃ ┃ ┃ ┣ 📜badge.tsx
+ ┃ ┃ ┃ ┣ 📜breadcrumb.tsx
+ ┃ ┃ ┃ ┣ 📜button.tsx
+ ┃ ┃ ┃ ┣ 📜calendar.tsx
+ ┃ ┃ ┃ ┣ 📜card.tsx
+ ┃ ┃ ┃ ┣ 📜carousel.tsx
+ ┃ ┃ ┃ ┣ 📜chart.tsx
+ ┃ ┃ ┃ ┣ 📜checkbox.tsx
+ ┃ ┃ ┃ ┣ 📜collapsible.tsx
+ ┃ ┃ ┃ ┣ 📜command.tsx
+ ┃ ┃ ┃ ┣ 📜container.tsx
+ ┃ ┃ ┃ ┣ 📜context-menu.tsx
+ ┃ ┃ ┃ ┣ 📜data-table.tsx
+ ┃ ┃ ┃ ┣ 📜dialog.tsx
+ ┃ ┃ ┃ ┣ 📜drawer.tsx
+ ┃ ┃ ┃ ┣ 📜dropdown-menu.tsx
+ ┃ ┃ ┃ ┣ 📜form.tsx
+ ┃ ┃ ┃ ┣ 📜hover-card.tsx
+ ┃ ┃ ┃ ┣ 📜input-otp.tsx
+ ┃ ┃ ┃ ┣ 📜input.tsx
+ ┃ ┃ ┃ ┣ 📜label.tsx
+ ┃ ┃ ┃ ┣ 📜loading-spinner.tsx
+ ┃ ┃ ┃ ┣ 📜menubar.tsx
+ ┃ ┃ ┃ ┣ 📜mobile-table.tsx
+ ┃ ┃ ┃ ┣ 📜navigation-menu.tsx
+ ┃ ┃ ┃ ┣ 📜page-header.tsx
+ ┃ ┃ ┃ ┣ 📜popover.tsx
+ ┃ ┃ ┃ ┣ 📜progress.tsx
+ ┃ ┃ ┃ ┣ 📜radio-group.tsx
+ ┃ ┃ ┃ ┣ 📜resizable.tsx
+ ┃ ┃ ┃ ┣ 📜responsive-layout.tsx
+ ┃ ┃ ┃ ┣ 📜scroll-area.tsx
+ ┃ ┃ ┃ ┣ 📜select.tsx
+ ┃ ┃ ┃ ┣ 📜separator.tsx
+ ┃ ┃ ┃ ┣ 📜sheet.tsx
+ ┃ ┃ ┃ ┣ 📜sidebar.tsx
+ ┃ ┃ ┃ ┣ 📜skeleton.tsx
+ ┃ ┃ ┃ ┣ 📜slider.tsx
+ ┃ ┃ ┃ ┣ 📜sonner.tsx
+ ┃ ┃ ┃ ┣ 📜switch.tsx
+ ┃ ┃ ┃ ┣ 📜table.tsx
+ ┃ ┃ ┃ ┣ 📜tabs.tsx
+ ┃ ┃ ┃ ┣ 📜textarea.tsx
+ ┃ ┃ ┃ ┣ 📜toast.tsx
+ ┃ ┃ ┃ ┣ 📜toaster.tsx
+ ┃ ┃ ┃ ┣ 📜toggle-group.tsx
+ ┃ ┃ ┃ ┣ 📜toggle.tsx
+ ┃ ┃ ┃ ┗ 📜tooltip.tsx
+ ┃ ┗ 📂lib
+ ┃ ┃ ┣ 📂config
+ ┃ ┃ ┃ ┣ 📜feature-flags.ts
+ ┃ ┃ ┃ ┣ 📜pdf.ts
+ ┃ ┃ ┃ ┗ 📜subscriptions.ts
+ ┃ ┃ ┣ 📂excel
+ ┃ ┃ ┃ ┣ 📜generateWorkbook.ts
+ ┃ ┃ ┃ ┣ 📜parseWorkbook.ts
+ ┃ ┃ ┃ ┗ 📜utils.ts
+ ┃ ┃ ┣ 📂files
+ ┃ ┃ ┃ ┣ 📜file-preview.ts
+ ┃ ┃ ┃ ┣ 📜file-validation.ts
+ ┃ ┃ ┃ ┗ 📜storage-adapter.ts
+ ┃ ┃ ┣ 📂observability
+ ┃ ┃ ┃ ┣ 📜logger.ts
+ ┃ ┃ ┃ ┣ 📜metrics.ts
+ ┃ ┃ ┃ ┗ 📜tracing.ts
+ ┃ ┃ ┣ 📂pdf
+ ┃ ┃ ┃ ┣ 📜extractText.ts
+ ┃ ┃ ┃ ┣ 📜generateReport.ts
+ ┃ ┃ ┃ ┣ 📜mergePDF.ts
+ ┃ ┃ ┃ ┗ 📜utils.ts
+ ┃ ┃ ┣ 📂server
+ ┃ ┃ ┃ ┣ 📂webhooks
+ ┃ ┃ ┃ ┃ ┗ 📜clerk.ts
+ ┃ ┃ ┃ ┣ 📜auth.ts
+ ┃ ┃ ┃ ┣ 📜cache.ts
+ ┃ ┃ ┃ ┣ 📜clerk-session-claims.ts
+ ┃ ┃ ┃ ┣ 📜org-router.ts
+ ┃ ┃ ┃ ┣ 📜rbac.ts
+ ┃ ┃ ┃ ┗ 📜upload.ts
+ ┃ ┃ ┗ 📂utils
+ ┃ ┃ ┃ ┣ 📜date.ts
+ ┃ ┃ ┃ ┣ 📜deepMerge.ts
+ ┃ ┃ ┃ ┣ 📜formatting.ts
+ ┃ ┃ ┃ ┣ 📜math.ts
+ ┃ ┃ ┃ ┣ 📜safeJSON.ts
+ ┃ ┃ ┃ ┣ 📜sleep.ts
+ ┃ ┃ ┃ ┣ 📜slugify.ts
+ ┃ ┃ ┃ ┗ 📜stripUndefinedKeys.ts
+ ┣ 📜.env
+ ┣ 📜.env.example
+ ┣ 📜.gitignore
+ ┣ 📜.prettierrc
+ ┣ 📜CHANGELOG.md
+ ┣ 📜CODE_OF_CONDUCT.md
+ ┣ 📜CONTRIBUTING.md
+ ┣ 📜eslint.config.js
+ ┣ 📜LICENSE
+ ┣ 📜next-env.d.ts
+ ┣ 📜next.config.ts
+ ┣ 📜package.json
+ ┣ 📜pnpm-lock.yaml
+ ┣ 📜pnpm-workspace.yaml
+ ┣ 📜postcss.config.mjs
+ ┣ 📜README.md
+ ┣ 📜SECURITY.md
+ ┣ 📜SUPPORT.md
+ ┣ 📜tailwind.config.ts
+ ┣ 📜TODO.md
+ ┗ 📜tsconfig.json

@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/.pnpm-store
 
 # next.js
 /.next/
@@ -9,6 +10,7 @@
 
 # production
 /build
+/dist
 
 # debug
 npm-debug.log*
@@ -17,7 +19,12 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files
-.env*
+.env
+.env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 !.env.example
 
 # vercel
@@ -30,25 +37,23 @@ next-env.d.ts
 # miscellaneous
 .DS_Store
 .vscode/
+.idea/
 .hintrc*
+.eslintcache
+.turbo
 
-
-/generated/prisma
-!/tests
+# testing
+/coverage
 /playwright-report
 /test-results
-
+/tests-examples
 
 # clerk configuration (can include secrets)
 /.clerk/
-/.notes/**
-/.codex/**
-.notes
-
 
 # Custom directories
 .audits/
 .notes/
-
-# Preview.js generated files
+.codex/
 __previewjs__/
+/generated/prisma

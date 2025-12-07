@@ -5,11 +5,13 @@
 **Status:** Draft
 
 ## Goals
+
 - Fast feedback (lint/type/test under 10s locally on typical feature scope).
 - Consistent formatting and linting across stack (Next.js 16, React 19, TS 5, ESLint 9, Prettier 3).
 - Deterministic installs and scripts (pnpm preferred).
 
 ## Package Management
+
 - **Manager:** pnpm (frozen lockfile in CI).
 - **Node:** 20.x LTS.
 - **Scripts (examples):**
@@ -24,25 +26,40 @@
   - `pnpm prisma:migrate` → Prisma migrate dev/deploy
 
 ## Linting (ESLint 9 Flat)
+
 - Base: `@eslint/js` recommended + `typescript-eslint` strict type-checked.
 - Next.js plugin, React, React Hooks.
 - Rules: no `any`, explicit return types, exhaust deps, no console (warn/error allowed).
 - Path aliases validated via TypeScript parser options.
 
 ## Formatting (Prettier 3)
+
 - Plugin: `prettier-plugin-tailwindcss` for class sorting.
 - Enforced in CI and pre-commit.
 
 ## Type Checking
+
 - `tsc --noEmit`, strict mode, bundler module resolution.
 - Path aliases `@/*`, `@/domains/*`, `@/shared/*`.
 
 ## Git Hooks
+
 - **Husky** + **lint-staged**:
-  - `pre-commit`: `lint-staged` → run `eslint --max-warnings=0` and `prettier --check` on staged files; optionally `vitest related --runInBand` for touched files.
-  - `pre-push`: optional `pnpm test:ci-lite` (unit only) for contributors.
+  - `pre-commit`: `lint-staged` → run `eslint --max-warnings=0` and `prettier --check` on staged files.
+  - `pre-push`: optional `pnpm test` (unit only) for contributors.
+
+## Copilot & AI Agents
+
+- **Instructions**: Located in `.github/instructions/`.
+  - `copilot-instructions.md`: General coding rules.
+  - `copilot-commit.md`: Commit message format.
+  - `copilot-pr.md`: PR description template.
+  - `copilot-review.md`: Code review guidelines.
+- **Configuration**: `.vscode/settings.json` is pre-configured to use these instructions.
+- **Agents**: `agents.md` (if present) defines custom agent behaviors.
 
 ## Testing Local Workflow
+
 - **Unit/Integration (Vitest):**
   - `pnpm test -- --watch` for red/green loops.
   - Use `tests/fixtures` and `msw` for network mocks.
@@ -52,6 +69,7 @@
 - **Coverage:** `pnpm test:coverage` → html/text reports.
 
 ## Tooling for DX
+
 - **Editor:** VS Code with recommended extensions: ESLint, Prettier, Prisma, Tailwind CSS IntelliSense, Playwright, Vitest.
 - **Storybook (optional):** Consider for UI review if needed; otherwise rely on shadcn docs + visual regression via Playwright screenshots.
 - **Env Management:** `.env.local` with `cp .env.example .env.local`; use `dotenv-flow` if needed.
@@ -59,23 +77,29 @@
 - **Logs:** Use Pino pretty transport in dev; JSON in prod.
 
 ## Performance Guardrails in Dev
+
 - Prefer RSC; avoid heavy client bundles.
 - Run `next lint` and `next analyze` for bundle insight (optional script `pnpm analyze`).
 
 ## Database Tooling
+
 - Prisma Studio: `pnpm prisma:studio` for local data inspect.
 - Migrations: `pnpm prisma:migrate` (dev), `pnpm prisma migrate deploy` (CI/CD).
 
 ## Accessibility & QA
+
 - `@axe-core/playwright` optional in E2E for critical flows.
 - Story-level a11y checks when using Storybook.
 
 ## Feature Flags
+
 - Env-driven flags for dev; ensure sensible defaults for offline dev.
 
 ## Caching & Proxy
+
 - Use Next.js built-in cache; disable ISR caching in dev by default.
 
 ## Observability in Dev
+
 - Sentry disabled locally; use console/Pino.
 - Otel exporter can be no-op in dev to reduce noise.

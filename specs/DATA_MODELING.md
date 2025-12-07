@@ -5,12 +5,14 @@
 **Status:** Draft
 
 ## Principles
+
 - Multi-tenant by design: every domain entity ties to `organizationId`.
 - Alignment between Prisma schema, TypeScript types, and Zod schemas.
 - Soft deletes where appropriate (users, loads, documents) with `deletedAt`.
 - Auditability: `createdAt`, `updatedAt`, `createdById`, `updatedById` where relevant.
 
 ## Core Models (Prisma 7 sketch)
+
 ```prisma
 enum SubscriptionTier { starter growth enterprise }
 enum SubscriptionStatus { trial active past_due cancelled suspended }
@@ -266,21 +268,26 @@ model WebhookEvent {
 ```
 
 ## Data Integrity & Constraints
+
 - Unique per org where appropriate (vin, unitNumber, load number, report quarter).
 - Foreign keys always include org linkage when relevant.
 - Soft delete via `deletedAt`; queries default to `deletedAt = null`.
 
 ## Derived / Cached Data
+
 - Materialized views (future) for analytics; otherwise computed via queries.
 - Aggregations for IFTA (miles, gallons) computed per report.
 
 ## Validation Alignment
+
 - Zod schemas mirror Prisma types; enums defined once in `types` and reused.
 - Server actions parse inputs with Zod before hitting Prisma.
 
 ## Audit Logging
+
 - All destructive or security-sensitive operations log to `AuditLog` with actor + org + entity.
 
 ## Migration Strategy
+
 - Prisma Migrate with Neon branches per environment.
 - Backfill scripts for existing data (if migrating from prior version).

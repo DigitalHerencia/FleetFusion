@@ -1,24 +1,35 @@
-## Summary
-- What problem does this change solve?
-- Links to related issues/specs (PRD, TECH_REQUIREMENTS) and decisions
+## 📋 Executive Summary
 
-## Changes
-- Bullet the key code/config changes
-- Note migrations or infra updates if any
+<!-- Use Compressed Decision Record format -->
 
-## Testing
-- [ ] Not run (explain why)
-- [ ] Unit
-- [ ] Integration
-- [ ] E2E/manual
-- Evidence: commands, screenshots, or logs
+`Decision: [What changed] | Rationale: [Why] | Impact: [Consequences] | Review: [Date]`
 
-## Screenshots / Recordings (if UI)
-- Add before/after or demo links
+## 🔗 Context & Intent
 
-## Checklist
-- [ ] Added/updated tests for critical paths
-- [ ] Updated docs (README/specs/changelog) if needed
-- [ ] Security/performance considerations addressed
-- [ ] Backward compatibility verified
-- [ ] Linked issue(s) and reviewers set
+- **Issue**: #
+- **Spec**: `specs/domains/[DOMAIN].md`
+- **Business Value**:
+
+## 🛠️ Changes Implemented
+
+- [ ] Frontend:
+- [ ] Backend (Server Actions/Fetchers):
+- [ ] Database (Prisma):
+- [ ] Config/Infra:
+
+## 🧪 Validation (Phase 4)
+
+- [ ] **Automated Tests**: (e.g., `pnpm test:dispatch`)
+- [ ] **Manual Verification**:
+- [ ] **Edge Cases**:
+
+## 📸 Screenshots / Recordings
+
+<!-- Required for UI changes -->
+
+## ✅ Spec Compliance Checklist (Phase 6: Handoff)
+
+- [ ] `PRD.md` / `TECH_REQUIREMENTS.md` updated
+- [ ] Domain Spec (`specs/domains/*.md`) updated
+- [ ] `CHANGELOG.md` entry prepared
+- [ ] Technical Debt issue created (if applicable)
