@@ -31,7 +31,7 @@
     "*.{js,jsx,json,md,css}": "prettier --check"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.36.0",
+    "@clerk/nextjs": "^6.36.1",
     "@hookform/resolvers": "^5.2.2",
     "@prisma/client": "^7.1.0",
     "@radix-ui/react-accordion": "^1.2.12",
