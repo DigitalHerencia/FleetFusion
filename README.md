@@ -54,7 +54,7 @@
 ---
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/DigitalHerencia/FleetFusion/refs/heads/main/public/09b931e1-ec51-4130-add4-39337908a058.png" alt="FleetFusion Screenshot" width="100%" style="border-radius:12px;margin:1rem 0;">
+  <img src="https://raw.githubusercontent.com/DigitalHerencia/FleetFusion/refs/heads/master/public/09b931e1-ec51-4130-add4-39337908a058.png" alt="FleetFusion Screenshot" width="100%" style="border-radius:12px;margin:1rem 0;">
 </p>
 
 ---
