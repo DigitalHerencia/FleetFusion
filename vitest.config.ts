@@ -10,6 +10,10 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.ts'],
     include: ['src/**/*.test.{ts,tsx}'],
     exclude: ['node_modules', '.next', 'e2e'],
+    threads: false,
+    sequence: {
+      concurrent: false,
+    },
     alias: {
       '@': path.resolve(__dirname, './src'),
     },

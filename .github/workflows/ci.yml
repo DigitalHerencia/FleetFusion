@@ -14,6 +14,7 @@ jobs:
       DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/fleetfusion'
       NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: 'pk_test_mock'
       CLERK_SECRET_KEY: 'sk_test_mock'
+      NEXT_TELEMETRY_DISABLED: '1'
 
     services:
       postgres:
@@ -37,12 +38,12 @@ jobs:
       - name: 📦 Install pnpm
         uses: pnpm/action-setup@v3
         with:
-          version: 9
+          version: 10.26.2
 
       - name: ⎔ Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24.12.0
           cache: 'pnpm'
 
       - name: 📦 Install dependencies
@@ -51,10 +52,17 @@ jobs:
       - name: 🗄️ Generate Prisma Client
         run: pnpm prisma:generate
 
+      - name: 🗄️ Run database migrations
+        run: pnpm prisma migrate deploy
+
       - name: 🏗️ Build Project
         run: pnpm build
-        env:
-          NEXT_TELEMETRY_DISABLED: 1
 
       - name: ⚡ Run Unit Tests
         run: pnpm test
+
+      - name: 📊 Run linter
+        run: pnpm lint
+
+      - name: 🔍 Type check
+        run: pnpm type-check

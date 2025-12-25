@@ -1,18 +1,27 @@
 'use server';
 
+import type { Prisma } from '@prisma/client';
+
 import { prisma } from '@/lib/prisma';
 import { auth } from '@/lib/server/auth';
 
 import { vehicleFiltersSchema } from '../schemas/vehicles.schema';
 
+/**
+ * Fetches a paginated list of vehicles for the current organization, applying optional filters.
+ * Filters can include status, type, and a search term (matches VIN, name, make, or model).
+ */
 export async function getVehicles(filters: unknown = {}) {
   const { orgId } = await auth.requireOrgContext();
+  // Validate and normalize filters input
   const parsed = vehicleFiltersSchema.parse(filters);
 
-  const where = {
+  // Build Prisma query conditions
+  const where: Prisma.VehicleWhereInput = {
     organizationId: orgId,
-    status: parsed.status,
-    type: parsed.type,
+    deletedAt: null, // only fetch vehicles that are not soft-deleted
+    ...(parsed.status !== undefined ? { status: parsed.status } : {}),
+    ...(parsed.type !== undefined ? { type: parsed.type } : {}),
     ...(parsed.search
       ? {
           OR: [
@@ -28,53 +37,62 @@ export async function getVehicles(filters: unknown = {}) {
   const vehicles = await prisma.vehicle.findMany({
     where,
     orderBy: { createdAt: 'desc' },
-    take: parsed.pageSize,
-    skip: (parsed.page - 1) * parsed.pageSize,
+    take: parsed['pageSize'],
+    skip: (parsed['page'] - 1) * parsed['pageSize'],
   });
-
   return vehicles;
 }
 
+/**
+ * Fetches a single vehicle by ID for the current organization, including related documents, inspections, and maintenance records.
+ * Returns null if not found or not accessible.
+ */
 export async function getVehicleById(params: { id: string }) {
   const { orgId } = await auth.requireOrgContext();
-
-  const vehicle = await prisma.vehicle.findUnique({
-    where: { id: params.id, organizationId: orgId },
+  const vehicle = await prisma.vehicle.findFirst({
+    where: { id: params.id, organizationId: orgId, deletedAt: null },
     include: {
       documents: true,
       inspections: true,
       maintenanceRecords: true,
     },
   });
-
   return vehicle;
 }
 
+/**
+ * Fetches summary counts of vehicles for dashboard display (total count, active count, in-shop count).
+ */
 export async function getVehiclesForDashboard() {
   const { orgId } = await auth.requireOrgContext();
+  const where = { organizationId: orgId, deletedAt: null } as const;
 
-  const vehicles = await prisma.vehicle.findMany({ where: { organizationId: orgId } });
-
-  const total = vehicles.length;
-  const active = vehicles.filter((v) => v.status === 'ACTIVE').length;
-  const inShop = vehicles.filter((v) => v.status === 'IN_SHOP').length;
+  const [total, active, inShop] = await Promise.all([
+    prisma.vehicle.count({ where }),
+    prisma.vehicle.count({ where: { ...where, status: 'ACTIVE' } }),
+    prisma.vehicle.count({ where: { ...where, status: 'IN_SHOP' } }),
+  ]);
 
   return { total, active, inShop };
 }
 
+/**
+ * Retrieves a chronological history of events for a vehicle, combining maintenance records and load assignments.
+ * Returns an array of events sorted by occurredAt descending, with type discriminators.
+ */
 export async function getVehicleHistory(params: { id: string }) {
   const { orgId } = await auth.requireOrgContext();
-
+  // Fetch maintenance records and loads for the vehicle
   const maintenance = await prisma.vehicleMaintenance.findMany({
     where: { vehicleId: params.id, organizationId: orgId },
     orderBy: { performedAt: 'desc' },
   });
-
   const loads = await prisma.load.findMany({
     where: { vehicleId: params.id, organizationId: orgId },
     orderBy: { pickupScheduledAt: 'desc' },
   });
 
+  // Merge and sort events by date (newest first)
   const merged = [
     ...maintenance.map((m) => ({
       type: 'maintenance' as const,
