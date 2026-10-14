@@ -26,9 +26,9 @@
     ],
     "types": ["@types/node"],
     "paths": {
-      "@/*": ["./src/*"],
-      "@/domains/*": ["./src/domains/*"],
-      "@/shared/*": ["./src/shared/*"]
+      "@/*": ["./app/*"],
+      "@/domains/*": ["./app/domains/*"],
+      "@/shared/*": ["./app/shared/*"]
     }
   },
   "include": [
@@ -36,7 +36,8 @@
     "src/**/*",
     "next.config.ts",
     "postcss.config.mjs",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "proxy.ts"
   ],
   "exclude": ["node_modules", ".next", "dist"]
 }
