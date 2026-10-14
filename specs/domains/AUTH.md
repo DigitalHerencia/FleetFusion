@@ -26,7 +26,7 @@ This domain is implemented in `src/app/auth/` and contains:
 
 ### 4.1 Sign Up & Sign In
 
-- **Pages:** `[[...sign-in]]/page.tsx`, `[[...sign-up]]/page.tsx`
+- **Pages:** `app/sign-in/[[...sign-in]]/page.tsx`, `app/sign-up/[[...sign-up]]/page.tsx`
 - **Action:** `signUpWithProfile` (in `authActions.ts`)
 - **Fetcher:** `getCurrentUserWithOrgs` (in `authFetchers.ts`)
 

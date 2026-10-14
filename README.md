@@ -95,7 +95,7 @@ pnpm test
 src/
   app/
     (marketing)/              # Public landing page
-    (auth)/sign-in, sign-up/   # Auth group scaffolding (Clerk-ready)
+    sign-in/, sign-up/         # Clerk authentication pages
     (tenant)/[orgId]/          # Tenant workspace with domain routes
       dispatch/                # Load board placeholder
       vehicles/                # Fleet readiness placeholder
