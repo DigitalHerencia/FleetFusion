@@ -1,25 +1,20 @@
 export const applicationProduct = {
-  name: "The Maximal Template™ Domain Library",
+  name: "FleetFusion",
   brand: {
-    title: "The Maximal Template™",
-    subtitle: "Domain Library",
+    title: "FleetFusion",
+    subtitle: "Fleet Operations Platform",
     image: "/favicon.png",
-    homeLabel: "The Maximal Template™ Domain Library home",
+    homeLabel: "FleetFusion home",
   },
-  description: "Productivity is dead. Long live product.",
+  description:
+    "Dispatch, compliance, and fleet operations for independent and growing fleets.",
 } as const;
 
 export const applicationCapabilities = {
-  marketing: true,
-  crm: true,
-  projects: true,
-  support: true,
-  marketingAutomation: true,
-  invoicing: true,
-  social: true,
-  ai: true,
-  portal: true,
-  admin: true,
+  dispatch: true,
+  compliance: true,
+  billing: true,
+  analytics: true,
 } as const;
 
 export const applicationDesign = {
