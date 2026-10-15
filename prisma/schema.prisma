@@ -201,3 +201,117 @@ model ComplianceItem {
   @@index([organizationId, expiresAt])
   @@index([organizationId, subjectType, type])
 }
+
+enum MembershipRole {
+  OWNER
+  ADMIN
+  MANAGER
+  MEMBER
+  VIEWER
+  BILLING
+  SUPPORT
+  CLIENT
+}
+
+enum MembershipStatus {
+  ACTIVE
+  INVITED
+  SUSPENDED
+}
+
+model User {
+  id          String   @id @default(uuid()) @db.Uuid
+  clerkUserId String   @unique
+  email       String?
+  displayName String?
+  memberships Membership[]
+  createdAt   DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @db.Timestamptz(6)
+}
+
+model Organization {
+  id        String   @id @default(uuid()) @db.Uuid
+  slug      String   @unique
+  name      String
+  memberships Membership[]
+  drivers   Driver[]
+  vehicles  Vehicle[]
+  loads     Load[]
+  loadStops LoadStop[]
+  complianceItems ComplianceItem[]
+  crmAccounts CrmAccount[]
+  invoices Invoice[]
+  assets Asset[]
+  settings OrganizationSettings?
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+}
+
+model Membership {
+  id             String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  userId         String @db.Uuid
+  role           MembershipRole @default(MEMBER)
+  status         MembershipStatus @default(ACTIVE)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  driver Driver? @relation("DriverMembership")
+  createdAssets Asset[] @relation("AssetCreator")
+  ownedCrmAccounts CrmAccount[] @relation("CrmAccountOwner")
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+  @@unique([organizationId, userId])
+  @@index([userId, status])
+}
+
+model OrganizationSettings {
+  id             String @id @default(uuid()) @db.Uuid
+  organizationId String @unique @db.Uuid
+  timezone       String @default("UTC")
+  locale         String @default("en-US")
+  defaultCurrency String @default("USD") @db.Char(3)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+}
+
+model CrmAccount {
+  id             String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  ownerMembershipId String? @db.Uuid
+  name           String
+  website        String?
+  industry       String?
+  status         String @default("ACTIVE")
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  ownerMembership Membership? @relation("CrmAccountOwner", fields: [ownerMembershipId], references: [id], onDelete: SetNull)
+  loads          Load[] @relation("LoadCustomer")
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+  @@index([organizationId, status])
+}
+
+model Invoice {
+  id             String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  loads Load[] @relation("LoadInvoices")
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+}
+
+model Asset {
+  id             String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  createdByMembershipId String? @db.Uuid
+  storageProvider String
+  storageKey String
+  filename String
+  contentType String?
+  byteSize BigInt @default(0)
+  checksum String?
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdByMembership Membership? @relation("AssetCreator", fields: [createdByMembershipId], references: [id], onDelete: SetNull)
+  complianceItems ComplianceItem[]
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+  @@unique([organizationId, storageKey])
+}
