@@ -7,1101 +7,157 @@ datasource db {
   provider = "postgresql"
 }
 
-enum MembershipRole {
-  OWNER
-  ADMIN
-  MANAGER
-  MEMBER
-  BILLING
-  SUPPORT
-  CLIENT
-  VIEWER
-}
-
-enum MembershipStatus {
-  INVITED
-  ACTIVE
-  SUSPENDED
-  REVOKED
-}
-
-enum SubscriptionStatus {
-  TRIALING
-  ACTIVE
-  PAST_DUE
-  PAUSED
-  CANCELED
-}
-
-enum CrmAccountStatus {
-  PROSPECT
-  ACTIVE
-  INACTIVE
-  ARCHIVED
-}
-
-enum CrmContactStatus {
-  LEAD
-  ACTIVE
-  INACTIVE
-  ARCHIVED
-}
-
-enum CrmDealStage {
-  LEAD
-  QUALIFIED
-  PROPOSAL
-  NEGOTIATION
-  WON
-  LOST
-}
-
-enum ProjectStatus {
-  PLANNED
-  ACTIVE
-  ON_HOLD
-  COMPLETED
-  CANCELED
-  ARCHIVED
-}
-
-enum ProjectMemberRole {
-  OWNER
-  MANAGER
-  CONTRIBUTOR
-  VIEWER
-}
-
-enum TaskStatus {
-  BACKLOG
-  TODO
-  IN_PROGRESS
-  BLOCKED
-  DONE
-  CANCELED
-}
-
-enum TaskPriority {
-  LOW
-  MEDIUM
-  HIGH
-  URGENT
-}
-
-enum TicketStatus {
-  OPEN
-  IN_PROGRESS
-  WAITING_ON_CUSTOMER
-  WAITING_ON_INTERNAL
-  RESOLVED
-  CLOSED
-}
-
-enum TicketPriority {
-  LOW
-  NORMAL
-  HIGH
-  URGENT
-}
-
-enum KnowledgeArticleStatus {
-  DRAFT
-  PUBLISHED
-  ARCHIVED
-}
-
-enum AudienceStatus {
-  DRAFT
-  ACTIVE
-  ARCHIVED
-}
-
-enum CampaignStatus {
-  DRAFT
-  SCHEDULED
-  ACTIVE
-  PAUSED
-  COMPLETED
-  CANCELED
-}
-
-enum CampaignStepType {
-  EMAIL
-  WAIT
-  WEBHOOK
-  CONDITION
-}
-
-enum InvoiceStatus {
-  DRAFT
-  OPEN
-  PAID
-  VOID
-  OVERDUE
-}
-
-enum ExpenseStatus {
-  DRAFT
-  SUBMITTED
-  APPROVED
-  REJECTED
-  REIMBURSED
-}
-
-enum SocialProvider {
-  LINKEDIN
-  X
-  FACEBOOK
-  INSTAGRAM
-  OTHER
-}
-
-enum SocialPostStatus {
-  DRAFT
-  SCHEDULED
-  PUBLISHING
-  PUBLISHED
-  PARTIALLY_FAILED
-  FAILED
-  CANCELED
-}
-
-enum SocialVariantStatus {
-  DRAFT
-  SCHEDULED
-  PUBLISHED
-  FAILED
-}
-
-enum AiGenerationStatus {
-  PENDING
-  RUNNING
-  SUCCEEDED
-  FAILED
-  CANCELED
-}
-
-enum PortalDocumentStatus {
-  DRAFT
-  IN_REVIEW
-  APPROVED
-  REJECTED
-  PUBLISHED
-  ARCHIVED
-}
-
-enum ApprovalStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
-enum WebhookStatus {
-  RECEIVED
-  PROCESSING
-  PROCESSED
-  FAILED
-}
-
-enum IdempotencyState {
-  STARTED
-  COMPLETED
-  FAILED
-}
-
-model User {
-  id          String  @id @default(uuid()) @db.Uuid
-  clerkUserId String  @unique
-  email       String?
-  displayName String?
-  imageUrl    String?
-
-  memberships             Membership[]
-  supportTicketsRequested SupportTicket[] @relation("SupportRequester")
-  aiGenerations           AiGeneration[]  @relation("AiGenerationUser")
-  aiUsage                 AiUsageLedger[] @relation("AiUsageUser")
-  auditEvents             AuditEvent[]    @relation("AuditActor")
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@index([email])
-}
-
-model Organization {
-  id       String  @id @default(uuid()) @db.Uuid
-  slug     String  @unique
-  name     String
-  imageUrl String?
-
-  memberships  Membership[]
-  settings     OrganizationSettings?
-  subscription BillingSubscription?
-
-  assets Asset[]
-
-  crmAccounts   CrmAccount[]
-  crmContacts   CrmContact[]
-  crmDeals      CrmDeal[]
-  crmActivities CrmActivity[]
-
-  projects         Project[]
-  projectMembers   ProjectMember[]
-  milestones       Milestone[]
-  tasks            Task[]
-  taskDependencies TaskDependency[]
-
-  supportTickets    SupportTicket[]
-  supportMessages   SupportMessage[]
-  knowledgeArticles KnowledgeArticle[]
-
-  audiences     Audience[]
-  campaigns     Campaign[]
-  campaignSteps CampaignStep[]
-
-  invoices     Invoice[]
-  invoiceLines InvoiceLine[]
-  expenses     Expense[]
-
-  socialAccounts  SocialAccount[]
-  socialPosts     SocialPost[]
-  socialVariants  SocialVariant[]
-  socialPostMedia SocialPostMedia[]
-
-  aiGenerations AiGeneration[]
-  aiUsage       AiUsageLedger[]
-
-  portalDocuments        PortalDocument[]
-  portalDocumentVersions PortalDocumentVersion[]
-  portalApprovals        PortalApproval[]
-
-  auditEvents AuditEvent[]
-
-  webhookEvents      WebhookEvent[]
-  idempotencyRecords IdempotencyRecord[]
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-}
-
-model Membership {
-  id             String           @id @default(uuid()) @db.Uuid
-  organizationId String           @db.Uuid
-  userId         String           @db.Uuid
-  role           MembershipRole   @default(MEMBER)
-  status         MembershipStatus @default(ACTIVE)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  crmAccountsOwned CrmAccount[] @relation("CrmAccountOwner")
-  crmContactsOwned CrmContact[] @relation("CrmContactOwner")
-  crmDealsOwned    CrmDeal[]    @relation("CrmDealOwner")
-
-  projectsOwned      Project[]       @relation("ProjectOwner")
-  projectMemberships ProjectMember[]
-  tasksAssigned      Task[]          @relation("TaskAssignee")
-
-  supportTicketsAssigned    SupportTicket[]    @relation("SupportAssignee")
-  supportMessagesAuthored   SupportMessage[]   @relation("SupportMessageAuthor")
-  knowledgeArticlesAuthored KnowledgeArticle[] @relation("KnowledgeArticleAuthor")
-
-  campaignsOwned Campaign[] @relation("CampaignOwner")
-
-  invoicesCreated   Invoice[] @relation("InvoiceCreator")
-  invoicesApproved  Invoice[] @relation("InvoiceApprover")
-  expensesSubmitted Expense[] @relation("ExpenseSubmitter")
-
-  assetsCreated      Asset[]      @relation("AssetCreator")
-  socialPostsCreated SocialPost[] @relation("SocialPostCreator")
-  socialPostsApproved SocialPost[] @relation("SocialPostApprover")
-  crmActivitiesAuthored CrmActivity[] @relation("CrmActivityAuthor")
-
-  portalVersionsUploaded  PortalDocumentVersion[] @relation("PortalVersionUploader")
-  portalApprovalsReviewed PortalApproval[]        @relation("PortalApprovalReviewer")
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@unique([organizationId, userId])
-  @@index([organizationId, status])
-  @@index([userId])
-}
-
-model OrganizationSettings {
-  id             String @id @default(uuid()) @db.Uuid
-  organizationId String @unique @db.Uuid
-
-  timezone        String @default("UTC")
-  locale          String @default("en-US")
-  defaultCurrency String @default("USD") @db.Char(3)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-}
-
-model BillingSubscription {
-  id                     String             @id @default(uuid()) @db.Uuid
-  organizationId         String             @unique @db.Uuid
-  provider               String
-  providerCustomerId     String?
-  providerSubscriptionId String?            @unique
-  planKey                String
-  status                 SubscriptionStatus
-  currentPeriodEnd       DateTime?          @db.Timestamptz(6)
-  cancelAtPeriodEnd      Boolean            @default(false)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@index([provider, providerCustomerId])
-}
-
-model Asset {
-  id                    String  @id @default(uuid()) @db.Uuid
-  organizationId        String  @db.Uuid
-  createdByMembershipId String? @db.Uuid
-
-  storageProvider String
-  storageKey      String
-  filename        String
-  contentType     String
-  byteSize        BigInt
-  checksum        String?
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  createdBy    Membership?  @relation("AssetCreator", fields: [createdByMembershipId], references: [id], onDelete: SetNull)
-
-  expenseReceipts        Expense[]               @relation("ExpenseReceipt")
-  socialPostMedia        SocialPostMedia[]
-  portalDocumentVersions PortalDocumentVersion[]
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-
-  @@unique([organizationId, storageProvider, storageKey])
-  @@index([organizationId, createdAt])
-}
-
-model CrmAccount {
-  id                String  @id @default(uuid()) @db.Uuid
-  organizationId    String  @db.Uuid
-  ownerMembershipId String? @db.Uuid
-
-  name       String
-  website    String?
-  industry   String?
-  status     CrmAccountStatus @default(PROSPECT)
-  notes      String?
-  archivedAt DateTime?        @db.Timestamptz(6)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  owner        Membership?  @relation("CrmAccountOwner", fields: [ownerMembershipId], references: [id], onDelete: SetNull)
-
-  contacts CrmContact[]
-  deals    CrmDeal[]
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@index([organizationId, status])
-  @@index([organizationId, ownerMembershipId])
-  @@index([organizationId, name])
-}
-
-model CrmContact {
-  id                String  @id @default(uuid()) @db.Uuid
-  organizationId    String  @db.Uuid
-  accountId         String? @db.Uuid
-  ownerMembershipId String? @db.Uuid
+// ───────── FleetFusion: fleet · dispatch · compliance ─────────
+enum DriverStatus { ACTIVE ON_LEAVE INACTIVE }
+enum VehicleStatus { ACTIVE IN_SHOP OUT_OF_SERVICE RETIRED }
+enum VehicleType { TRACTOR TRAILER STRAIGHT_TRUCK }
+enum LoadStatus { DRAFT BOOKED DISPATCHED AT_PICKUP IN_TRANSIT AT_DELIVERY DELIVERED CANCELED }
+enum LoadStopType { PICKUP DELIVERY }
+enum ComplianceSubjectType { ORGANIZATION DRIVER VEHICLE }
+enum ComplianceItemType { CDL MEDICAL_CARD REGISTRATION INSURANCE ANNUAL_INSPECTION IRP_CAB_CARD IFTA_LICENSE UCR OPERATING_AUTHORITY OTHER }
+
+model Driver {
+  id             String  @id @default(uuid()) @db.Uuid
+  organizationId String  @db.Uuid
+  membershipId   String? @unique @db.Uuid
 
   firstName  String
   lastName   String
-  email      String?
   phone      String?
-  title      String?
-  status     CrmContactStatus @default(LEAD)
-  archivedAt DateTime?        @db.Timestamptz(6)
+  email      String?
+  status     DriverStatus @default(ACTIVE)
+  hiredAt    DateTime?    @db.Date
+  archivedAt DateTime?    @db.Timestamptz(6)
+  version    Int          @default(1)
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  account      CrmAccount?  @relation(fields: [accountId], references: [id], onDelete: SetNull)
-  owner        Membership?  @relation("CrmContactOwner", fields: [ownerMembershipId], references: [id], onDelete: SetNull)
+  membership   Membership?  @relation("DriverMembership", fields: [membershipId], references: [id], onDelete: SetNull)
 
-  primaryDeals CrmDeal[] @relation("CrmDealPrimaryContact")
+  loads           Load[]           @relation("LoadDriver")
+  complianceItems ComplianceItem[] @relation("ComplianceDriver")
 
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   updatedAt DateTime @updatedAt @db.Timestamptz(6)
 
   @@index([organizationId, status])
-  @@index([organizationId, accountId])
-  @@index([organizationId, email])
+  @@index([organizationId, lastName, firstName])
 }
 
-model CrmDeal {
-  id                String  @id @default(uuid()) @db.Uuid
-  organizationId    String  @db.Uuid
-  accountId         String  @db.Uuid
-  primaryContactId  String? @db.Uuid
-  ownerMembershipId String? @db.Uuid
-
-  name              String
-  stage             CrmDealStage @default(LEAD)
-  value             Decimal      @default(0) @db.Decimal(19, 4)
-  currency          String       @default("USD") @db.Char(3)
-  probability       Int          @default(0)
-  expectedCloseDate DateTime?    @db.Date
-  closedAt          DateTime?    @db.Timestamptz(6)
-  archivedAt        DateTime?    @db.Timestamptz(6)
-  version           Int          @default(1)
-
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  account        CrmAccount   @relation(fields: [accountId], references: [id], onDelete: Cascade)
-  primaryContact CrmContact?  @relation("CrmDealPrimaryContact", fields: [primaryContactId], references: [id], onDelete: SetNull)
-  owner          Membership?  @relation("CrmDealOwner", fields: [ownerMembershipId], references: [id], onDelete: SetNull)
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@index([organizationId, stage])
-  @@index([organizationId, ownerMembershipId])
-  @@index([organizationId, accountId])
-  @@index([organizationId, expectedCloseDate])
-}
-
-model CrmActivity {
-  id                     String  @id @default(uuid()) @db.Uuid
-  organizationId         String  @db.Uuid
-  authoredByMembershipId String? @db.Uuid
-
-  recordType String
-  recordId   String @db.Uuid
-  kind       String
-  subject    String
-  body       String?
-  occurredAt DateTime @db.Timestamptz(6)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  authoredBy   Membership?  @relation("CrmActivityAuthor", fields: [authoredByMembershipId], references: [id], onDelete: SetNull)
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@index([organizationId, recordType, recordId, occurredAt])
-  @@index([organizationId, authoredByMembershipId])
-}
-
-model Project {
-  id                String  @id @default(uuid()) @db.Uuid
-  organizationId    String  @db.Uuid
-  ownerMembershipId String? @db.Uuid
-
-  name        String
-  description String?
-  status      ProjectStatus @default(PLANNED)
-  startsAt    DateTime?     @db.Date
-  dueAt       DateTime?     @db.Date
-  archivedAt  DateTime?     @db.Timestamptz(6)
-  version     Int           @default(1)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  owner        Membership?  @relation("ProjectOwner", fields: [ownerMembershipId], references: [id], onDelete: SetNull)
-
-  members    ProjectMember[]
-  milestones Milestone[]
-  tasks      Task[]
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@index([organizationId, status])
-  @@index([organizationId, ownerMembershipId])
-  @@index([organizationId, dueAt])
-}
-
-model ProjectMember {
-  id             String            @id @default(uuid()) @db.Uuid
-  organizationId String            @db.Uuid
-  projectId      String            @db.Uuid
-  membershipId   String            @db.Uuid
-  role           ProjectMemberRole @default(CONTRIBUTOR)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  project      Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  membership   Membership   @relation(fields: [membershipId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-
-  @@unique([projectId, membershipId])
-  @@index([organizationId, membershipId])
-}
-
-model Milestone {
-  id             String @id @default(uuid()) @db.Uuid
-  organizationId String @db.Uuid
-  projectId      String @db.Uuid
-
-  name        String
-  description String?
-  dueAt       DateTime? @db.Date
-  completedAt DateTime? @db.Timestamptz(6)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  project      Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
-
-  tasks Task[]
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@index([organizationId, projectId])
-  @@index([organizationId, dueAt])
-}
-
-model Task {
-  id                   String  @id @default(uuid()) @db.Uuid
-  organizationId       String  @db.Uuid
-  projectId            String  @db.Uuid
-  milestoneId          String? @db.Uuid
-  parentTaskId         String? @db.Uuid
-  assigneeMembershipId String? @db.Uuid
-
-  title       String
-  description String?
-  status      TaskStatus   @default(TODO)
-  priority    TaskPriority @default(MEDIUM)
-  startsAt    DateTime?    @db.Timestamptz(6)
-  dueAt       DateTime?    @db.Timestamptz(6)
-  completedAt DateTime?    @db.Timestamptz(6)
-  position    Int          @default(0)
-  version     Int          @default(1)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  project      Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  milestone    Milestone?   @relation(fields: [milestoneId], references: [id], onDelete: SetNull)
-
-  parent   Task?  @relation("TaskHierarchy", fields: [parentTaskId], references: [id], onDelete: SetNull)
-  children Task[] @relation("TaskHierarchy")
-
-  assignee Membership? @relation("TaskAssignee", fields: [assigneeMembershipId], references: [id], onDelete: SetNull)
-
-  dependencies TaskDependency[] @relation("TaskDependencySource")
-  requiredBy   TaskDependency[] @relation("TaskDependencyTarget")
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@index([organizationId, projectId, status])
-  @@index([organizationId, assigneeMembershipId, status])
-  @@index([organizationId, dueAt])
-  @@index([parentTaskId])
-}
-
-model TaskDependency {
-  id              String @id @default(uuid()) @db.Uuid
-  organizationId  String @db.Uuid
-  taskId          String @db.Uuid
-  dependsOnTaskId String @db.Uuid
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  task         Task         @relation("TaskDependencySource", fields: [taskId], references: [id], onDelete: Cascade)
-  dependsOn    Task         @relation("TaskDependencyTarget", fields: [dependsOnTaskId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-
-  @@unique([taskId, dependsOnTaskId])
-  @@index([organizationId, dependsOnTaskId])
-}
-
-model SupportTicket {
-  id                   String  @id @default(uuid()) @db.Uuid
-  organizationId       String  @db.Uuid
-  requesterUserId      String? @db.Uuid
-  assignedMembershipId String? @db.Uuid
-
-  number      Int
-  subject     String
-  description String?
-  status      TicketStatus   @default(OPEN)
-  priority    TicketPriority @default(NORMAL)
-
-  firstResponseDueAt DateTime? @db.Timestamptz(6)
-  resolutionDueAt    DateTime? @db.Timestamptz(6)
-  resolvedAt         DateTime? @db.Timestamptz(6)
-  closedAt           DateTime? @db.Timestamptz(6)
-  version            Int       @default(1)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  requester    User?        @relation("SupportRequester", fields: [requesterUserId], references: [id], onDelete: SetNull)
-  assignee     Membership?  @relation("SupportAssignee", fields: [assignedMembershipId], references: [id], onDelete: SetNull)
-
-  messages SupportMessage[]
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@unique([organizationId, number])
-  @@index([organizationId, status, priority])
-  @@index([organizationId, assignedMembershipId, status])
-}
-
-model SupportMessage {
-  id                 String  @id @default(uuid()) @db.Uuid
-  organizationId     String  @db.Uuid
-  ticketId           String  @db.Uuid
-  authorMembershipId String? @db.Uuid
-
-  authorLabel String
-  body        String
-  isInternal  Boolean @default(false)
-
-  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  ticket       SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  author       Membership?   @relation("SupportMessageAuthor", fields: [authorMembershipId], references: [id], onDelete: SetNull)
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-
-  @@index([organizationId, ticketId, createdAt])
-}
-
-model KnowledgeArticle {
-  id                 String  @id @default(uuid()) @db.Uuid
-  organizationId     String  @db.Uuid
-  authorMembershipId String? @db.Uuid
-
-  slug   String
-  title  String
-  body   String
-  status KnowledgeArticleStatus @default(DRAFT)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  author       Membership?  @relation("KnowledgeArticleAuthor", fields: [authorMembershipId], references: [id], onDelete: SetNull)
-
-  publishedAt DateTime? @db.Timestamptz(6)
-  createdAt   DateTime  @default(now()) @db.Timestamptz(6)
-  updatedAt   DateTime  @updatedAt @db.Timestamptz(6)
-
-  @@unique([organizationId, slug])
-  @@index([organizationId, status])
-}
-
-model Audience {
+model Vehicle {
   id             String @id @default(uuid()) @db.Uuid
   organizationId String @db.Uuid
 
-  name       String
-  definition Json
-  status     AudienceStatus @default(DRAFT)
+  unitNumber String
+  type       VehicleType   @default(TRACTOR)
+  status     VehicleStatus @default(ACTIVE)
+  vin        String?
+  plate      String?
+  plateState String?       @db.Char(2)
+  make       String?
+  model      String?
+  year       Int?
+  archivedAt DateTime?     @db.Timestamptz(6)
+  version    Int           @default(1)
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  campaigns    Campaign[]
+
+  loads           Load[]           @relation("LoadVehicle")
+  complianceItems ComplianceItem[] @relation("ComplianceVehicle")
 
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   updatedAt DateTime @updatedAt @db.Timestamptz(6)
 
+  @@unique([organizationId, unitNumber])
   @@index([organizationId, status])
 }
 
-model Campaign {
+model Load {
   id                String  @id @default(uuid()) @db.Uuid
   organizationId    String  @db.Uuid
-  audienceId        String? @db.Uuid
-  ownerMembershipId String? @db.Uuid
+  customerAccountId String? @db.Uuid
+  driverId          String? @db.Uuid
+  vehicleId         String? @db.Uuid
 
-  name        String
-  description String?
-  status      CampaignStatus @default(DRAFT)
-  scheduledAt DateTime?      @db.Timestamptz(6)
-  startedAt   DateTime?      @db.Timestamptz(6)
-  completedAt DateTime?      @db.Timestamptz(6)
-  version     Int            @default(1)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  audience     Audience?    @relation(fields: [audienceId], references: [id], onDelete: SetNull)
-  owner        Membership?  @relation("CampaignOwner", fields: [ownerMembershipId], references: [id], onDelete: SetNull)
-
-  steps CampaignStep[]
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@index([organizationId, status])
-  @@index([organizationId, scheduledAt])
-}
-
-model CampaignStep {
-  id             String @id @default(uuid()) @db.Uuid
-  organizationId String @db.Uuid
-  campaignId     String @db.Uuid
-
-  position Int
-  type     CampaignStepType
-  config   Json
+  number          Int
+  referenceNumber String?
+  status          LoadStatus @default(DRAFT)
+  rate            Decimal    @default(0) @db.Decimal(19, 4)
+  currency        String     @default("USD") @db.Char(3)
+  miles           Int?
+  notes           String?
+  podReceivedAt   DateTime?  @db.Timestamptz(6)
+  deliveredAt     DateTime?  @db.Timestamptz(6)
+  archivedAt      DateTime?  @db.Timestamptz(6)
+  version         Int        @default(1)
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  campaign     Campaign     @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  customer     CrmAccount?  @relation("LoadCustomer", fields: [customerAccountId], references: [id], onDelete: SetNull)
+  driver       Driver?      @relation("LoadDriver", fields: [driverId], references: [id], onDelete: SetNull)
+  vehicle      Vehicle?     @relation("LoadVehicle", fields: [vehicleId], references: [id], onDelete: SetNull)
 
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@unique([campaignId, position])
-  @@index([organizationId, campaignId])
-}
-
-model Invoice {
-  id                    String  @id @default(uuid()) @db.Uuid
-  organizationId        String  @db.Uuid
-  createdByMembershipId String? @db.Uuid
-  approvedByMembershipId String? @db.Uuid
-
-  number        Int
-  customerName  String
-  customerEmail String?
-  currency      String  @default("USD") @db.Char(3)
-
-  subtotal Decimal @default(0) @db.Decimal(19, 4)
-  taxTotal Decimal @default(0) @db.Decimal(19, 4)
-  total    Decimal @default(0) @db.Decimal(19, 4)
-
-  status   InvoiceStatus @default(DRAFT)
-  issuedAt DateTime?     @db.Date
-  dueAt    DateTime?     @db.Date
-  paidAt   DateTime?     @db.Timestamptz(6)
-  approvedAt DateTime?   @db.Timestamptz(6)
-  version  Int           @default(1)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  createdBy    Membership?  @relation("InvoiceCreator", fields: [createdByMembershipId], references: [id], onDelete: SetNull)
-  approvedBy   Membership?  @relation("InvoiceApprover", fields: [approvedByMembershipId], references: [id], onDelete: SetNull)
-
-  lines InvoiceLine[]
+  stops    LoadStop[]
+  invoices Invoice[]  @relation("LoadInvoices")
 
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   updatedAt DateTime @updatedAt @db.Timestamptz(6)
 
   @@unique([organizationId, number])
   @@index([organizationId, status])
-  @@index([organizationId, approvedAt])
-  @@index([organizationId, dueAt])
+  @@index([organizationId, driverId, status])
+  @@index([organizationId, customerAccountId])
 }
 
-model InvoiceLine {
+model LoadStop {
   id             String @id @default(uuid()) @db.Uuid
   organizationId String @db.Uuid
-  invoiceId      String @db.Uuid
+  loadId         String @db.Uuid
 
-  position     Int
-  description  String
-  quantity     Decimal @default(1) @db.Decimal(12, 3)
-  unitPrice    Decimal @db.Decimal(19, 4)
-  taxRate      Decimal @default(0) @db.Decimal(7, 6)
-  lineSubtotal Decimal @db.Decimal(19, 4)
-  lineTax      Decimal @db.Decimal(19, 4)
-  lineTotal    Decimal @db.Decimal(19, 4)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  invoice      Invoice      @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-
-  @@unique([invoiceId, position])
-  @@index([organizationId, invoiceId])
-}
-
-model Expense {
-  id                      String  @id @default(uuid()) @db.Uuid
-  organizationId          String  @db.Uuid
-  submittedByMembershipId String? @db.Uuid
-  receiptAssetId          String? @db.Uuid
-
-  vendor      String
-  description String?
-  amount      Decimal       @db.Decimal(19, 4)
-  currency    String        @default("USD") @db.Char(3)
-  incurredAt  DateTime      @db.Date
-  status      ExpenseStatus @default(DRAFT)
+  sequence     Int
+  type         LoadStopType
+  locationName String?
+  address1     String?
+  city         String
+  state        String    @db.Char(2)
+  postalCode   String?
+  windowStart  DateTime? @db.Timestamptz(6)
+  windowEnd    DateTime? @db.Timestamptz(6)
+  arrivedAt    DateTime? @db.Timestamptz(6)
+  departedAt   DateTime? @db.Timestamptz(6)
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  submittedBy  Membership?  @relation("ExpenseSubmitter", fields: [submittedByMembershipId], references: [id], onDelete: SetNull)
-  receipt      Asset?       @relation("ExpenseReceipt", fields: [receiptAssetId], references: [id], onDelete: SetNull)
+  load         Load         @relation(fields: [loadId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   updatedAt DateTime @updatedAt @db.Timestamptz(6)
 
-  @@index([organizationId, status])
-  @@index([organizationId, incurredAt])
+  @@unique([loadId, sequence])
+  @@index([organizationId, loadId])
 }
 
-model SocialAccount {
-  id             String @id @default(uuid()) @db.Uuid
-  organizationId String @db.Uuid
-
-  provider          SocialProvider
-  providerAccountId String
-  displayName       String
-  credentialRef     String?
-  active            Boolean        @default(true)
-
-  organization Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  variants     SocialVariant[]
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@unique([organizationId, provider, providerAccountId])
-  @@index([organizationId, active])
-}
-
-model SocialPost {
-  id                    String  @id @default(uuid()) @db.Uuid
-  organizationId        String  @db.Uuid
-  createdByMembershipId String? @db.Uuid
-  approvedByMembershipId String? @db.Uuid
-
-  title       String?
-  content     String
-  status      SocialPostStatus @default(DRAFT)
-  scheduledAt DateTime?        @db.Timestamptz(6)
-  publishedAt DateTime?        @db.Timestamptz(6)
-  approvedAt  DateTime?        @db.Timestamptz(6)
-  version     Int              @default(1)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  createdBy    Membership?  @relation("SocialPostCreator", fields: [createdByMembershipId], references: [id], onDelete: SetNull)
-  approvedBy   Membership?  @relation("SocialPostApprover", fields: [approvedByMembershipId], references: [id], onDelete: SetNull)
-
-  variants SocialVariant[]
-  media    SocialPostMedia[]
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@index([organizationId, status])
-  @@index([organizationId, scheduledAt])
-  @@index([organizationId, approvedAt])
-}
-
-model SocialVariant {
-  id              String @id @default(uuid()) @db.Uuid
-  organizationId  String @db.Uuid
-  postId          String @db.Uuid
-  socialAccountId String @db.Uuid
-
-  content        String
-  status         SocialVariantStatus @default(DRAFT)
-  providerPostId String?
-  publishedAt    DateTime?           @db.Timestamptz(6)
-  errorCode      String?
-
-  organization  Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  post          SocialPost    @relation(fields: [postId], references: [id], onDelete: Cascade)
-  socialAccount SocialAccount @relation(fields: [socialAccountId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@unique([postId, socialAccountId])
-  @@index([organizationId, status])
-}
-
-model SocialPostMedia {
-  id             String @id @default(uuid()) @db.Uuid
-  organizationId String @db.Uuid
-  postId         String @db.Uuid
-  assetId        String @db.Uuid
-  position       Int
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  post         SocialPost   @relation(fields: [postId], references: [id], onDelete: Cascade)
-  asset        Asset        @relation(fields: [assetId], references: [id], onDelete: Cascade)
-
-  @@unique([postId, assetId])
-  @@unique([postId, position])
-  @@index([organizationId, postId])
-}
-
-model AiGeneration {
-  id             String @id @default(uuid()) @db.Uuid
-  organizationId String @db.Uuid
-  userId         String @db.Uuid
-
-  provider String
-  model    String
-  status   AiGenerationStatus @default(PENDING)
-
-  input       Json
-  output      Json?
-  requestHash String?
-  errorCode   String?
-
-  inputTokens  Int     @default(0)
-  outputTokens Int     @default(0)
-  cost         Decimal @default(0) @db.Decimal(19, 8)
-
-  startedAt   DateTime? @db.Timestamptz(6)
-  completedAt DateTime? @db.Timestamptz(6)
-
-  organization Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  user         User           @relation("AiGenerationUser", fields: [userId], references: [id], onDelete: Restrict)
-  usage        AiUsageLedger?
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@index([organizationId, userId, createdAt])
-  @@index([organizationId, status])
-  @@index([organizationId, requestHash])
-}
-
-model AiUsageLedger {
-  id             String @id @default(uuid()) @db.Uuid
-  organizationId String @db.Uuid
-  userId         String @db.Uuid
-  generationId   String @unique @db.Uuid
-
-  provider     String
-  model        String
-  inputTokens  Int
-  outputTokens Int
-  cost         Decimal @db.Decimal(19, 8)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  user         User         @relation("AiUsageUser", fields: [userId], references: [id], onDelete: Restrict)
-  generation   AiGeneration @relation(fields: [generationId], references: [id], onDelete: Cascade)
-
-  occurredAt DateTime @default(now()) @db.Timestamptz(6)
-
-  @@index([organizationId, occurredAt])
-  @@index([organizationId, userId, occurredAt])
-}
-
-model PortalDocument {
-  id             String @id @default(uuid()) @db.Uuid
-  organizationId String @db.Uuid
-
-  title                String
-  description          String?
-  status               PortalDocumentStatus @default(DRAFT)
-  clientVisible        Boolean              @default(false)
-  currentVersionNumber Int                  @default(0)
-  version              Int                  @default(1)
-
-  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-
-  versions PortalDocumentVersion[]
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@index([organizationId, status])
-  @@index([organizationId, clientVisible])
-}
-
-model PortalDocumentVersion {
-  id                     String  @id @default(uuid()) @db.Uuid
-  organizationId         String  @db.Uuid
-  documentId             String  @db.Uuid
-  assetId                String  @db.Uuid
-  uploadedByMembershipId String? @db.Uuid
-
-  versionNumber Int
-  notes         String?
-
-  organization Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  document     PortalDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
-  asset        Asset          @relation(fields: [assetId], references: [id], onDelete: Restrict)
-  uploadedBy   Membership?    @relation("PortalVersionUploader", fields: [uploadedByMembershipId], references: [id], onDelete: SetNull)
-
-  approvals PortalApproval[]
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-
-  @@unique([documentId, versionNumber])
-  @@index([organizationId, documentId])
-}
-
-model PortalApproval {
-  id                   String  @id @default(uuid()) @db.Uuid
-  organizationId       String  @db.Uuid
-  documentVersionId    String  @db.Uuid
-  reviewerMembershipId String? @db.Uuid
-
-  reviewerLabel String
-  status        ApprovalStatus @default(PENDING)
-  note          String?
-  decidedAt     DateTime?      @db.Timestamptz(6)
-
-  organization    Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  documentVersion PortalDocumentVersion @relation(fields: [documentVersionId], references: [id], onDelete: Cascade)
-  reviewer        Membership?           @relation("PortalApprovalReviewer", fields: [reviewerMembershipId], references: [id], onDelete: SetNull)
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @db.Timestamptz(6)
-
-  @@unique([documentVersionId, reviewerMembershipId])
-  @@index([organizationId, status])
-}
-
-model AuditEvent {
+model ComplianceItem {
   id             String  @id @default(uuid()) @db.Uuid
   organizationId String  @db.Uuid
-  actorUserId    String? @db.Uuid
+  driverId       String? @db.Uuid
+  vehicleId      String? @db.Uuid
+  assetId        String? @db.Uuid
 
-  action       String
-  resourceType String
-  resourceId   String?
-  metadata     Json?
+  subjectType     ComplianceSubjectType
+  type            ComplianceItemType
+  title           String?
+  referenceNumber String?
+  issuedAt        DateTime? @db.Date
+  expiresAt       DateTime? @db.Date
+  archivedAt      DateTime? @db.Timestamptz(6)
+  version         Int       @default(1)
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  actor        User?        @relation("AuditActor", fields: [actorUserId], references: [id], onDelete: SetNull)
-
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-
-  @@index([organizationId, createdAt])
-  @@index([organizationId, resourceType, resourceId])
-  @@index([organizationId, action])
-}
-
-model WebhookEvent {
-  id             String  @id @default(uuid()) @db.Uuid
-  organizationId String? @db.Uuid
-
-  provider String
-  eventId  String
-  type     String
-  status   WebhookStatus @default(RECEIVED)
-
-  payloadHash String?
-  errorCode   String?
-  receivedAt  DateTime  @default(now()) @db.Timestamptz(6)
-  processedAt DateTime? @db.Timestamptz(6)
-
-  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
-
-  @@unique([provider, eventId])
-  @@index([organizationId, receivedAt])
-  @@index([provider, status])
-}
-
-model IdempotencyRecord {
-  id             String  @id @default(uuid()) @db.Uuid
-  organizationId String? @db.Uuid
-
-  scope String
-  key   String
-  state IdempotencyState @default(STARTED)
-
-  result      Json?
-  errorCode   String?
-  completedAt DateTime? @db.Timestamptz(6)
-
-  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  driver       Driver?      @relation("ComplianceDriver", fields: [driverId], references: [id], onDelete: Cascade)
+  vehicle      Vehicle?     @relation("ComplianceVehicle", fields: [vehicleId], references: [id], onDelete: Cascade)
+  asset        Asset?       @relation(fields: [assetId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   updatedAt DateTime @updatedAt @db.Timestamptz(6)
 
-  @@unique([scope, key])
-  @@index([organizationId, createdAt])
+  @@index([organizationId, expiresAt])
+  @@index([organizationId, subjectType, type])
 }
