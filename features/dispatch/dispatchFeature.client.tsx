@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { DispatchTemplate } from "@/components/templates/dispatchTemplate";
 import { Input } from "@/components/ui/input";
@@ -84,7 +83,6 @@ export function DispatchFeatureClient({ board }: { board: DispatchBoardData }) {
               <option key={value} value={value}>{label}</option>
             ))}
           </select>
-          <Link className="type-link" href="/dispatch/new">New load</Link>
         </div>
       }
     />
