@@ -1,4 +1,4 @@
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { Show, UserButton } from '@clerk/nextjs';
 import type { Route } from 'next';
 import Link from 'next/link';
 
@@ -25,7 +25,7 @@ export function PublicNav() {
               {label}
             </Link>
           ))}
-          <SignedOut>
+          <Show when="signed-out">
             <Link
               className="text-muted-foreground hover:text-foreground rounded-md px-3 py-2 text-sm font-medium transition-colors"
               href={'/sign-in' as Route}
@@ -38,8 +38,8 @@ export function PublicNav() {
             >
               Get started
             </Link>
-          </SignedOut>
-          <SignedIn>
+          </Show>
+          <Show when="signed-in">
             <Link
               className="text-muted-foreground hover:text-foreground rounded-md px-3 py-2 text-sm font-medium transition-colors"
               href="/dashboard"
@@ -47,7 +47,7 @@ export function PublicNav() {
               Dashboard
             </Link>
             <UserButton />
-          </SignedIn>
+          </Show>
         </nav>
       </div>
     </header>
