@@ -8,13 +8,53 @@ datasource db {
 }
 
 // ───────── FleetFusion: fleet · dispatch · compliance ─────────
-enum DriverStatus { ACTIVE ON_LEAVE INACTIVE }
-enum VehicleStatus { ACTIVE IN_SHOP OUT_OF_SERVICE RETIRED }
-enum VehicleType { TRACTOR TRAILER STRAIGHT_TRUCK }
-enum LoadStatus { DRAFT BOOKED DISPATCHED AT_PICKUP IN_TRANSIT AT_DELIVERY DELIVERED CANCELED }
-enum LoadStopType { PICKUP DELIVERY }
-enum ComplianceSubjectType { ORGANIZATION DRIVER VEHICLE }
-enum ComplianceItemType { CDL MEDICAL_CARD REGISTRATION INSURANCE ANNUAL_INSPECTION IRP_CAB_CARD IFTA_LICENSE UCR OPERATING_AUTHORITY OTHER }
+enum DriverStatus {
+  ACTIVE
+  ON_LEAVE
+  INACTIVE
+}
+enum VehicleStatus {
+  ACTIVE
+  IN_SHOP
+  OUT_OF_SERVICE
+  RETIRED
+}
+enum VehicleType {
+  TRACTOR
+  TRAILER
+  STRAIGHT_TRUCK
+}
+enum LoadStatus {
+  DRAFT
+  BOOKED
+  DISPATCHED
+  AT_PICKUP
+  IN_TRANSIT
+  AT_DELIVERY
+  DELIVERED
+  CANCELED
+}
+enum LoadStopType {
+  PICKUP
+  DELIVERY
+}
+enum ComplianceSubjectType {
+  ORGANIZATION
+  DRIVER
+  VEHICLE
+}
+enum ComplianceItemType {
+  CDL
+  MEDICAL_CARD
+  REGISTRATION
+  INSURANCE
+  ANNUAL_INSPECTION
+  IRP_CAB_CARD
+  IFTA_LICENSE
+  UCR
+  OPERATING_AUTHORITY
+  OTHER
+}
 
 model Driver {
   id             String  @id @default(uuid()) @db.Uuid
