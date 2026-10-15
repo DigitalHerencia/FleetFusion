@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
 import { DashboardLayout, type DashboardStat } from "@/components/blocks/dashboard-layout";
 import type { LoadSummaryDTO } from "@/types/dispatchTypes";
@@ -23,9 +22,7 @@ function LoadCard({ load }: { load: LoadSummaryDTO }) {
     <article className="surface-card space-y-3 p-4">
       <header className="flex flex-wrap items-start justify-between gap-2">
         <div>
-          <Link className="type-title hover:underline" href={`/dispatch/${load.id}`}>
-            Load #{load.number}
-          </Link>
+          <h3 className="type-title">Load #{load.number}</h3>
           <p className="type-caption text-muted-primary">{load.referenceNumber ?? "No reference number"}</p>
         </div>
         <strong className="text-sm">{money(load.rate)}</strong>
@@ -38,7 +35,10 @@ function LoadCard({ load }: { load: LoadSummaryDTO }) {
         <span>{load.customer?.name ?? "No customer"}</span>
         <span className="text-muted-primary">{load.driver?.name ?? "Unassigned driver"} · {load.vehicle?.unitNumber ?? "No truck"}</span>
       </div>
-      <Link className="type-link" href={`/dispatch/${load.id}`}>Open load</Link>
+      <p className="type-caption text-muted-primary">
+        {load.miles == null ? "Miles not entered" : `${load.miles.toLocaleString()} mi`}
+        {load.podReceivedAt ? " · POD received" : ""}
+      </p>
     </article>
   );
 }
