@@ -1,16 +1,16 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
-import { PublicNav } from '@/components/navigation/PublicNav';
-import { SharedFooter } from '@/components/shared/SharedFooter';
+import { PublicFooter } from "@/components/nav/public-footer";
+import { PublicHeader } from "@/components/nav/public-header";
+import { PublicMobileBottomNav } from "@/components/nav/mobile-bottom-nav";
 
-export function MarketingLayout({ children }: { children: ReactNode }) {
+export function PublicShell({ children }: { children: ReactNode }) {
   return (
-    <>
-      <PublicNav />
-      <main className="flex-1">{children}</main>
-      <SharedFooter />
-    </>
+    <div className="flex min-h-screen flex-col">
+      <PublicHeader />
+      <main className="min-w-0 flex-1 pb-16 md:pb-0">{children}</main>
+      <PublicFooter />
+      <PublicMobileBottomNav />
+    </div>
   );
 }
-
-export default MarketingLayout;
