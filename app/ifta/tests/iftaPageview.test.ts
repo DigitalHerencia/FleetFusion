@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 describe('iftaPageview', () => {
   it('list page renders header, filters, trips/fuel lists', async () => {

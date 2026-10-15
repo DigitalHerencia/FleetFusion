@@ -10,10 +10,28 @@ import { vehicleSchema } from '../schemas/vehicles.schema';
 
 type VehicleClient = Pick<PrismaClient, 'vehicle'>;
 
+type OptionalProperties<T> = {
+  [Key in keyof T as undefined extends T[Key] ? Key : never]?: Exclude<T[Key], undefined>;
+};
+type RequiredProperties<T> = {
+  [Key in keyof T as undefined extends T[Key] ? never : Key]: T[Key];
+};
+
+function omitUndefined<T extends object>(value: T): RequiredProperties<T> & OptionalProperties<T> {
+  return Object.fromEntries(
+    Object.entries(value).filter(([, fieldValue]) => fieldValue !== undefined),
+  ) as RequiredProperties<T> & OptionalProperties<T>;
+}
+
+function withOrganizationId(input: unknown, orgId: string) {
+  const fields = typeof input === 'object' && input !== null ? input : {};
+  return { ...fields, organizationId: orgId };
+}
+
 async function revalidateVehicles(orgId: string) {
   try {
     await revalidatePath('/vehicles');
-    await revalidateTag(`org:${orgId}:vehicles`);
+    await revalidateTag(`org:${orgId}:vehicles`, 'max');
   } catch (error) {
     if (process.env.NODE_ENV === 'test') return;
     throw error;
@@ -38,17 +56,21 @@ async function ensureVehicleUnique(
   data: { vin?: string | null; name?: string | null; excludeId?: string },
 ) {
   const or: Prisma.VehicleWhereInput[] = [];
-  if (data.vin) or.push({ vin: toInsensitiveEquals(data.vin) });
-  if (data.name) or.push({ name: toInsensitiveEquals(data.name) });
+  const vinFilter = toInsensitiveEquals(data.vin);
+  const nameFilter = toInsensitiveEquals(data.name);
+  if (vinFilter) or.push({ vin: vinFilter });
+  if (nameFilter) or.push({ name: nameFilter });
 
   if (!or.length) return;
 
+  const where: Prisma.VehicleWhereInput = {
+    organizationId: orgId,
+    OR: or,
+  };
+  if (data.excludeId) where.NOT = { id: data.excludeId };
+
   const existing = await client.vehicle.findFirst({
-    where: {
-      organizationId: orgId,
-      NOT: data.excludeId ? { id: data.excludeId } : undefined,
-      OR: or,
-    },
+    where,
   });
 
   if (existing) {
@@ -60,11 +82,12 @@ export async function createVehicle(input: unknown) {
   const { orgId } = await auth.requireOrgContext();
   await auth.assertRole('manager');
 
-  const parsed = vehicleSchema.parse({ ...input, organizationId: orgId });
+  const parsed = vehicleSchema.parse(withOrganizationId(input, orgId));
 
   await ensureVehicleUnique(prisma, orgId, { vin: parsed.vin, name: parsed.name });
 
-  const vehicle = await prisma.vehicle.create({ data: parsed }).catch((error) => {
+  const data: Prisma.VehicleUncheckedCreateInput = omitUndefined(parsed);
+  const vehicle = await prisma.vehicle.create({ data }).catch((error) => {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
       throw new Error('A vehicle with this VIN already exists');
     }
@@ -85,17 +108,25 @@ export async function updateVehicle(input: unknown) {
     organizationId: vehicleSchema.shape.organizationId.optional(),
   });
 
-  const parsed = updateSchema.parse({ ...input, organizationId: orgId });
+  const parsed = updateSchema.parse(withOrganizationId(input, orgId));
 
   const { id, ...data } = parsed;
   if (!id) throw new Error('Vehicle id is required');
 
-  await ensureVehicleUnique(prisma, orgId, { vin: data.vin, name: data.name, excludeId: id });
+  await ensureVehicleUnique(prisma, orgId, {
+    ...(data.vin !== undefined ? { vin: data.vin } : {}),
+    ...(data.name !== undefined ? { name: data.name } : {}),
+    excludeId: id,
+  });
 
+  const updateData: Prisma.VehicleUncheckedUpdateInput = {
+    ...omitUndefined(data),
+    organizationId: orgId,
+  };
   const vehicle = await prisma.vehicle
     .update({
       where: { id, organizationId: orgId, deletedAt: null },
-      data: { ...data, organizationId: orgId },
+      data: updateData,
     })
     .catch((error) => handleNotFound(error, 'Vehicle not found or already deleted'));
 
@@ -139,9 +170,7 @@ export async function bulkImportVehicles(input: { rows: unknown[] }) {
     return [] as const;
   }
 
-  const parsedRows = input.rows.map((row) =>
-    vehicleSchema.parse({ ...row, organizationId: orgId }),
-  );
+  const parsedRows = input.rows.map((row) => vehicleSchema.parse(withOrganizationId(row, orgId)));
 
   const seenVins = new Set<string>();
   const seenNames = new Set<string>();
@@ -168,7 +197,7 @@ export async function bulkImportVehicles(input: { rows: unknown[] }) {
         await ensureVehicleUnique(tx, orgId, { vin: row.vin, name: row.name });
       }
 
-      return Promise.all(parsedRows.map((row) => tx.vehicle.create({ data: row })));
+      return Promise.all(parsedRows.map((row) => tx.vehicle.create({ data: omitUndefined(row) })));
     })
     .catch((error) => {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {

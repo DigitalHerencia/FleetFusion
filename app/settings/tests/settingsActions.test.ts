@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 describe('settingsActions', () => {
   it('updateOrgProfile validates schema + persists fields', async () => {

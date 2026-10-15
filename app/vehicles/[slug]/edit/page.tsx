@@ -4,16 +4,33 @@ import { VehicleForm } from '../../components/VehicleForm';
 import { getVehicleById } from '../../lib/vehiclesFetchers';
 
 interface EditVehiclePageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-// Dynamic route for editing a vehicle. Fetches existing data for form.
 export default async function EditVehiclePage({ params }: EditVehiclePageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   const vehicle = await getVehicleById({ id: slug });
   if (!vehicle) {
     notFound();
   }
-  // Render the vehicle form pre-filled with existing data
-  return <VehicleForm initialData={vehicle} />;
+  return (
+    <VehicleForm
+      initialData={{
+        id: vehicle.id,
+        name: vehicle.name ?? '',
+        vin: vehicle.vin ?? '',
+        ...(vehicle.plateNumber !== null ? { plateNumber: vehicle.plateNumber } : {}),
+        ...(vehicle.plateState !== null ? { plateState: vehicle.plateState } : {}),
+        ...(vehicle.type !== null ? { type: vehicle.type } : {}),
+        status: vehicle.status,
+        ...(vehicle.year !== null ? { year: vehicle.year } : {}),
+        ...(vehicle.make !== null ? { make: vehicle.make } : {}),
+        ...(vehicle.model !== null ? { model: vehicle.model } : {}),
+        ...(vehicle.odometer !== null ? { odometer: vehicle.odometer } : {}),
+        ...(vehicle.fuelType !== null ? { fuelType: vehicle.fuelType } : {}),
+        ...(vehicle.axleCount !== null ? { axleCount: vehicle.axleCount } : {}),
+        ...(vehicle.deletedAt !== null ? { deletedAt: vehicle.deletedAt } : {}),
+      }}
+    />
+  );
 }

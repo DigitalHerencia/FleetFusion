@@ -1,18 +1,19 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 import {
   type VehicleFilters,
-  type VehicleInput,
   vehicleFiltersSchema,
+  type VehicleFormInput,
+  type VehicleInput,
   vehicleSchema,
 } from '../schemas/vehicles.schema';
 
-export function useVehicleForm(defaultValues?: Partial<VehicleInput>) {
-  return useForm<VehicleInput>({
+export function useVehicleForm(defaultValues?: Partial<VehicleFormInput>) {
+  return useForm<VehicleFormInput, undefined, VehicleInput>({
     resolver: zodResolver(vehicleSchema),
     mode: 'onBlur',
     defaultValues: {

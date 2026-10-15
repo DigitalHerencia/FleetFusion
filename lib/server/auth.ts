@@ -9,7 +9,7 @@ export type OrgContext = {
 
 declare global {
   // Provided by tests to bypass Clerk/Edge middleware.
-  // eslint-disable-next-line no-var
+
   var __TEST_AUTH_CONTEXT__: OrgContext | undefined;
 }
 

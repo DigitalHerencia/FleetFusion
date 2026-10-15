@@ -144,7 +144,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for full guidelines.
 
 ### Linting & Formatting
 
-Run `npm run lint` to check code quality. Use `npm run format` to automatically format the project with Prettier.
+Run `pnpm lint` and `pnpm format:check` to check code quality and formatting. Use `pnpm format` to apply Prettier formatting, and `pnpm type-check` to generate framework and Prisma types before running the TypeScript checker.
 
 ---
 

@@ -1,1 +1,83 @@
-// Stub for modules.css
+.drivers-domain {
+  display: block;
+  min-width: 0;
+}
+
+.domain-page {
+  display: grid;
+  gap: 1.5rem;
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: clamp(1rem, 3vw, 2.5rem);
+}
+
+.drivers-list {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.driver-card {
+  border: 1px solid #d8dee9;
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.driver-card header,
+.page-header {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.driver-card dl,
+.detail-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.driver-status-panel {
+  border: 1px solid #d8dee9;
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.domain-form {
+  display: grid;
+  gap: 1rem;
+  max-width: 640px;
+}
+
+.domain-form label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.domain-filters {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.domain-filters label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.drivers-mobile {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .drivers-list {
+    grid-template-columns: 1fr;
+  }
+
+  .drivers-mobile {
+    display: block;
+  }
+}

@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 describe('settingsPageview', () => {
   it('page renders header + sections', async () => {

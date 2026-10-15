@@ -1,8 +1,8 @@
 import {
-  vehicleFiltersSchema,
-  vehicleSchema,
   type VehicleFilters,
+  vehicleFiltersSchema,
   type VehicleInput,
+  vehicleSchema,
 } from '../schemas/vehicles.schema';
 
 export function validateVehicleInput(input: unknown): VehicleInput {

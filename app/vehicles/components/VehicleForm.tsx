@@ -38,8 +38,8 @@ export function VehicleForm({ initialData }: VehicleFormProps) {
       }
       // If successful, router will redirect via server action; optionally, we can refresh
       router.refresh();
-    } catch (e: any) {
-      setError(e.message || 'Failed to save vehicle');
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'Failed to save vehicle');
     }
   }
 

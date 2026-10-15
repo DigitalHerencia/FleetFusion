@@ -1,1 +1,3 @@
-// Stub for error.tsx handles domain failures
+'use client';
+
+export { default } from '@/error';

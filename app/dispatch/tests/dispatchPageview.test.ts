@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 describe('dispatchPageview', () => {
   it('board renders header, filters, board, bulk actions', async () => {

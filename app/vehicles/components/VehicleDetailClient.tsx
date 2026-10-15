@@ -6,6 +6,7 @@ import type {
   VehicleInspection,
   VehicleMaintenance,
 } from '@prisma/client';
+import Link from 'next/link';
 
 interface VehicleDetailClientProps {
   vehicle: Vehicle & {
@@ -22,9 +23,22 @@ interface VehicleDetailClientProps {
 export function VehicleDetailClient({ vehicle }: VehicleDetailClientProps) {
   return (
     <div className="space-y-4 p-6">
-      <h1 className="text-2xl font-semibold">
-        Vehicle Detail: {vehicle.name || 'Unnamed'} ({vehicle.vin || 'No VIN'})
-      </h1>
+      <header className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <Link className="text-muted-foreground text-sm underline" href="/vehicles">
+            Back to vehicles
+          </Link>
+          <h1 className="text-2xl font-semibold">
+            {vehicle.name || 'Unnamed'} ({vehicle.vin || 'No VIN'})
+          </h1>
+        </div>
+        <Link
+          className="bg-primary text-primary-foreground rounded-md px-4 py-2 text-sm"
+          href={`/vehicles/${vehicle.id}/edit`}
+        >
+          Edit vehicle
+        </Link>
+      </header>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <p>

@@ -1,4 +1,5 @@
 import type { Vehicle } from '@prisma/client';
+import Link from 'next/link';
 
 interface VehicleCardProps {
   vehicle: Vehicle;
@@ -10,7 +11,11 @@ interface VehicleCardProps {
  */
 export function VehicleCard({ vehicle }: VehicleCardProps) {
   return (
-    <article className="border-border bg-card rounded-md border p-4 shadow-sm">
+    <Link
+      aria-label={`View vehicle ${vehicle.name ?? vehicle.vin}`}
+      className="border-border bg-card hover:bg-muted/40 block rounded-md border p-4 shadow-sm transition-colors"
+      href={`/vehicles/${vehicle.id}`}
+    >
       <div className="flex items-center justify-between">
         <div>
           <p className="text-muted-foreground text-sm">{vehicle.name ?? 'Unnamed'}</p>
@@ -22,6 +27,6 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
         {vehicle.make ?? ''} {vehicle.model ?? ''}
         {vehicle.year ? ` · ${vehicle.year}` : ''}
       </p>
-    </article>
+    </Link>
   );
 }

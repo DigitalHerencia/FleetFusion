@@ -1,1 +1,5 @@
-// Stub for loading.tsx
+import { NotificationSkeleton } from './components/NotificationSkeleton';
+
+export default function NotificationsLoading() {
+  return <NotificationSkeleton />;
+}

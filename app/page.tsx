@@ -1,4 +1,5 @@
 import { ArrowRight, BarChart3, FileText, MapPin, Shield, Truck, Users } from 'lucide-react';
+import type { Route } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -43,7 +44,7 @@ export default function Home() {
                     asChild
                     className="w-full rounded-md bg-blue-500 px-6 py-2 font-semibold text-white hover:bg-blue-800"
                   >
-                    <Link href="/sign-up">
+                    <Link href={'/sign-up' as Route}>
                       Start Free 30-Day Trial <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>

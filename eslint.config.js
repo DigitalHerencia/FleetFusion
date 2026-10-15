@@ -65,6 +65,13 @@ export default tseslint.config(
     },
   },
 
+  {
+    files: ['**/tests/**/*.{ts,tsx}', '**/*.{test,spec}.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
+
   // Prettier (must be last)
   prettier,
 );

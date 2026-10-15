@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 describe('dashboardActions', () => {
   it('markAlertSeen should update alert state', async () => {

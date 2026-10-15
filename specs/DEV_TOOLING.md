@@ -7,16 +7,17 @@
 ## Goals
 
 - Fast feedback (lint/type/test under 10s locally on typical feature scope).
-- Consistent formatting and linting across stack (Next.js 16, React 19, TS 5, ESLint 9, Prettier 3).
+- Consistent formatting and linting across stack (Next.js 16, React 19, TypeScript 6, ESLint 10, Prettier 3).
 - Deterministic installs and scripts (pnpm preferred).
 
 ## Package Management
 
 - **Manager:** pnpm (frozen lockfile in CI).
-- **Node:** 20.x LTS.
+- **Node:** 24.12.0 (matches CI).
 - **Scripts (examples):**
-  - `pnpm lint` → ESLint 9 flat config
-  - `pnpm type-check` → `tsc --noEmit`
+  - `pnpm lint` → ESLint 10 flat config with zero warnings
+  - `pnpm typegen` → Prisma Client and Next.js route types (requires `DIRECT_URL` or `DATABASE_URL`)
+  - `pnpm type-check` → generate types, then type-check application code and generated route types
   - `pnpm test` → Vitest unit/integration
   - `pnpm test:coverage` → Vitest coverage
   - `pnpm test:e2e` → Playwright
@@ -25,11 +26,11 @@
   - `pnpm prisma:generate` → Prisma client
   - `pnpm prisma:migrate` → Prisma migrate dev/deploy
 
-## Linting (ESLint 9 Flat)
+## Linting (ESLint 10 Flat)
 
-- Base: `@eslint/js` recommended + `typescript-eslint` strict type-checked.
+- Base: `@eslint/js` recommended + `typescript-eslint` recommended.
 - Next.js plugin, React, React Hooks.
-- Rules: no `any`, explicit return types, exhaust deps, no console (warn/error allowed).
+- Rules: explicit `any` is warned in application code and allowed in test files; unused variables are warned; console calls are warned except `warn` and `error`.
 - Path aliases validated via TypeScript parser options.
 
 ## Formatting (Prettier 3)
@@ -39,7 +40,7 @@
 
 ## Type Checking
 
-- `tsc --noEmit`, strict mode, bundler module resolution.
+- `tsc --noEmit`, strict mode, bundler module resolution; unit-test files are validated by Vitest rather than this production type-check.
 - Path aliases `@/*`, `@/domains/*`, `@/shared/*`.
 
 ## Git Hooks
@@ -79,7 +80,7 @@
 ## Performance Guardrails in Dev
 
 - Prefer RSC; avoid heavy client bundles.
-- Run `next lint` and `next analyze` for bundle insight (optional script `pnpm analyze`).
+- Run `pnpm lint` and `next analyze` for bundle insight (optional script `pnpm analyze`).
 
 ## Database Tooling
 

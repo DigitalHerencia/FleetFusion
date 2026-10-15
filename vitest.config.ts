@@ -8,14 +8,14 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
-    include: ['src/**/*.test.{ts,tsx}'],
+    include: ['app/**/*.test.{ts,tsx}'],
     exclude: ['node_modules', '.next', 'e2e'],
-    threads: false,
+    fileParallelism: false,
     sequence: {
       concurrent: false,
     },
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(__dirname, '.'),
     },
   },
 });

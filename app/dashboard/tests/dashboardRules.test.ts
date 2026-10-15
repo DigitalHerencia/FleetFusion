@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 describe('dashboardRules', () => {
   it('resolveDashboardPriorityAlerts identifies top-level alerts', async () => {

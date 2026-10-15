@@ -1,1 +1,24 @@
-// Stub for modules.css
+.admin-domain {
+  min-width: 0;
+}
+
+.admin-domain table {
+  border-collapse: collapse;
+}
+
+.admin-domain th {
+  font-weight: 600;
+}
+
+.admin-domain input,
+.admin-domain textarea,
+.admin-domain select {
+  max-width: 100%;
+}
+
+.admin-domain button,
+.admin-domain a {
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+}

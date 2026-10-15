@@ -1,13 +1,11 @@
-import '@/app/globals.css';
+import '@/globals.css';
 
 import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
 import type React from 'react';
 
-import { AuthProvider } from '@/components/auth/context';
-import { PageLayout } from '@/components/shared/PageLayout';
-import { ThemeProvider } from '@/components/shared/ThemeProvider';
+import { ThemeProvider } from '@/components/providers/theme-provider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -29,22 +27,16 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider signInUrl="/sign-in" signUpUrl="/sign-up">
-      <html
-        lang="en"
-        className={`dark ${inter.variable} ${playfair.variable}`}
-        suppressHydrationWarning
-      >
+      <html lang="en" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
         <body className="bg-background text-foreground min-h-screen">
-          <AuthProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <PageLayout className="gap-0">{children}</PageLayout>
-            </ThemeProvider>
-          </AuthProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="flex min-h-screen flex-col">{children}</div>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

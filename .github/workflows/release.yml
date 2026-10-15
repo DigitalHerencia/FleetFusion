@@ -9,6 +9,8 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/fleetfusion
     permissions:
       contents: write
     steps:
@@ -18,7 +20,7 @@ jobs:
       - name: 📦 Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.26.2
+          version: 12.11.2
 
       - name: ⎔ Setup Node.js
         uses: actions/setup-node@v6

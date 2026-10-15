@@ -1,1 +1,22 @@
-// Stub for modules.css
+.analytics-domain {
+  min-width: 0;
+}
+
+.analytics-domain figure {
+  margin: 0;
+}
+
+.analytics-domain table {
+  border-collapse: collapse;
+}
+
+.analytics-domain th {
+  font-weight: 600;
+}
+
+.analytics-domain button,
+.analytics-domain a {
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+}

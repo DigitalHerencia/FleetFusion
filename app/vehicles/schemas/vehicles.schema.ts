@@ -115,4 +115,5 @@ export const vehicleFiltersSchema = z.object({
 
 // Export TypeScript types for external usage
 export type VehicleInput = z.infer<typeof vehicleSchema>;
+export type VehicleFormInput = z.input<typeof vehicleSchema>;
 export type VehicleFilters = z.infer<typeof vehicleFiltersSchema>;

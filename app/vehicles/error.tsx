@@ -1,3 +1,5 @@
+'use client';
+
 interface VehiclesErrorProps {
   error: Error;
   reset: () => void;
