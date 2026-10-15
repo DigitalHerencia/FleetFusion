@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BarChart3, FileText, MapPin, Shield, Truck, Users } from "lucide-react";
+import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { PricingSection } from "@/components/blocks/pricing-section";
 
@@ -54,6 +55,6 @@ export function LandingPageTemplate() {
   );
 }
 
-function FeatureCard({icon,title,children}:{icon:React.ReactNode;title:string;children:React.ReactNode}) {
+function FeatureCard({icon,title,children}:{icon:ReactNode;title:string;children:ReactNode}) {
   return <div className="flex flex-col items-center space-y-2 rounded-lg border bg-white/80 p-4 shadow-sm dark:bg-black/40">{icon}<h3 className="text-lg font-bold sm:text-xl">{title}</h3><p className="text-muted-foreground text-center text-sm sm:text-base">{children}</p></div>;
 }
