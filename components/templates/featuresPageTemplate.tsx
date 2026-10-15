@@ -14,7 +14,7 @@ const features = [
 ] as const;
 
 export function FeaturesPageTemplate() {
-  return <main className="relative flex-1 overflow-hidden bg-black">
+  return <div className="relative flex-1 overflow-hidden bg-black">
     <div className="from-background via-background pointer-events-none absolute inset-0 bg-gradient-to-b to-transparent" />
     <div className="absolute right-0 bottom-0 left-0 z-0"><Image src="/mountain_bg.png" alt="Road leading to mountains" width={1200} height={800} className="h-auto w-full object-cover" priority /></div>
     <div className="relative z-10 container mx-auto px-4 py-12 md:px-8">
@@ -31,5 +31,5 @@ export function FeaturesPageTemplate() {
         <p className="mx-auto mt-12 max-w-xl text-center text-sm text-blue-200 drop-shadow-md">For a full list of features and integrations, contact <a href="mailto:digitalherencia@outlook.com" className="underline transition-colors hover:text-blue-400">digitalherencia@outlook.com</a>.</p>
       </div>
     </div>
-  </main>;
+  </div>;
 }
