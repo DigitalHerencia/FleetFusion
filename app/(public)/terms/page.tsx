@@ -1,161 +1,18 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import Link from "next/link";
+
+const sections = [
+  ["acceptance", "Acceptance of terms", "By accessing or using FleetFusion, you agree to these terms. If you do not agree, do not use the service."],
+  ["service", "The service", "FleetFusion provides fleet operations software, which may include dispatch, compliance-document tracking, billing support, maintenance information, and reporting. Features may change as the product evolves."],
+  ["accounts", "Accounts and access", "You are responsible for providing accurate account information, protecting your credentials, and activity conducted through your account. You must have authority to act for any organization you register."],
+  ["payments", "Subscriptions and payment", "If paid plans are offered to you, pricing, billing intervals, taxes, renewal, and cancellation terms will be presented with the applicable order or subscription. Do not rely on pricing described in older marketing materials."],
+  ["acceptable-use", "Acceptable use", "Do not misuse the service, interfere with its operation, attempt unauthorized access, or use it in violation of applicable law."],
+  ["data", "Your data", "You retain rights in the business information you submit. You authorize FleetFusion to process that information as needed to provide, secure, and support the service, subject to the Privacy Policy."],
+  ["availability", "Availability and disclaimers", "The service is provided subject to applicable agreements and law. Unless expressly stated in a written agreement, the service is provided on an as-available basis and without warranties to the extent permitted by law."],
+  ["liability", "Limitation of liability", "To the extent permitted by law, FleetFusion is not liable for indirect, incidental, special, consequential, or punitive damages arising from use of the service."],
+  ["changes", "Changes to these terms", "These terms may be updated as the service changes. The revised version will be posted on this page with an updated effective date."],
+  ["contact", "Contact", "Questions about these terms can be sent to support@fleetfusion.app."],
+];
 
 export default function TermsPage() {
-  return (
-    <div className="bg-background relative flex min-h-screen flex-col">
-      {/* Background gradient overlay for fade effect */}
-      <div
-        className="from-background via-background pointer-events-none absolute inset-0 bg-gradient-to-b to-transparent"
-        style={{ zIndex: 0 }}
-      />
-
-      {/* Background image positioned at bottom */}
-      <div className="absolute right-0 bottom-0 left-0 z-0">
-        <Image
-          src="/winding_bg.png"
-          alt="Sunset highway with truck silhouette"
-          width={1200}
-          height={800}
-          className="h-auto w-full object-cover"
-          priority
-        />
-      </div>
-
-      <main className="relative z-10 flex-1">
-        <div className="container mx-auto px-4 py-12 md:px-8">
-          <div className="bg-card/90 mx-auto mb-24 w-full max-w-3xl p-6">
-            <h1 className="mb-6 text-center text-3xl font-bold md:text-4xl">📜 Terms of Service</h1>
-            <p className="text-muted-foreground mb-8 text-center text-sm">
-              Effective Date: April 27, 2025
-              <br />
-              Fleet Fusion, LLC &mdash; Anthony, New Mexico, United States
-            </p>
-            <ol className="text-foreground list-decimal space-y-4 pl-6 text-base">
-              <li>
-                <strong>Acceptance of Terms</strong>
-                <br />
-                By accessing or using Fleet Fusion's services ("Services"), you agree to be bound by
-                these Terms of Service ("Terms"). If you do not agree to these Terms, you may not
-                access or use the Services.
-              </li>
-              <li>
-                <strong>Services</strong>
-                <br />
-                Fleet Fusion provides a Transportation Management Software (TMS) platform as a
-                service (SaaS) designed for small to mid-sized enterprises (SMEs) managing fleet
-                operations. Services include dispatch, compliance, billing, maintenance tracking,
-                analytics, and related features.
-              </li>
-              <li>
-                <strong>Eligibility</strong>
-                <br />
-                You must be at least 18 years old and capable of entering into a legally binding
-                agreement to use our Services.
-              </li>
-              <li>
-                <strong>Account Registration</strong>
-                <br />
-                You must create an account and provide accurate, complete information. You are
-                responsible for maintaining the confidentiality of your credentials and all
-                activities under your account.
-              </li>
-              <li>
-                <strong>Subscription and Payment</strong>
-                <br />
-                <ul className="list-disc pl-6">
-                  <li>Starter Plan: $149/mo</li>
-                  <li>Growth Plan: $349/mo</li>
-                  <li>Enterprise Plan: $15/truck (minimum $699/mo)</li>
-                </ul>
-                <span className="mt-2 block">
-                  All prices are in USD. Taxes, SMS fees, and overages may apply. Payment is due
-                  monthly in advance. Failure to pay may result in suspension or termination of your
-                  account.
-                </span>
-              </li>
-              <li>
-                <strong>License Grant</strong>
-                <br />
-                Fleet Fusion grants you a non-exclusive, non-transferable, revocable license to use
-                the Services for your internal business operations.
-              </li>
-              <li>
-                <strong>Restrictions</strong>
-                <br />
-                You agree not to:
-                <ul className="list-disc pl-6">
-                  <li>Reverse engineer, decompile, or disassemble the software;</li>
-                  <li>Access the Services to build a competitive product;</li>
-                  <li>Use the platform for any illegal purpose.</li>
-                </ul>
-              </li>
-              <li>
-                <strong>Data Ownership and Usage</strong>
-                <br />
-                You retain ownership of all fleet data entered into the system. By using the
-                Services, you grant Fleet Fusion a limited license to use anonymized, aggregated
-                data to improve the Services.
-              </li>
-              <li>
-                <strong>Termination</strong>
-                <br />
-                Fleet Fusion may suspend or terminate access if you breach these Terms. Upon
-                termination, your access to data will be limited as described in the Privacy Policy.
-              </li>
-              <li>
-                <strong>Modifications</strong>
-                <br />
-                Fleet Fusion may modify these Terms at any time by posting updated Terms on the
-                website. Continued use constitutes acceptance.
-              </li>
-              <li>
-                <strong>Warranties and Disclaimers</strong>
-                <br />
-                Fleet Fusion provides Services "as is." We disclaim all warranties, express or
-                implied, including merchantability and fitness for a particular purpose.
-              </li>
-              <li>
-                <strong>Limitation of Liability</strong>
-                <br />
-                Fleet Fusion shall not be liable for indirect, incidental, special, or consequential
-                damages arising out of the use or inability to use the Services.
-              </li>
-              <li>
-                <strong>Indemnification</strong>
-                <br />
-                You agree to indemnify and hold harmless Fleet Fusion and its affiliates from any
-                claims, damages, liabilities, or expenses arising from your use of the Services.
-              </li>
-              <li>
-                <strong>Governing Law</strong>
-                <br />
-                These Terms are governed by the laws of the State of New Mexico, without regard to
-                its conflict of law principles.
-              </li>
-              <li>
-                <strong>Contact</strong>
-                <br />
-                Questions about these Terms? Email us at{' '}
-                <a href="mailto:digitalherencia@outlook.com" className="text-primary underline">
-                  digitalherencia@outlook.com
-                </a>
-              </li>
-            </ol>
-          </div>
-        </div>
-      </main>
-      <footer className="bg-background/80 relative z-10 flex w-full flex-row gap-2 px-6 py-3 backdrop-blur-sm">
-        <p className="text-muted-foreground text-xs">© 2025 FleetFusion. All rights reserved.</p>
-        <nav className="flex gap-4 sm:ml-auto sm:gap-6">
-          <Link className="text-xs underline-offset-4 hover:underline" href="/terms">
-            Terms of Service
-          </Link>
-          <Link className="text-xs underline-offset-4 hover:underline" href="/privacy">
-            Privacy
-          </Link>
-        </nav>
-      </footer>
-    </div>
-  );
+  return <article className="px-6 py-14 md:px-10 md:py-20"><div className="mx-auto max-w-4xl"><p className="text-sm font-bold tracking-widest text-primary uppercase">Legal</p><h1 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">Terms of Service</h1><p className="mt-4 text-sm text-muted-foreground">Effective date: October 15, 2026</p><p className="mt-8 max-w-3xl leading-8">These terms describe the basic conditions for using FleetFusion. They are general product terms and should be reviewed by qualified counsel before being treated as final legal advice or a signed agreement.</p><nav aria-label="On this page" className="mt-8 rounded-xl border bg-muted/30 p-5"><h2 className="font-bold">On this page</h2><ul className="mt-3 grid gap-2 sm:grid-cols-2">{sections.map(([id,title])=><li key={id}><Link className="text-primary underline underline-offset-4" href={`#${id}`}>{title}</Link></li>)}</ul></nav><div className="mt-10 space-y-8">{sections.map(([id,title,body])=><section id={id} key={id} className="scroll-mt-24"><h2 className="text-xl font-bold">{title}</h2><p className="mt-3 leading-8 text-muted-foreground">{body}</p></section>)}</div></div></article>;
 }
