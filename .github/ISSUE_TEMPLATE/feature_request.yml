@@ -1,0 +1,30 @@
+name: Feature
+description: Propose a bounded product capability or recipe/foundation addition.
+title: ""
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: What user/product outcome should exist?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Which shared-foundation or recipe capability changes?
+    validations:
+      required: true
+  - type: textarea
+    id: layers
+    attributes:
+      label: Expected layers
+      description: Identify likely routes, features, blocks, fetchers/actions, db helpers, workflows, auth/authz, integrations, schemas, or types.
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: State observable completion criteria.
+    validations:
+      required: true

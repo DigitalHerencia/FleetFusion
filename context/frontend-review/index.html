@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Frontend review</title>
+<style>
+:root{color-scheme:dark}
+body{margin:0;background:#08070c;color:#faf4e7;font:16px/1.55 system-ui}
+header{padding:20px 24px;position:sticky;top:0;background:#08070cf2;border-bottom:1px solid #7095a0;z-index:1;backdrop-filter:blur(10px)}
+h1{margin:0} h2{font-size:1rem;overflow-wrap:anywhere}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+input,select{font:inherit;padding:8px;background:#111;color:inherit;border:1px solid #7095a0}
+main{padding:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+article{border:1px solid #7095a0;padding:16px;min-width:0}
+article[data-error="true"]{border-style:dashed}
+img{width:100%;height:300px;object-fit:contain;object-position:top;background:#111}
+a{color:#a6d2df} small{display:block;color:#c7c1b5}
+</style>
+<header>
+  <h1>Frontend visual review</h1>
+  <p>122 captures · 1440 × 1000 desktop / 390 × 844 mobile · authenticated Edge session</p>
+  <div class="controls">
+    <input id="q" aria-label="Filter routes" placeholder="Filter routes">
+    <select id="size" aria-label="Viewport">
+      <option value="">Both sizes</option><option value="desktop">desktop</option><option value="mobile">mobile</option>
+    </select>
+    <select id="status" aria-label="Status">
+      <option value="">All statuses</option><option value="ok">ok</option><option value="error">error</option>
+    </select>
+  </div>
+</header>
+<main>
+<article data-path="/" data-size="desktop" data-error="false">
+  <h2>/</h2>
+  <small>desktop</small>
+  <a href="desktop-home.png"><img loading="lazy" alt="/ desktop screenshot" src="desktop-home.png"></a>
+  <p><a href="desktop-home.png">Open full screenshot</a></p>
+</article>
+<article data-path="/" data-size="mobile" data-error="false">
+  <h2>/</h2>
+  <small>mobile</small>
+  <a href="mobile-home.png"><img loading="lazy" alt="/ mobile screenshot" src="mobile-home.png"></a>
+  <p><a href="mobile-home.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/audit" data-size="desktop" data-error="false">
+  <h2>/admin/audit</h2>
+  <small>desktop</small>
+  <a href="desktop-admin_audit.png"><img loading="lazy" alt="/admin/audit desktop screenshot" src="desktop-admin_audit.png"></a>
+  <p><a href="desktop-admin_audit.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/audit" data-size="mobile" data-error="false">
+  <h2>/admin/audit</h2>
+  <small>mobile</small>
+  <a href="mobile-admin_audit.png"><img loading="lazy" alt="/admin/audit mobile screenshot" src="mobile-admin_audit.png"></a>
+  <p><a href="mobile-admin_audit.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records" data-size="desktop" data-error="false">
+  <h2>/admin/records</h2>
+  <small>desktop</small>
+  <a href="desktop-admin_records.png"><img loading="lazy" alt="/admin/records desktop screenshot" src="desktop-admin_records.png"></a>
+  <p><a href="desktop-admin_records.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records" data-size="mobile" data-error="false">
+  <h2>/admin/records</h2>
+  <small>mobile</small>
+  <a href="mobile-admin_records.png"><img loading="lazy" alt="/admin/records mobile screenshot" src="mobile-admin_records.png"></a>
+  <p><a href="mobile-admin_records.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/AI generations" data-size="desktop" data-error="false">
+  <h2>/admin/records/AI generations</h2>
+  <small>desktop</small>
+  <a href="desktop-admin_records_AI%20generations.png"><img loading="lazy" alt="/admin/records/AI generations desktop screenshot" src="desktop-admin_records_AI%20generations.png"></a>
+  <p><a href="desktop-admin_records_AI%20generations.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/AI generations" data-size="mobile" data-error="false">
+  <h2>/admin/records/AI generations</h2>
+  <small>mobile</small>
+  <a href="mobile-admin_records_AI%20generations.png"><img loading="lazy" alt="/admin/records/AI generations mobile screenshot" src="mobile-admin_records_AI%20generations.png"></a>
+  <p><a href="mobile-admin_records_AI%20generations.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/Campaigns" data-size="desktop" data-error="false">
+  <h2>/admin/records/Campaigns</h2>
+  <small>desktop</small>
+  <a href="desktop-admin_records_Campaigns.png"><img loading="lazy" alt="/admin/records/Campaigns desktop screenshot" src="desktop-admin_records_Campaigns.png"></a>
+  <p><a href="desktop-admin_records_Campaigns.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/Campaigns" data-size="mobile" data-error="false">
+  <h2>/admin/records/Campaigns</h2>
+  <small>mobile</small>
+  <a href="mobile-admin_records_Campaigns.png"><img loading="lazy" alt="/admin/records/Campaigns mobile screenshot" src="mobile-admin_records_Campaigns.png"></a>
+  <p><a href="mobile-admin_records_Campaigns.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/CRM contacts" data-size="desktop" data-error="false">
+  <h2>/admin/records/CRM contacts</h2>
+  <small>desktop</small>
+  <a href="desktop-admin_records_CRM%20contacts.png"><img loading="lazy" alt="/admin/records/CRM contacts desktop screenshot" src="desktop-admin_records_CRM%20contacts.png"></a>
+  <p><a href="desktop-admin_records_CRM%20contacts.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/CRM contacts" data-size="mobile" data-error="false">
+  <h2>/admin/records/CRM contacts</h2>
+  <small>mobile</small>
+  <a href="mobile-admin_records_CRM%20contacts.png"><img loading="lazy" alt="/admin/records/CRM contacts mobile screenshot" src="mobile-admin_records_CRM%20contacts.png"></a>
+  <p><a href="mobile-admin_records_CRM%20contacts.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/Invoices" data-size="desktop" data-error="false">
+  <h2>/admin/records/Invoices</h2>
+  <small>desktop</small>
+  <a href="desktop-admin_records_Invoices.png"><img loading="lazy" alt="/admin/records/Invoices desktop screenshot" src="desktop-admin_records_Invoices.png"></a>
+  <p><a href="desktop-admin_records_Invoices.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/Invoices" data-size="mobile" data-error="false">
+  <h2>/admin/records/Invoices</h2>
+  <small>mobile</small>
+  <a href="mobile-admin_records_Invoices.png"><img loading="lazy" alt="/admin/records/Invoices mobile screenshot" src="mobile-admin_records_Invoices.png"></a>
+  <p><a href="mobile-admin_records_Invoices.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/Portal documents" data-size="desktop" data-error="false">
+  <h2>/admin/records/Portal documents</h2>
+  <small>desktop</small>
+  <a href="desktop-admin_records_Portal%20documents.png"><img loading="lazy" alt="/admin/records/Portal documents desktop screenshot" src="desktop-admin_records_Portal%20documents.png"></a>
+  <p><a href="desktop-admin_records_Portal%20documents.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/Portal documents" data-size="mobile" data-error="false">
+  <h2>/admin/records/Portal documents</h2>
+  <small>mobile</small>
+  <a href="mobile-admin_records_Portal%20documents.png"><img loading="lazy" alt="/admin/records/Portal documents mobile screenshot" src="mobile-admin_records_Portal%20documents.png"></a>
+  <p><a href="mobile-admin_records_Portal%20documents.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/Projects" data-size="desktop" data-error="false">
+  <h2>/admin/records/Projects</h2>
+  <small>desktop</small>
+  <a href="desktop-admin_records_Projects.png"><img loading="lazy" alt="/admin/records/Projects desktop screenshot" src="desktop-admin_records_Projects.png"></a>
+  <p><a href="desktop-admin_records_Projects.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/Projects" data-size="mobile" data-error="false">
+  <h2>/admin/records/Projects</h2>
+  <small>mobile</small>
+  <a href="mobile-admin_records_Projects.png"><img loading="lazy" alt="/admin/records/Projects mobile screenshot" src="mobile-admin_records_Projects.png"></a>
+  <p><a href="mobile-admin_records_Projects.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/Social posts" data-size="desktop" data-error="false">
+  <h2>/admin/records/Social posts</h2>
+  <small>desktop</small>
+  <a href="desktop-admin_records_Social%20posts.png"><img loading="lazy" alt="/admin/records/Social posts desktop screenshot" src="desktop-admin_records_Social%20posts.png"></a>
+  <p><a href="desktop-admin_records_Social%20posts.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/Social posts" data-size="mobile" data-error="false">
+  <h2>/admin/records/Social posts</h2>
+  <small>mobile</small>
+  <a href="mobile-admin_records_Social%20posts.png"><img loading="lazy" alt="/admin/records/Social posts mobile screenshot" src="mobile-admin_records_Social%20posts.png"></a>
+  <p><a href="mobile-admin_records_Social%20posts.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/Support tickets" data-size="desktop" data-error="false">
+  <h2>/admin/records/Support tickets</h2>
+  <small>desktop</small>
+  <a href="desktop-admin_records_Support%20tickets.png"><img loading="lazy" alt="/admin/records/Support tickets desktop screenshot" src="desktop-admin_records_Support%20tickets.png"></a>
+  <p><a href="desktop-admin_records_Support%20tickets.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/records/Support tickets" data-size="mobile" data-error="false">
+  <h2>/admin/records/Support tickets</h2>
+  <small>mobile</small>
+  <a href="mobile-admin_records_Support%20tickets.png"><img loading="lazy" alt="/admin/records/Support tickets mobile screenshot" src="mobile-admin_records_Support%20tickets.png"></a>
+  <p><a href="mobile-admin_records_Support%20tickets.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/users" data-size="desktop" data-error="false">
+  <h2>/admin/users</h2>
+  <small>desktop</small>
+  <a href="desktop-admin_users.png"><img loading="lazy" alt="/admin/users desktop screenshot" src="desktop-admin_users.png"></a>
+  <p><a href="desktop-admin_users.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/users" data-size="mobile" data-error="false">
+  <h2>/admin/users</h2>
+  <small>mobile</small>
+  <a href="mobile-admin_users.png"><img loading="lazy" alt="/admin/users mobile screenshot" src="mobile-admin_users.png"></a>
+  <p><a href="mobile-admin_users.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/users/a03ad13d-139e-443a-9a66-e0fe94aa1d23" data-size="desktop" data-error="false">
+  <h2>/admin/users/a03ad13d-139e-443a-9a66-e0fe94aa1d23</h2>
+  <small>desktop</small>
+  <a href="desktop-admin_users_a03ad13d-139e-443a-9a66-e0fe94aa1d23.png"><img loading="lazy" alt="/admin/users/a03ad13d-139e-443a-9a66-e0fe94aa1d23 desktop screenshot" src="desktop-admin_users_a03ad13d-139e-443a-9a66-e0fe94aa1d23.png"></a>
+  <p><a href="desktop-admin_users_a03ad13d-139e-443a-9a66-e0fe94aa1d23.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/users/a03ad13d-139e-443a-9a66-e0fe94aa1d23" data-size="mobile" data-error="false">
+  <h2>/admin/users/a03ad13d-139e-443a-9a66-e0fe94aa1d23</h2>
+  <small>mobile</small>
+  <a href="mobile-admin_users_a03ad13d-139e-443a-9a66-e0fe94aa1d23.png"><img loading="lazy" alt="/admin/users/a03ad13d-139e-443a-9a66-e0fe94aa1d23 mobile screenshot" src="mobile-admin_users_a03ad13d-139e-443a-9a66-e0fe94aa1d23.png"></a>
+  <p><a href="mobile-admin_users_a03ad13d-139e-443a-9a66-e0fe94aa1d23.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/users/new" data-size="desktop" data-error="false">
+  <h2>/admin/users/new</h2>
+  <small>desktop</small>
+  <a href="desktop-admin_users_new.png"><img loading="lazy" alt="/admin/users/new desktop screenshot" src="desktop-admin_users_new.png"></a>
+  <p><a href="desktop-admin_users_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/users/new" data-size="mobile" data-error="false">
+  <h2>/admin/users/new</h2>
+  <small>mobile</small>
+  <a href="mobile-admin_users_new.png"><img loading="lazy" alt="/admin/users/new mobile screenshot" src="mobile-admin_users_new.png"></a>
+  <p><a href="mobile-admin_users_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/ai" data-size="desktop" data-error="false">
+  <h2>/ai</h2>
+  <small>desktop</small>
+  <a href="desktop-ai.png"><img loading="lazy" alt="/ai desktop screenshot" src="desktop-ai.png"></a>
+  <p><a href="desktop-ai.png">Open full screenshot</a></p>
+</article>
+<article data-path="/ai" data-size="mobile" data-error="false">
+  <h2>/ai</h2>
+  <small>mobile</small>
+  <a href="mobile-ai.png"><img loading="lazy" alt="/ai mobile screenshot" src="mobile-ai.png"></a>
+  <p><a href="mobile-ai.png">Open full screenshot</a></p>
+</article>
+<article data-path="/ai/playground" data-size="desktop" data-error="false">
+  <h2>/ai/playground</h2>
+  <small>desktop</small>
+  <a href="desktop-ai_playground.png"><img loading="lazy" alt="/ai/playground desktop screenshot" src="desktop-ai_playground.png"></a>
+  <p><a href="desktop-ai_playground.png">Open full screenshot</a></p>
+</article>
+<article data-path="/ai/playground" data-size="mobile" data-error="false">
+  <h2>/ai/playground</h2>
+  <small>mobile</small>
+  <a href="mobile-ai_playground.png"><img loading="lazy" alt="/ai/playground mobile screenshot" src="mobile-ai_playground.png"></a>
+  <p><a href="mobile-ai_playground.png">Open full screenshot</a></p>
+</article>
+<article data-path="/ai/usage" data-size="desktop" data-error="false">
+  <h2>/ai/usage</h2>
+  <small>desktop</small>
+  <a href="desktop-ai_usage.png"><img loading="lazy" alt="/ai/usage desktop screenshot" src="desktop-ai_usage.png"></a>
+  <p><a href="desktop-ai_usage.png">Open full screenshot</a></p>
+</article>
+<article data-path="/ai/usage" data-size="mobile" data-error="false">
+  <h2>/ai/usage</h2>
+  <small>mobile</small>
+  <a href="mobile-ai_usage.png"><img loading="lazy" alt="/ai/usage mobile screenshot" src="mobile-ai_usage.png"></a>
+  <p><a href="mobile-ai_usage.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/accounts" data-size="desktop" data-error="false">
+  <h2>/crm/accounts</h2>
+  <small>desktop</small>
+  <a href="desktop-crm_accounts.png"><img loading="lazy" alt="/crm/accounts desktop screenshot" src="desktop-crm_accounts.png"></a>
+  <p><a href="desktop-crm_accounts.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/accounts" data-size="mobile" data-error="false">
+  <h2>/crm/accounts</h2>
+  <small>mobile</small>
+  <a href="mobile-crm_accounts.png"><img loading="lazy" alt="/crm/accounts mobile screenshot" src="mobile-crm_accounts.png"></a>
+  <p><a href="mobile-crm_accounts.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/accounts/new" data-size="desktop" data-error="false">
+  <h2>/crm/accounts/new</h2>
+  <small>desktop</small>
+  <a href="desktop-crm_accounts_new.png"><img loading="lazy" alt="/crm/accounts/new desktop screenshot" src="desktop-crm_accounts_new.png"></a>
+  <p><a href="desktop-crm_accounts_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/accounts/new" data-size="mobile" data-error="false">
+  <h2>/crm/accounts/new</h2>
+  <small>mobile</small>
+  <a href="mobile-crm_accounts_new.png"><img loading="lazy" alt="/crm/accounts/new mobile screenshot" src="mobile-crm_accounts_new.png"></a>
+  <p><a href="mobile-crm_accounts_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/analytics" data-size="desktop" data-error="false">
+  <h2>/crm/analytics</h2>
+  <small>desktop</small>
+  <a href="desktop-crm_analytics.png"><img loading="lazy" alt="/crm/analytics desktop screenshot" src="desktop-crm_analytics.png"></a>
+  <p><a href="desktop-crm_analytics.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/analytics" data-size="mobile" data-error="false">
+  <h2>/crm/analytics</h2>
+  <small>mobile</small>
+  <a href="mobile-crm_analytics.png"><img loading="lazy" alt="/crm/analytics mobile screenshot" src="mobile-crm_analytics.png"></a>
+  <p><a href="mobile-crm_analytics.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/contacts" data-size="desktop" data-error="false">
+  <h2>/crm/contacts</h2>
+  <small>desktop</small>
+  <a href="desktop-crm_contacts.png"><img loading="lazy" alt="/crm/contacts desktop screenshot" src="desktop-crm_contacts.png"></a>
+  <p><a href="desktop-crm_contacts.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/contacts" data-size="mobile" data-error="false">
+  <h2>/crm/contacts</h2>
+  <small>mobile</small>
+  <a href="mobile-crm_contacts.png"><img loading="lazy" alt="/crm/contacts mobile screenshot" src="mobile-crm_contacts.png"></a>
+  <p><a href="mobile-crm_contacts.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/contacts/new" data-size="desktop" data-error="false">
+  <h2>/crm/contacts/new</h2>
+  <small>desktop</small>
+  <a href="desktop-crm_contacts_new.png"><img loading="lazy" alt="/crm/contacts/new desktop screenshot" src="desktop-crm_contacts_new.png"></a>
+  <p><a href="desktop-crm_contacts_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/contacts/new" data-size="mobile" data-error="false">
+  <h2>/crm/contacts/new</h2>
+  <small>mobile</small>
+  <a href="mobile-crm_contacts_new.png"><img loading="lazy" alt="/crm/contacts/new mobile screenshot" src="mobile-crm_contacts_new.png"></a>
+  <p><a href="mobile-crm_contacts_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/leads" data-size="desktop" data-error="false">
+  <h2>/crm/leads</h2>
+  <small>desktop</small>
+  <a href="desktop-crm_leads.png"><img loading="lazy" alt="/crm/leads desktop screenshot" src="desktop-crm_leads.png"></a>
+  <p><a href="desktop-crm_leads.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/leads" data-size="mobile" data-error="false">
+  <h2>/crm/leads</h2>
+  <small>mobile</small>
+  <a href="mobile-crm_leads.png"><img loading="lazy" alt="/crm/leads mobile screenshot" src="mobile-crm_leads.png"></a>
+  <p><a href="mobile-crm_leads.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/leads/new" data-size="desktop" data-error="false">
+  <h2>/crm/leads/new</h2>
+  <small>desktop</small>
+  <a href="desktop-crm_leads_new.png"><img loading="lazy" alt="/crm/leads/new desktop screenshot" src="desktop-crm_leads_new.png"></a>
+  <p><a href="desktop-crm_leads_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/leads/new" data-size="mobile" data-error="false">
+  <h2>/crm/leads/new</h2>
+  <small>mobile</small>
+  <a href="mobile-crm_leads_new.png"><img loading="lazy" alt="/crm/leads/new mobile screenshot" src="mobile-crm_leads_new.png"></a>
+  <p><a href="mobile-crm_leads_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/pipeline" data-size="desktop" data-error="false">
+  <h2>/crm/pipeline</h2>
+  <small>desktop</small>
+  <a href="desktop-crm_pipeline.png"><img loading="lazy" alt="/crm/pipeline desktop screenshot" src="desktop-crm_pipeline.png"></a>
+  <p><a href="desktop-crm_pipeline.png">Open full screenshot</a></p>
+</article>
+<article data-path="/crm/pipeline" data-size="mobile" data-error="false">
+  <h2>/crm/pipeline</h2>
+  <small>mobile</small>
+  <a href="mobile-crm_pipeline.png"><img loading="lazy" alt="/crm/pipeline mobile screenshot" src="mobile-crm_pipeline.png"></a>
+  <p><a href="mobile-crm_pipeline.png">Open full screenshot</a></p>
+</article>
+<article data-path="/dashboard" data-size="desktop" data-error="false">
+  <h2>/dashboard</h2>
+  <small>desktop</small>
+  <a href="desktop-dashboard.png"><img loading="lazy" alt="/dashboard desktop screenshot" src="desktop-dashboard.png"></a>
+  <p><a href="desktop-dashboard.png">Open full screenshot</a></p>
+</article>
+<article data-path="/dashboard" data-size="mobile" data-error="false">
+  <h2>/dashboard</h2>
+  <small>mobile</small>
+  <a href="mobile-dashboard.png"><img loading="lazy" alt="/dashboard mobile screenshot" src="mobile-dashboard.png"></a>
+  <p><a href="mobile-dashboard.png">Open full screenshot</a></p>
+</article>
+<article data-path="/expenses" data-size="desktop" data-error="false">
+  <h2>/expenses</h2>
+  <small>desktop</small>
+  <a href="desktop-expenses.png"><img loading="lazy" alt="/expenses desktop screenshot" src="desktop-expenses.png"></a>
+  <p><a href="desktop-expenses.png">Open full screenshot</a></p>
+</article>
+<article data-path="/expenses" data-size="mobile" data-error="false">
+  <h2>/expenses</h2>
+  <small>mobile</small>
+  <a href="mobile-expenses.png"><img loading="lazy" alt="/expenses mobile screenshot" src="mobile-expenses.png"></a>
+  <p><a href="mobile-expenses.png">Open full screenshot</a></p>
+</article>
+<article data-path="/expenses/new" data-size="desktop" data-error="false">
+  <h2>/expenses/new</h2>
+  <small>desktop</small>
+  <a href="desktop-expenses_new.png"><img loading="lazy" alt="/expenses/new desktop screenshot" src="desktop-expenses_new.png"></a>
+  <p><a href="desktop-expenses_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/expenses/new" data-size="mobile" data-error="false">
+  <h2>/expenses/new</h2>
+  <small>mobile</small>
+  <a href="mobile-expenses_new.png"><img loading="lazy" alt="/expenses/new mobile screenshot" src="mobile-expenses_new.png"></a>
+  <p><a href="mobile-expenses_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/faq" data-size="desktop" data-error="false">
+  <h2>/faq</h2>
+  <small>desktop</small>
+  <a href="desktop-faq.png"><img loading="lazy" alt="/faq desktop screenshot" src="desktop-faq.png"></a>
+  <p><a href="desktop-faq.png">Open full screenshot</a></p>
+</article>
+<article data-path="/faq" data-size="mobile" data-error="false">
+  <h2>/faq</h2>
+  <small>mobile</small>
+  <a href="mobile-faq.png"><img loading="lazy" alt="/faq mobile screenshot" src="mobile-faq.png"></a>
+  <p><a href="mobile-faq.png">Open full screenshot</a></p>
+</article>
+<article data-path="/invoices" data-size="desktop" data-error="false">
+  <h2>/invoices</h2>
+  <small>desktop</small>
+  <a href="desktop-invoices.png"><img loading="lazy" alt="/invoices desktop screenshot" src="desktop-invoices.png"></a>
+  <p><a href="desktop-invoices.png">Open full screenshot</a></p>
+</article>
+<article data-path="/invoices" data-size="mobile" data-error="false">
+  <h2>/invoices</h2>
+  <small>mobile</small>
+  <a href="mobile-invoices.png"><img loading="lazy" alt="/invoices mobile screenshot" src="mobile-invoices.png"></a>
+  <p><a href="mobile-invoices.png">Open full screenshot</a></p>
+</article>
+<article data-path="/invoices/new" data-size="desktop" data-error="false">
+  <h2>/invoices/new</h2>
+  <small>desktop</small>
+  <a href="desktop-invoices_new.png"><img loading="lazy" alt="/invoices/new desktop screenshot" src="desktop-invoices_new.png"></a>
+  <p><a href="desktop-invoices_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/invoices/new" data-size="mobile" data-error="false">
+  <h2>/invoices/new</h2>
+  <small>mobile</small>
+  <a href="mobile-invoices_new.png"><img loading="lazy" alt="/invoices/new mobile screenshot" src="mobile-invoices_new.png"></a>
+  <p><a href="mobile-invoices_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/marketing/analytics" data-size="desktop" data-error="false">
+  <h2>/marketing/analytics</h2>
+  <small>desktop</small>
+  <a href="desktop-marketing_analytics.png"><img loading="lazy" alt="/marketing/analytics desktop screenshot" src="desktop-marketing_analytics.png"></a>
+  <p><a href="desktop-marketing_analytics.png">Open full screenshot</a></p>
+</article>
+<article data-path="/marketing/analytics" data-size="mobile" data-error="false">
+  <h2>/marketing/analytics</h2>
+  <small>mobile</small>
+  <a href="mobile-marketing_analytics.png"><img loading="lazy" alt="/marketing/analytics mobile screenshot" src="mobile-marketing_analytics.png"></a>
+  <p><a href="mobile-marketing_analytics.png">Open full screenshot</a></p>
+</article>
+<article data-path="/marketing/audiences" data-size="desktop" data-error="false">
+  <h2>/marketing/audiences</h2>
+  <small>desktop</small>
+  <a href="desktop-marketing_audiences.png"><img loading="lazy" alt="/marketing/audiences desktop screenshot" src="desktop-marketing_audiences.png"></a>
+  <p><a href="desktop-marketing_audiences.png">Open full screenshot</a></p>
+</article>
+<article data-path="/marketing/audiences" data-size="mobile" data-error="false">
+  <h2>/marketing/audiences</h2>
+  <small>mobile</small>
+  <a href="mobile-marketing_audiences.png"><img loading="lazy" alt="/marketing/audiences mobile screenshot" src="mobile-marketing_audiences.png"></a>
+  <p><a href="mobile-marketing_audiences.png">Open full screenshot</a></p>
+</article>
+<article data-path="/marketing/audiences/new" data-size="desktop" data-error="false">
+  <h2>/marketing/audiences/new</h2>
+  <small>desktop</small>
+  <a href="desktop-marketing_audiences_new.png"><img loading="lazy" alt="/marketing/audiences/new desktop screenshot" src="desktop-marketing_audiences_new.png"></a>
+  <p><a href="desktop-marketing_audiences_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/marketing/audiences/new" data-size="mobile" data-error="false">
+  <h2>/marketing/audiences/new</h2>
+  <small>mobile</small>
+  <a href="mobile-marketing_audiences_new.png"><img loading="lazy" alt="/marketing/audiences/new mobile screenshot" src="mobile-marketing_audiences_new.png"></a>
+  <p><a href="mobile-marketing_audiences_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/marketing/campaigns" data-size="desktop" data-error="false">
+  <h2>/marketing/campaigns</h2>
+  <small>desktop</small>
+  <a href="desktop-marketing_campaigns.png"><img loading="lazy" alt="/marketing/campaigns desktop screenshot" src="desktop-marketing_campaigns.png"></a>
+  <p><a href="desktop-marketing_campaigns.png">Open full screenshot</a></p>
+</article>
+<article data-path="/marketing/campaigns" data-size="mobile" data-error="false">
+  <h2>/marketing/campaigns</h2>
+  <small>mobile</small>
+  <a href="mobile-marketing_campaigns.png"><img loading="lazy" alt="/marketing/campaigns mobile screenshot" src="mobile-marketing_campaigns.png"></a>
+  <p><a href="mobile-marketing_campaigns.png">Open full screenshot</a></p>
+</article>
+<article data-path="/marketing/campaigns/new" data-size="desktop" data-error="false">
+  <h2>/marketing/campaigns/new</h2>
+  <small>desktop</small>
+  <a href="desktop-marketing_campaigns_new.png"><img loading="lazy" alt="/marketing/campaigns/new desktop screenshot" src="desktop-marketing_campaigns_new.png"></a>
+  <p><a href="desktop-marketing_campaigns_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/marketing/campaigns/new" data-size="mobile" data-error="false">
+  <h2>/marketing/campaigns/new</h2>
+  <small>mobile</small>
+  <a href="mobile-marketing_campaigns_new.png"><img loading="lazy" alt="/marketing/campaigns/new mobile screenshot" src="mobile-marketing_campaigns_new.png"></a>
+  <p><a href="mobile-marketing_campaigns_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/my-tasks" data-size="desktop" data-error="false">
+  <h2>/my-tasks</h2>
+  <small>desktop</small>
+  <a href="desktop-my-tasks.png"><img loading="lazy" alt="/my-tasks desktop screenshot" src="desktop-my-tasks.png"></a>
+  <p><a href="desktop-my-tasks.png">Open full screenshot</a></p>
+</article>
+<article data-path="/my-tasks" data-size="mobile" data-error="false">
+  <h2>/my-tasks</h2>
+  <small>mobile</small>
+  <a href="mobile-my-tasks.png"><img loading="lazy" alt="/my-tasks mobile screenshot" src="mobile-my-tasks.png"></a>
+  <p><a href="mobile-my-tasks.png">Open full screenshot</a></p>
+</article>
+<article data-path="/onboarding" data-size="desktop" data-error="false">
+  <h2>/onboarding</h2>
+  <small>desktop · redirects to /dashboard</small>
+  <a href="desktop-onboarding.png"><img loading="lazy" alt="/onboarding desktop screenshot" src="desktop-onboarding.png"></a>
+  <p><a href="desktop-onboarding.png">Open full screenshot</a></p>
+</article>
+<article data-path="/onboarding" data-size="mobile" data-error="false">
+  <h2>/onboarding</h2>
+  <small>mobile · redirects to /dashboard</small>
+  <a href="mobile-onboarding.png"><img loading="lazy" alt="/onboarding mobile screenshot" src="mobile-onboarding.png"></a>
+  <p><a href="mobile-onboarding.png">Open full screenshot</a></p>
+</article>
+<article data-path="/portal" data-size="desktop" data-error="false">
+  <h2>/portal</h2>
+  <small>desktop</small>
+  <a href="desktop-portal.png"><img loading="lazy" alt="/portal desktop screenshot" src="desktop-portal.png"></a>
+  <p><a href="desktop-portal.png">Open full screenshot</a></p>
+</article>
+<article data-path="/portal" data-size="mobile" data-error="false">
+  <h2>/portal</h2>
+  <small>mobile</small>
+  <a href="mobile-portal.png"><img loading="lazy" alt="/portal mobile screenshot" src="mobile-portal.png"></a>
+  <p><a href="mobile-portal.png">Open full screenshot</a></p>
+</article>
+<article data-path="/portal/billing" data-size="desktop" data-error="false">
+  <h2>/portal/billing</h2>
+  <small>desktop</small>
+  <a href="desktop-portal_billing.png"><img loading="lazy" alt="/portal/billing desktop screenshot" src="desktop-portal_billing.png"></a>
+  <p><a href="desktop-portal_billing.png">Open full screenshot</a></p>
+</article>
+<article data-path="/portal/billing" data-size="mobile" data-error="false">
+  <h2>/portal/billing</h2>
+  <small>mobile</small>
+  <a href="mobile-portal_billing.png"><img loading="lazy" alt="/portal/billing mobile screenshot" src="mobile-portal_billing.png"></a>
+  <p><a href="mobile-portal_billing.png">Open full screenshot</a></p>
+</article>
+<article data-path="/portal/documents" data-size="desktop" data-error="false">
+  <h2>/portal/documents</h2>
+  <small>desktop</small>
+  <a href="desktop-portal_documents.png"><img loading="lazy" alt="/portal/documents desktop screenshot" src="desktop-portal_documents.png"></a>
+  <p><a href="desktop-portal_documents.png">Open full screenshot</a></p>
+</article>
+<article data-path="/portal/documents" data-size="mobile" data-error="false">
+  <h2>/portal/documents</h2>
+  <small>mobile</small>
+  <a href="mobile-portal_documents.png"><img loading="lazy" alt="/portal/documents mobile screenshot" src="mobile-portal_documents.png"></a>
+  <p><a href="mobile-portal_documents.png">Open full screenshot</a></p>
+</article>
+<article data-path="/privacy" data-size="desktop" data-error="false">
+  <h2>/privacy</h2>
+  <small>desktop</small>
+  <a href="desktop-privacy.png"><img loading="lazy" alt="/privacy desktop screenshot" src="desktop-privacy.png"></a>
+  <p><a href="desktop-privacy.png">Open full screenshot</a></p>
+</article>
+<article data-path="/privacy" data-size="mobile" data-error="false">
+  <h2>/privacy</h2>
+  <small>mobile</small>
+  <a href="mobile-privacy.png"><img loading="lazy" alt="/privacy mobile screenshot" src="mobile-privacy.png"></a>
+  <p><a href="mobile-privacy.png">Open full screenshot</a></p>
+</article>
+<article data-path="/projects" data-size="desktop" data-error="false">
+  <h2>/projects</h2>
+  <small>desktop</small>
+  <a href="desktop-projects.png"><img loading="lazy" alt="/projects desktop screenshot" src="desktop-projects.png"></a>
+  <p><a href="desktop-projects.png">Open full screenshot</a></p>
+</article>
+<article data-path="/projects" data-size="mobile" data-error="false">
+  <h2>/projects</h2>
+  <small>mobile</small>
+  <a href="mobile-projects.png"><img loading="lazy" alt="/projects mobile screenshot" src="mobile-projects.png"></a>
+  <p><a href="mobile-projects.png">Open full screenshot</a></p>
+</article>
+<article data-path="/projects/new" data-size="desktop" data-error="false">
+  <h2>/projects/new</h2>
+  <small>desktop</small>
+  <a href="desktop-projects_new.png"><img loading="lazy" alt="/projects/new desktop screenshot" src="desktop-projects_new.png"></a>
+  <p><a href="desktop-projects_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/projects/new" data-size="mobile" data-error="false">
+  <h2>/projects/new</h2>
+  <small>mobile</small>
+  <a href="mobile-projects_new.png"><img loading="lazy" alt="/projects/new mobile screenshot" src="mobile-projects_new.png"></a>
+  <p><a href="mobile-projects_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/settings/billing" data-size="desktop" data-error="false">
+  <h2>/settings/billing</h2>
+  <small>desktop</small>
+  <a href="desktop-settings_billing.png"><img loading="lazy" alt="/settings/billing desktop screenshot" src="desktop-settings_billing.png"></a>
+  <p><a href="desktop-settings_billing.png">Open full screenshot</a></p>
+</article>
+<article data-path="/settings/billing" data-size="mobile" data-error="false">
+  <h2>/settings/billing</h2>
+  <small>mobile</small>
+  <a href="mobile-settings_billing.png"><img loading="lazy" alt="/settings/billing mobile screenshot" src="mobile-settings_billing.png"></a>
+  <p><a href="mobile-settings_billing.png">Open full screenshot</a></p>
+</article>
+<article data-path="/settings/integrations" data-size="desktop" data-error="false">
+  <h2>/settings/integrations</h2>
+  <small>desktop</small>
+  <a href="desktop-settings_integrations.png"><img loading="lazy" alt="/settings/integrations desktop screenshot" src="desktop-settings_integrations.png"></a>
+  <p><a href="desktop-settings_integrations.png">Open full screenshot</a></p>
+</article>
+<article data-path="/settings/integrations" data-size="mobile" data-error="false">
+  <h2>/settings/integrations</h2>
+  <small>mobile</small>
+  <a href="mobile-settings_integrations.png"><img loading="lazy" alt="/settings/integrations mobile screenshot" src="mobile-settings_integrations.png"></a>
+  <p><a href="mobile-settings_integrations.png">Open full screenshot</a></p>
+</article>
+<article data-path="/settings/members" data-size="desktop" data-error="false">
+  <h2>/settings/members</h2>
+  <small>desktop</small>
+  <a href="desktop-settings_members.png"><img loading="lazy" alt="/settings/members desktop screenshot" src="desktop-settings_members.png"></a>
+  <p><a href="desktop-settings_members.png">Open full screenshot</a></p>
+</article>
+<article data-path="/settings/members" data-size="mobile" data-error="false">
+  <h2>/settings/members</h2>
+  <small>mobile</small>
+  <a href="mobile-settings_members.png"><img loading="lazy" alt="/settings/members mobile screenshot" src="mobile-settings_members.png"></a>
+  <p><a href="mobile-settings_members.png">Open full screenshot</a></p>
+</article>
+<article data-path="/settings/profile" data-size="desktop" data-error="false">
+  <h2>/settings/profile</h2>
+  <small>desktop</small>
+  <a href="desktop-settings_profile.png"><img loading="lazy" alt="/settings/profile desktop screenshot" src="desktop-settings_profile.png"></a>
+  <p><a href="desktop-settings_profile.png">Open full screenshot</a></p>
+</article>
+<article data-path="/settings/profile" data-size="mobile" data-error="false">
+  <h2>/settings/profile</h2>
+  <small>mobile</small>
+  <a href="mobile-settings_profile.png"><img loading="lazy" alt="/settings/profile mobile screenshot" src="mobile-settings_profile.png"></a>
+  <p><a href="mobile-settings_profile.png">Open full screenshot</a></p>
+</article>
+<article data-path="/sign-in" data-size="desktop" data-error="false">
+  <h2>/sign-in</h2>
+  <small>desktop · redirects to /dashboard</small>
+  <a href="desktop-sign-in.png"><img loading="lazy" alt="/sign-in desktop screenshot" src="desktop-sign-in.png"></a>
+  <p><a href="desktop-sign-in.png">Open full screenshot</a></p>
+</article>
+<article data-path="/sign-in" data-size="mobile" data-error="false">
+  <h2>/sign-in</h2>
+  <small>mobile · redirects to /dashboard</small>
+  <a href="mobile-sign-in.png"><img loading="lazy" alt="/sign-in mobile screenshot" src="mobile-sign-in.png"></a>
+  <p><a href="mobile-sign-in.png">Open full screenshot</a></p>
+</article>
+<article data-path="/sign-up" data-size="desktop" data-error="false">
+  <h2>/sign-up</h2>
+  <small>desktop · redirects to /dashboard</small>
+  <a href="desktop-sign-up.png"><img loading="lazy" alt="/sign-up desktop screenshot" src="desktop-sign-up.png"></a>
+  <p><a href="desktop-sign-up.png">Open full screenshot</a></p>
+</article>
+<article data-path="/sign-up" data-size="mobile" data-error="false">
+  <h2>/sign-up</h2>
+  <small>mobile · redirects to /dashboard</small>
+  <a href="mobile-sign-up.png"><img loading="lazy" alt="/sign-up mobile screenshot" src="mobile-sign-up.png"></a>
+  <p><a href="mobile-sign-up.png">Open full screenshot</a></p>
+</article>
+<article data-path="/social/calendar" data-size="desktop" data-error="false">
+  <h2>/social/calendar</h2>
+  <small>desktop</small>
+  <a href="desktop-social_calendar.png"><img loading="lazy" alt="/social/calendar desktop screenshot" src="desktop-social_calendar.png"></a>
+  <p><a href="desktop-social_calendar.png">Open full screenshot</a></p>
+</article>
+<article data-path="/social/calendar" data-size="mobile" data-error="false">
+  <h2>/social/calendar</h2>
+  <small>mobile</small>
+  <a href="mobile-social_calendar.png"><img loading="lazy" alt="/social/calendar mobile screenshot" src="mobile-social_calendar.png"></a>
+  <p><a href="mobile-social_calendar.png">Open full screenshot</a></p>
+</article>
+<article data-path="/social/compose" data-size="desktop" data-error="false">
+  <h2>/social/compose</h2>
+  <small>desktop</small>
+  <a href="desktop-social_compose.png"><img loading="lazy" alt="/social/compose desktop screenshot" src="desktop-social_compose.png"></a>
+  <p><a href="desktop-social_compose.png">Open full screenshot</a></p>
+</article>
+<article data-path="/social/compose" data-size="mobile" data-error="false">
+  <h2>/social/compose</h2>
+  <small>mobile</small>
+  <a href="mobile-social_compose.png"><img loading="lazy" alt="/social/compose mobile screenshot" src="mobile-social_compose.png"></a>
+  <p><a href="mobile-social_compose.png">Open full screenshot</a></p>
+</article>
+<article data-path="/social/media" data-size="desktop" data-error="false">
+  <h2>/social/media</h2>
+  <small>desktop</small>
+  <a href="desktop-social_media.png"><img loading="lazy" alt="/social/media desktop screenshot" src="desktop-social_media.png"></a>
+  <p><a href="desktop-social_media.png">Open full screenshot</a></p>
+</article>
+<article data-path="/social/media" data-size="mobile" data-error="false">
+  <h2>/social/media</h2>
+  <small>mobile</small>
+  <a href="mobile-social_media.png"><img loading="lazy" alt="/social/media mobile screenshot" src="mobile-social_media.png"></a>
+  <p><a href="mobile-social_media.png">Open full screenshot</a></p>
+</article>
+<article data-path="/support/analytics" data-size="desktop" data-error="false">
+  <h2>/support/analytics</h2>
+  <small>desktop</small>
+  <a href="desktop-support_analytics.png"><img loading="lazy" alt="/support/analytics desktop screenshot" src="desktop-support_analytics.png"></a>
+  <p><a href="desktop-support_analytics.png">Open full screenshot</a></p>
+</article>
+<article data-path="/support/analytics" data-size="mobile" data-error="false">
+  <h2>/support/analytics</h2>
+  <small>mobile</small>
+  <a href="mobile-support_analytics.png"><img loading="lazy" alt="/support/analytics mobile screenshot" src="mobile-support_analytics.png"></a>
+  <p><a href="mobile-support_analytics.png">Open full screenshot</a></p>
+</article>
+<article data-path="/support/inbox" data-size="desktop" data-error="false">
+  <h2>/support/inbox</h2>
+  <small>desktop</small>
+  <a href="desktop-support_inbox.png"><img loading="lazy" alt="/support/inbox desktop screenshot" src="desktop-support_inbox.png"></a>
+  <p><a href="desktop-support_inbox.png">Open full screenshot</a></p>
+</article>
+<article data-path="/support/inbox" data-size="mobile" data-error="false">
+  <h2>/support/inbox</h2>
+  <small>mobile</small>
+  <a href="mobile-support_inbox.png"><img loading="lazy" alt="/support/inbox mobile screenshot" src="mobile-support_inbox.png"></a>
+  <p><a href="mobile-support_inbox.png">Open full screenshot</a></p>
+</article>
+<article data-path="/support/knowledge-base" data-size="desktop" data-error="false">
+  <h2>/support/knowledge-base</h2>
+  <small>desktop</small>
+  <a href="desktop-support_knowledge-base.png"><img loading="lazy" alt="/support/knowledge-base desktop screenshot" src="desktop-support_knowledge-base.png"></a>
+  <p><a href="desktop-support_knowledge-base.png">Open full screenshot</a></p>
+</article>
+<article data-path="/support/knowledge-base" data-size="mobile" data-error="false">
+  <h2>/support/knowledge-base</h2>
+  <small>mobile</small>
+  <a href="mobile-support_knowledge-base.png"><img loading="lazy" alt="/support/knowledge-base mobile screenshot" src="mobile-support_knowledge-base.png"></a>
+  <p><a href="mobile-support_knowledge-base.png">Open full screenshot</a></p>
+</article>
+<article data-path="/support/knowledge-base/new" data-size="desktop" data-error="false">
+  <h2>/support/knowledge-base/new</h2>
+  <small>desktop</small>
+  <a href="desktop-support_knowledge-base_new.png"><img loading="lazy" alt="/support/knowledge-base/new desktop screenshot" src="desktop-support_knowledge-base_new.png"></a>
+  <p><a href="desktop-support_knowledge-base_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/support/knowledge-base/new" data-size="mobile" data-error="false">
+  <h2>/support/knowledge-base/new</h2>
+  <small>mobile</small>
+  <a href="mobile-support_knowledge-base_new.png"><img loading="lazy" alt="/support/knowledge-base/new mobile screenshot" src="mobile-support_knowledge-base_new.png"></a>
+  <p><a href="mobile-support_knowledge-base_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/support/tickets/new" data-size="desktop" data-error="false">
+  <h2>/support/tickets/new</h2>
+  <small>desktop</small>
+  <a href="desktop-support_tickets_new.png"><img loading="lazy" alt="/support/tickets/new desktop screenshot" src="desktop-support_tickets_new.png"></a>
+  <p><a href="desktop-support_tickets_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/support/tickets/new" data-size="mobile" data-error="false">
+  <h2>/support/tickets/new</h2>
+  <small>mobile</small>
+  <a href="mobile-support_tickets_new.png"><img loading="lazy" alt="/support/tickets/new mobile screenshot" src="mobile-support_tickets_new.png"></a>
+  <p><a href="mobile-support_tickets_new.png">Open full screenshot</a></p>
+</article>
+<article data-path="/terms" data-size="desktop" data-error="false">
+  <h2>/terms</h2>
+  <small>desktop</small>
+  <a href="desktop-terms.png"><img loading="lazy" alt="/terms desktop screenshot" src="desktop-terms.png"></a>
+  <p><a href="desktop-terms.png">Open full screenshot</a></p>
+</article>
+<article data-path="/terms" data-size="mobile" data-error="false">
+  <h2>/terms</h2>
+  <small>mobile</small>
+  <a href="mobile-terms.png"><img loading="lazy" alt="/terms mobile screenshot" src="mobile-terms.png"></a>
+  <p><a href="mobile-terms.png">Open full screenshot</a></p>
+</article>
+<article data-path="/sign-up" data-size="desktop" data-error="false">
+  <h2>/sign-up</h2>
+  <small>desktop · redirects to /dashboard</small>
+  <a href="desktop-sign-up.png"><img loading="lazy" alt="/sign-up desktop screenshot" src="desktop-sign-up.png"></a>
+  <p><a href="desktop-sign-up.png">Open full screenshot</a></p>
+</article>
+<article data-path="/sign-up" data-size="mobile" data-error="false">
+  <h2>/sign-up</h2>
+  <small>mobile · redirects to /dashboard</small>
+  <a href="mobile-sign-up.png"><img loading="lazy" alt="/sign-up mobile screenshot" src="mobile-sign-up.png"></a>
+  <p><a href="mobile-sign-up.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/users/e6cf0337-3b8f-4428-aad2-d481d26f7839" data-size="desktop" data-error="false">
+  <h2>/admin/users/e6cf0337-3b8f-4428-aad2-d481d26f7839</h2>
+  <small>desktop</small>
+  <a href="desktop-admin_users_e6cf0337-3b8f-4428-aad2-d481d26f7839.png"><img loading="lazy" alt="/admin/users/e6cf0337-3b8f-4428-aad2-d481d26f7839 desktop screenshot" src="desktop-admin_users_e6cf0337-3b8f-4428-aad2-d481d26f7839.png"></a>
+  <p><a href="desktop-admin_users_e6cf0337-3b8f-4428-aad2-d481d26f7839.png">Open full screenshot</a></p>
+</article>
+<article data-path="/admin/users/e6cf0337-3b8f-4428-aad2-d481d26f7839" data-size="mobile" data-error="false">
+  <h2>/admin/users/e6cf0337-3b8f-4428-aad2-d481d26f7839</h2>
+  <small>mobile</small>
+  <a href="mobile-admin_users_e6cf0337-3b8f-4428-aad2-d481d26f7839.png"><img loading="lazy" alt="/admin/users/e6cf0337-3b8f-4428-aad2-d481d26f7839 mobile screenshot" src="mobile-admin_users_e6cf0337-3b8f-4428-aad2-d481d26f7839.png"></a>
+  <p><a href="mobile-admin_users_e6cf0337-3b8f-4428-aad2-d481d26f7839.png">Open full screenshot</a></p>
+</article></main>
+<script>
+const q=document.querySelector("#q"), size=document.querySelector("#size"), status=document.querySelector("#status");
+function filter(){
+  const text=q.value.toLowerCase();
+  document.querySelectorAll("article").forEach(card=>{
+    const textOk=card.dataset.path.toLowerCase().includes(text);
+    const sizeOk=!size.value||card.dataset.size===size.value;
+    const error=card.dataset.error==="true";
+    const statusOk=!status.value||(status.value==="error"?error:!error);
+    card.hidden=!(textOk&&sizeOk&&statusOk);
+  });
+}
+q.addEventListener("input",filter); size.addEventListener("change",filter); status.addEventListener("change",filter);
+</script>
+</html>

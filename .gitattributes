@@ -1,0 +1,40 @@
+# Normalize repository text files across Windows/macOS/Linux.
+* text=auto eol=lf
+
+# Treat common binary assets as binary.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.7z binary
+
+# Keep machine-local provider state and secrets out of git archive exports.
+/.clerk export-ignore
+/.clerk/** export-ignore
+/.vercel export-ignore
+/.vercel/** export-ignore
+/.stripe export-ignore
+/.stripe/** export-ignore
+/.neon export-ignore
+/.neon/** export-ignore
+/.supabase export-ignore
+/.supabase/** export-ignore
+/.wrangler export-ignore
+/.wrangler/** export-ignore
+
+# Exclude real environment files from source archives, but keep the example.
+/.env* export-ignore
+/.env.example -export-ignore
+
+# Do not package locally generated release archives inside source archives.
+/*.zip export-ignore
+/*.tar export-ignore
+/*.tgz export-ignore
+/*.tar.gz export-ignore
+/*.7z export-ignore
+/*.rar export-ignore

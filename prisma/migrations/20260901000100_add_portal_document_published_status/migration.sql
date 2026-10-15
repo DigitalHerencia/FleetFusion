@@ -1,0 +1,1 @@
+ALTER TYPE "PortalDocumentStatus" ADD VALUE 'PUBLISHED';

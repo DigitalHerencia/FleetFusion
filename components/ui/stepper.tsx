@@ -1,0 +1,392 @@
+"use client";
+
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils/cn";
+import { Check } from "lucide-react";
+
+// Context
+interface StepperContextValue {
+  activeStep: number;
+  setActiveStep: (step: number) => void;
+  totalSteps: number;
+  orientation: "horizontal" | "vertical";
+}
+
+const StepperContext = React.createContext<StepperContextValue | null>(null);
+
+function useStepperContext() {
+  const context = React.useContext(StepperContext);
+  if (!context) {
+    throw new Error("Stepper components must be used within a <Stepper />");
+  }
+  return context;
+}
+
+// Step variants
+const stepVariants = cva(
+  "flex items-center justify-center border-3 border-foreground font-bold transition duration-200",
+  {
+    variants: {
+      state: {
+        completed:
+          "bg-success text-success-foreground shadow-[4px_4px_0px_hsl(var(--shadow-color))]",
+        active:
+          "scale-110 bg-primary text-primary-foreground shadow-[4px_4px_0px_hsl(var(--shadow-color))]",
+        upcoming: "bg-muted text-muted-foreground",
+      },
+      size: {
+        sm: "h-8 w-8 text-sm",
+        md: "h-10 w-10",
+        lg: "h-12 w-12 text-lg",
+      },
+    },
+    defaultVariants: {
+      state: "upcoming",
+      size: "md",
+    },
+  },
+);
+
+// Stepper Root
+export interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
+  activeStep?: number;
+  onStepChange?: (step: number) => void;
+  orientation?: "horizontal" | "vertical";
+}
+
+const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
+  (
+    {
+      activeStep: controlledActiveStep,
+      onStepChange,
+      orientation = "horizontal",
+      className,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
+    const [uncontrolledActiveStep, setUncontrolledActiveStep] =
+      React.useState(0);
+
+    const isControlled = controlledActiveStep !== undefined;
+    const activeStep = isControlled
+      ? controlledActiveStep
+      : uncontrolledActiveStep;
+
+    const setActiveStep = React.useCallback(
+      (step: number) => {
+        if (!isControlled) {
+          setUncontrolledActiveStep(step);
+        }
+        onStepChange?.(step);
+      },
+      [isControlled, onStepChange],
+    );
+
+    // Count total steps from children
+    const totalSteps = React.Children.toArray(children).filter((child) => {
+      if (!React.isValidElement(child)) return false;
+      return (
+        (child.type as typeof StepperItem & { _isBoldKitStepperItem?: boolean })
+          ._isBoldKitStepperItem === true
+      );
+    }).length;
+
+    return (
+      <StepperContext.Provider
+        value={{ activeStep, setActiveStep, totalSteps, orientation }}
+      >
+        <div
+          ref={ref}
+          className={cn(
+            "flex",
+            orientation === "horizontal" ? "flex-row" : "flex-col",
+            className,
+          )}
+          {...props}
+        >
+          {children}
+        </div>
+      </StepperContext.Provider>
+    );
+  },
+);
+Stepper.displayName = "Stepper";
+
+// Stepper List (container for triggers)
+export type StepperListProps = React.HTMLAttributes<HTMLDivElement>;
+
+const StepperList = React.forwardRef<HTMLDivElement, StepperListProps>(
+  ({ className, children, ...props }, ref) => {
+    const { orientation } = useStepperContext();
+
+    return (
+      <div
+        ref={ref}
+        role="tablist"
+        className={cn(
+          "flex items-center",
+          orientation === "horizontal" ? "flex-row" : "flex-col items-start",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  },
+);
+StepperList.displayName = "StepperList";
+
+// Stepper Item (wrapper for a single step)
+interface StepperItemContextValue {
+  index: number;
+  triggerId: string;
+}
+
+const StepperItemContext = React.createContext<StepperItemContextValue | null>(
+  null,
+);
+
+function useStepperItemContext() {
+  const context = React.useContext(StepperItemContext);
+  if (!context) {
+    throw new Error(
+      "StepperItem components must be used within a <StepperItem />",
+    );
+  }
+  return context;
+}
+
+export interface StepperItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  index: number;
+}
+
+const StepperItem = React.forwardRef<HTMLDivElement, StepperItemProps>(
+  ({ index, className, children, ...props }, ref) => {
+    const { orientation } = useStepperContext();
+
+    const triggerId = `stepper-trigger-${index}`;
+
+    return (
+      <StepperItemContext.Provider value={{ index, triggerId }}>
+        <div
+          ref={ref}
+          className={cn(
+            "flex items-center",
+            orientation === "horizontal" ? "flex-row" : "flex-col",
+            className,
+          )}
+          {...props}
+        >
+          {children}
+        </div>
+      </StepperItemContext.Provider>
+    );
+  },
+);
+StepperItem.displayName = "StepperItem";
+(
+  StepperItem as typeof StepperItem & { _isBoldKitStepperItem: boolean }
+)._isBoldKitStepperItem = true;
+
+// Stepper Trigger (the clickable step indicator)
+export interface StepperTriggerProps
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof stepVariants> {
+  showStepNumber?: boolean;
+}
+
+const StepperTrigger = React.forwardRef<HTMLButtonElement, StepperTriggerProps>(
+  ({ size, showStepNumber = true, className, children, ...props }, ref) => {
+    const { activeStep, setActiveStep } = useStepperContext();
+    const { index, triggerId } = useStepperItemContext();
+
+    const state: "completed" | "active" | "upcoming" =
+      index < activeStep
+        ? "completed"
+        : index === activeStep
+          ? "active"
+          : "upcoming";
+
+    return (
+      <button
+        ref={ref}
+        id={triggerId}
+        type="button"
+        role="tab"
+        aria-selected={state === "active"}
+        onClick={() => setActiveStep(index)}
+        className={cn(stepVariants({ state, size }), className)}
+        {...props}
+      >
+        {state === "completed" ? (
+          <Check className="h-5 w-5" />
+        ) : showStepNumber ? (
+          index + 1
+        ) : (
+          children
+        )}
+      </button>
+    );
+  },
+);
+StepperTrigger.displayName = "StepperTrigger";
+
+// Stepper Separator (line between steps)
+export type StepperSeparatorProps = React.HTMLAttributes<HTMLDivElement>;
+
+const StepperSeparator = React.forwardRef<
+  HTMLDivElement,
+  StepperSeparatorProps
+>(({ className, ...props }, ref) => {
+  const { activeStep, orientation } = useStepperContext();
+  const { index } = useStepperItemContext();
+
+  const isCompleted = index < activeStep;
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "transition duration-200",
+        orientation === "horizontal"
+          ? "mx-2 h-[3px] min-w-8 flex-1"
+          : "my-2 ml-5 min-h-8 w-[3px]",
+        isCompleted ? "bg-foreground" : "border-foreground/30 bg-foreground/30",
+        !isCompleted && "border-2 border-dashed bg-transparent",
+        className,
+      )}
+      {...props}
+    />
+  );
+});
+StepperSeparator.displayName = "StepperSeparator";
+
+// Stepper Content (panel for each step)
+export interface StepperContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  index: number;
+}
+
+const StepperContent = React.forwardRef<HTMLDivElement, StepperContentProps>(
+  ({ index, className, children, ...props }, ref) => {
+    const { activeStep } = useStepperContext();
+
+    if (index !== activeStep) {
+      return null;
+    }
+
+    return (
+      <div
+        ref={ref}
+        role="tabpanel"
+        aria-labelledby={`stepper-trigger-${index}`}
+        className={cn(
+          "mt-4 animate-[slide-in-from-bottom_200ms_ease-out]",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  },
+);
+StepperContent.displayName = "StepperContent";
+
+// Stepper Actions (prev/next buttons helper)
+export interface StepperActionsProps extends React.HTMLAttributes<HTMLDivElement> {
+  onComplete?: () => void;
+  prevLabel?: string;
+  nextLabel?: string;
+  completeLabel?: string;
+}
+
+const StepperActions = React.forwardRef<HTMLDivElement, StepperActionsProps>(
+  (
+    {
+      onComplete,
+      prevLabel = "Previous",
+      nextLabel = "Next",
+      completeLabel = "Complete",
+      className,
+      children,
+      ...props
+    },
+    ref,
+  ) => {
+    const { activeStep, setActiveStep, totalSteps } = useStepperContext();
+
+    const isFirst = activeStep === 0;
+    const isLast = activeStep === totalSteps - 1;
+
+    const handlePrev = () => {
+      if (!isFirst) {
+        setActiveStep(activeStep - 1);
+      }
+    };
+
+    const handleNext = () => {
+      if (isLast) {
+        onComplete?.();
+      } else {
+        setActiveStep(activeStep + 1);
+      }
+    };
+
+    return (
+      <div
+        ref={ref}
+        className={cn("mt-4 flex items-center gap-2", className)}
+        {...props}
+      >
+        {children || (
+          <>
+            <button
+              type="button"
+              onClick={handlePrev}
+              disabled={isFirst}
+              className={cn(
+                "border-3 border-foreground px-4 py-2 text-sm font-bold uppercase",
+                "bg-muted shadow-[4px_4px_0px_hsl(var(--shadow-color))]",
+                "hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none",
+                "disabled:pointer-events-none disabled:opacity-50",
+                "transition duration-200",
+              )}
+            >
+              {prevLabel}
+            </button>
+            <button
+              type="button"
+              onClick={handleNext}
+              className={cn(
+                "border-3 border-foreground px-4 py-2 text-sm font-bold uppercase",
+                "bg-primary text-primary-foreground shadow-[4px_4px_0px_hsl(var(--shadow-color))]",
+                "hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none",
+                "transition duration-200",
+              )}
+            >
+              {isLast ? completeLabel : nextLabel}
+            </button>
+          </>
+        )}
+      </div>
+    );
+  },
+);
+StepperActions.displayName = "StepperActions";
+
+export {
+  Stepper,
+  StepperList,
+  StepperItem,
+  StepperTrigger,
+  StepperSeparator,
+  StepperContent,
+  StepperActions,
+  stepVariants,
+  useStepperContext,
+};

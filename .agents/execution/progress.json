@@ -1,0 +1,371 @@
+{
+  "auth_alignment_redirect_2026_09_09": {
+    "status": "implemented",
+    "scope": "Auth layout redirects existing authenticated identities through redirectAfterAuth; shared desktop grid rows align copy and form panel starts. Footer actions wrap in one flex row.",
+    "executed": ["Focused ESLint passed", "tsc --noEmit passed", "Tailwind/PostCSS compilation passed", "git diff --check passed"],
+    "skipped": ["Live Clerk/browser redirect verification", "Browser layout verification", "Build"],
+    "blocked": []
+  },
+  "logo_placements_2026_09_09": {
+    "status": "implemented",
+    "scope": "Reviewed public, auth, tenant desktop/mobile, portal, and setup logo placements. Centered and responsively enlarged auth branding without badge; compact tenant lockups and 40px collapsed icon.",
+    "executed": ["Focused Prettier completed", "ESLint passed for four changed brand/shell modules", "Tailwind/PostCSS compilation passed", "git diff --check passed"],
+    "skipped": ["Browser verification", "Build", "Typecheck"],
+    "blocked": []
+  },
+  "public_navigation_brand_2026_09_09": {
+    "status": "implemented",
+    "scope": "Content-driven footer-only link states and shared favicon/two-line brand lockup; header retains default sign-in and outline sign-up Buttons. Responsive Tailwind utilities in globals.css.",
+    "executed": [
+      "Focused Prettier write completed.",
+      "Focused ESLint on seven changed brand/navigation/content modules passed with zero warnings.",
+      "PostCSS/Tailwind compilation of globals.css passed.",
+      "git diff --check passed."
+    ],
+    "skipped": ["Browser visual verification", "Build", "Broad tests", "Typecheck"],
+    "blocked": [],
+    "inferred": ["Responsive layout and equal image/text line-box heights are defined by CSS; not browser-verified."]
+  },
+  "schema_version": "1.0.0",
+  "file": ".agents/execution/progress.json",
+  "product": "The Maximal Template",
+  "purpose": "Machine-readable tracker for the canonical eight-spec Maximal Template repair/build sequence.",
+  "updated_at": "2026-09-09T04:48:21.0872556Z",
+  "tenant_auth_migration": {
+    "status": "implemented",
+    "authority": "Owner request to replace createRouteMatcher protection with existing auth helpers in the tenant layout.",
+    "implemented": "Tenant layout uses getIdentity and redirectToSignIn; proxy retains clerkMiddleware without path-based authentication. Existing resource-level checks remain in place.",
+    "executed": [
+      "pnpm exec eslint proxy.ts 'app/(tenant)/layout.tsx' --max-warnings=0: passed",
+      "pnpm exec prettier --check proxy.ts 'app/(tenant)/layout.tsx': passed"
+    ],
+    "skipped": ["Typecheck, build, browser, and live Clerk checks"],
+    "blocked": [],
+    "inferred": "Signed-out tenant navigation redirects to /sign-in; runtime behavior was not exercised."
+  },
+  "tooling_configuration": {
+    "status": "implemented_with_remaining_audit_findings",
+    "authority": "Owner request to install updated template dependencies and reconcile ESLint, Prettier, Tailwind v4, shadcn, and template-root tooling.",
+    "revision": "297a4c91ee2ed448bd13c603b3041741a270d9b1 plus uncommitted working-tree changes",
+    "environment": "Windows; Node 24.14.0; pnpm 12.3.4; commands run from template/",
+    "implemented": [
+      "Installed owner runtime dependency upgrades and refreshed the template lockfile; retained compatible ESLint 9.39.5 and TypeScript 6.0.3 because current React/TypeScript lint plugins exclude the requested newer majors.",
+      "Aligned Node typings to Node 24; typecheck generates Next route types before tsc.",
+      "Preserved template lint rules and added presentation auth/feature boundaries, block React Hook Form restrictions, unused-disable diagnostics, and generated/local-state ignores.",
+      "Configured Prettier Tailwind v4 sorting for JSX and cn/clsx/cva, standalone editor defaults, EditorConfig, and nested ESLint working-directory detection.",
+      "Cleared shadcn's legacy config path; globals.css remains Tailwind authority with template-scoped scanning and standard responsive breakpoints.",
+      "Enabled sharp build permission, strict release-age handling, and stale-dependency errors before scripts. pnpm recorded an exact release-age exception for the owner's requested react-resizable-panels 4.12.4.",
+      "Removed four unused imports and escaped one JSX apostrophe without changing rendered copy."
+    ],
+    "executed": [
+      "pnpm install: passed, including Prisma Client generation. Initial Windows access failure recovered on retry; overlapping auto-install generation failures recovered with sequential generation before typecheck.",
+      "pnpm install --frozen-lockfile: passed after final workspace settings.",
+      "pnpm lint: passed with zero warnings after five source lint corrections.",
+      "pnpm typecheck: passed, including Next route type generation.",
+      "Focused Prettier check of edited configs, stylesheet, documentation, editor settings, and four corrected source files: passed.",
+      "In-memory ESLint probes: prohibited database, auth, feature, provider, block form, and raw SQL imports/expressions rejected; feature UI composition allowed; generated/local files ignored.",
+      "Node/PostCSS compilation: passed with zero warnings; semantic theme utilities and all five standard responsive breakpoints emitted. Prettier cn/clsx/cva sorting probes passed.",
+      "pnpm format:check: passed on final working tree after bulk formatting changes appeared in the shared workspace; initially reported 123 files.",
+      "pnpm audit --json: reports two high and one moderate advisory through Prisma dependencies (deepmerge-ts 7.1.5 and mysql2 3.15.3). No advisory suppression or unvalidated dependency overrides added."
+    ],
+    "skipped": [
+      "Build",
+      "Development server",
+      "Browser and live-provider verification",
+      "Database migrations"
+    ],
+    "blocked": [],
+    "remaining": [
+      "Resolve Prisma transitive advisories GHSA-ggr8-5vv4-36mx, GHSA-3f6p-5ww8-9rcr, and GHSA-rgwj-5xj2-c3m3 through a validated upstream update or scoped dependency remediation."
+    ],
+    "inferred": [
+      "Static checks establish tooling compatibility, not live provider or production behavior."
+    ]
+  },
+  "branding_cleanup": {
+    "status": "implemented",
+    "authority": "Current owner request to remove the site alias and apply LogoLockup and Wordmark consistently sitewide.",
+    "implemented": [
+      "Both brand components read applicationProduct directly; removed content/site.ts and its generator artifact catalog entry.",
+      "Public header honors its logo prop on desktop and mobile; auth shell exposes Wordmark on mobile.",
+      "Wordmark has an explicit home-link label and nonshrinking decorative initial; tenant header accommodates wrapping product names.",
+      "Removed unused applicationProduct import from public footer."
+    ],
+    "executed": [
+      "pnpm exec prettier --write components/brand/logo-lockup.tsx components/brand/wordmark.tsx components/nav/public-header.tsx components/nav/public-footer.tsx components/shells/auth-shell.tsx components/shells/tenant-shell.tsx: passed from template/.",
+      "pnpm exec eslint components/brand/logo-lockup.tsx components/brand/wordmark.tsx components/nav/public-header.tsx components/nav/public-footer.tsx components/shells/auth-shell.tsx components/shells/tenant-shell.tsx --max-warnings=0: passed from template/.",
+      "pnpm exec prettier --check packages/core/src/template-artifact-catalog.ts: passed.",
+      "Repository search found no remaining content/site or site.ts references in template/ or packages/.",
+      "git diff --check: passed."
+    ],
+    "skipped": ["Build", "Typecheck", "Browser verification"],
+    "blocked": [
+      "pnpm exec eslint packages/core/src/template-artifact-catalog.ts --max-warnings=0: root typescript-eslint rejects TypeScript 7.0."
+    ],
+    "inferred": [
+      "Existing public, auth, tenant, and portal branding now reads the shared application identity; responsive layout changes remain visually unverified."
+    ]
+  },
+  "tailwind_typography_update": {
+    "status": "complete",
+    "authority": "Current owner request to address CSS directive warnings and configure typography and required template utilities.",
+    "implemented": [
+      "Tailwind language associations and IntelliSense recommendations for repository and standalone template workspaces; CSS validation remains enabled.",
+      "Root-layout font loading for JetBrains Mono body, Archivo Black display, and Fira Code code text, with inline Tailwind font mappings and base typography.",
+      "Nonnegative radius tokens, hard shadows, motion tokens, eyebrow utility, and existing component animation recipes with reduced-motion support."
+    ],
+    "executed": [
+      "Prettier formatted changed CSS, TSX, and editor JSON files.",
+      "pnpm exec eslint app/layout.tsx --max-warnings=0: passed from template/.",
+      "Node/PostCSS compilation using @tailwindcss/postcss: passed; expected font, marquee, reveal, and spinner styles emitted; zero warnings and no unprocessed Tailwind directives.",
+      "git diff --check: passed."
+    ],
+    "skipped": [
+      "Full build and font download",
+      "Typecheck",
+      "Live editor diagnostics and browser verification"
+    ],
+    "blocked": []
+  },
+  "root_layout_update": {
+    "status": "complete",
+    "authority": "Current owner instruction: root layout owns uniform sitewide defaults and main-content spacing.",
+    "implemented": "Root layout owns metadata, system sans font, document styling, and responsive main gutters. Shells retain composition and internal navigation spacing.",
+    "executed": [
+      "pnpm exec prettier --check app/layout.tsx app/globals.css components/shells/public-shell.tsx components/shells/tenant-shell.tsx components/shells/portal-shell.tsx components/shells/auth-shell.tsx: passed from template/",
+      "pnpm exec eslint app/layout.tsx components/shells/public-shell.tsx components/shells/tenant-shell.tsx components/shells/portal-shell.tsx components/shells/auth-shell.tsx --max-warnings=0: passed from template/",
+      "git diff --check: passed"
+    ],
+    "skipped": ["Build", "Typecheck", "Browser verification"],
+    "blocked": [],
+    "inferred": [
+      "Responsive main spacing is shared by public, tenant, portal, and auth shells through root-layout selectors."
+    ]
+  },
+  "status_values": [
+    "not_started",
+    "in_progress",
+    "blocked",
+    "complete",
+    "deferred"
+  ],
+  "current_phase": "complete",
+  "implementation_started": true,
+  "specs": [
+    {
+      "id": "00",
+      "priority": "P0",
+      "title": "Fix the architectural contract",
+      "path": "context/specs/00.architectural-contract.md",
+      "status": "complete"
+    },
+    {
+      "id": "01",
+      "priority": "P1",
+      "title": "Repair route topology and public-demo information architecture",
+      "path": "context/specs/01.route-topology-public-demo.md",
+      "status": "complete"
+    },
+    {
+      "id": "02",
+      "priority": "P2",
+      "title": "Make the design system dark-only and mature neo-brutalist",
+      "path": "context/specs/02.design-system.md",
+      "status": "complete"
+    },
+    {
+      "id": "03",
+      "priority": "P3",
+      "title": "Rebuild the block library around categories and variations",
+      "path": "context/specs/03.block-library.md",
+      "status": "complete"
+    },
+    {
+      "id": "04",
+      "priority": "P4",
+      "title": "Normalize CRM contacts as the golden vertical slice",
+      "path": "context/specs/04.crm-golden-vertical-slice.md",
+      "status": "complete"
+    },
+    {
+      "id": "05",
+      "priority": "P5",
+      "title": "Normalize application library, types, schemas, and webhook persistence boundaries",
+      "path": "context/specs/05.application-library-normalization.md",
+      "status": "complete"
+    },
+    {
+      "id": "06",
+      "priority": "P6",
+      "title": "Turn the application shell into the Maximal Template explorer",
+      "path": "context/specs/06.maximal-template-explorer.md",
+      "status": "complete"
+    },
+    {
+      "id": "07",
+      "priority": "P7",
+      "title": "Finish external-provider configuration and demo surfaces",
+      "path": "context/specs/07.provider-integrations.md",
+      "status": "complete"
+    }
+  ],
+  "governance_package": {
+    "status": "applied",
+    "applied_to_repository": true,
+    "validation": {
+      "yaml_json_parse": "passed_2026-08-15",
+      "repository_runtime_checks": "passed_2026-08-15"
+    }
+  },
+  "custom_auth": {
+    "status": "implemented_runtime_verification_blocked",
+    "authority": "Owner request for custom Clerk RHF auth flows, responsive swapped shell columns, and idempotent Neon user sync.",
+    "implemented": [
+      "Existing auth feature forms use RHF with Clerk hooks; existing blocks accept controlled children. No new React components.",
+      "Auth content, primary form column, logo, header, copyright, and route-dependent column order updated.",
+      "Clerk development username/password verified; required verified email enabled after CLI dry-run.",
+      "Local ignored .env.local DATABASE_URL corrected to the already migrated template database."
+    ],
+    "executed": [
+      "Focused ESLint: passed.",
+      "pnpm exec tsc --noEmit: passed.",
+      "Changed files formatted with Prettier.",
+      "Signed webhook verification and tamper rejection: passed.",
+      "Opt-in Neon transactional sync, one-membership repeat sync, webhook deduplication, identity conflict, and repeated anonymization: passed; all test writes rolled back.",
+      "Clerk dashboard: existing ngrok endpoint subscribes to user.created, user.updated, user.deleted."
+    ],
+    "skipped": [
+      "Build, development server startup, production configuration, migrations, deployment, commits and pushes."
+    ],
+    "blocked": [
+      "Browser rendering and end-to-end auth: localhost:3000 refused connection.",
+      "Fresh ngrok webhook delivery: local app is offline.",
+      "Inherited DATABASE_URL differs from corrected .env.local; launch environment must clear or align it.",
+      "Owner-deleted template/proxy.ts preserved; Clerk server session helpers require clerkMiddleware."
+    ],
+    "inferred": [
+      "Responsive column behavior and custom flow transitions are statically implemented, not browser verified."
+    ]
+  },
+  "auth_readability": {
+    "implemented": "Auth inputs use background surfaces and foreground text, including autofill styling. Form text and footer use foreground; descriptions use larger type and relaxed line height.",
+    "executed": [
+      "Visual inspection of running /sign-in and /sign-up desktop pages.",
+      "Focused ESLint and git diff --check passed; changed files formatted."
+    ],
+    "skipped": [
+      "Typecheck and tests: CSS and presentation-only changes.",
+      "Mobile viewport verification and authentication submission."
+    ]
+  },
+  "webhook_connection_repair": {
+    "cause": "Inherited DATABASE_URL targeted a database without WebhookEvent; local configuration targeted the migrated template database.",
+    "change": "Development database connection prefers explicit .env.local URL and caches Prisma by connection fingerprint; API logs bounded diagnostic codes only.",
+    "executed": [
+      "Direct invocation of actual API POST route through auth helper and Neon: signed event 200, duplicate 200, tampered signature 400; test ledger row removed.",
+      "Focused ESLint and TypeScript passed."
+    ],
+    "blocked": [
+      "HTTP/ngrok delivery could not be verified because localhost:3000 is offline."
+    ]
+  },
+  "typography_standardization": {
+    "status": "implemented_static_verified",
+    "scope": "Template-wide typography defaults and shared controls; sign-in and sign-up hierarchy, alignment, and spacing.",
+    "executed": [
+      "Tailwind/PostCSS compilation passed; active typography and form-field selectors emitted.",
+      "Focused ESLint passed for all changed TSX files; affected checks rerun after follow-up edits.",
+      "pnpm exec tsc --noEmit --incremental false passed.",
+      "Formatting applied to changed sources and design authority.",
+      "Token contrast: auth foreground on teal 5.67:1, eyebrow on dark 7.61:1, brand chip 18.67:1. Card secondary foreground increased from 80% to 90% after calculated contrast failure."
+    ],
+    "skipped": [
+      "Next build",
+      "Development server and browser visual verification",
+      "Live Clerk authentication tests"
+    ],
+    "blocked": [],
+    "inferred": [
+      "Responsive wrapping and compact label-control grouping reviewed statically; rendered appearance remains unverified."
+    ]
+  },
+  "frontend_browser_review": {
+    "status": "visual_review_complete_functional_gaps_remaining",
+    "updated_at": "2026-09-08T19:48:22.8375118Z",
+    "screenshots": "C:/Users/scree/.codex/visualizations/2026/09/07/01a07e01-3ab4-7210-95b3-eb8480cd6b00/frontend-review/index.html",
+    "executed": [
+      "118 screenshots: 50 static/auth route requests and 9 existing record URLs at desktop and mobile widths; no detected page-error screen or document overflow",
+      "Sidebar collapse and CRM tree link navigation; mobile Escape dismissal; landing Features anchor",
+      "Computed global styles: input font 16px, minimum height 44px, token-derived card background",
+      "pnpm exec tsc --noEmit --incremental false: passed",
+      "Focused ESLint across changed tracked TypeScript files: passed",
+      "pnpm exec tsx --test tests/onboarding.test.ts: 5 passed"
+    ],
+    "changes": [
+      "Corrected /signup to /sign-up and /features to /#features",
+      "Added actual Features anchor and reduced landing primary slab to primary/10",
+      "Mobile menu uses in-flow disclosure and Escape restores trigger focus",
+      "Repeated forms use global surface and typography utilities; removed nested labels and hardcoded palette values"
+    ],
+    "blocked": [
+      "Most record detail/edit views lack records in the signed-in workspace",
+      "Completed onboarding redirects to dashboard",
+      "SendGrid and Vercel Blob missing configuration in rendered integration status"
+    ],
+    "remaining": [
+      "Generic command controls echo local input without executing search or business operations",
+      "Create/edit forms review locally without persistent writes",
+      "Full CRUD acceptance and cross-tenant negative testing remain unverified",
+      "Production performance and provider health checks not run"
+    ],
+    "skipped": [
+      "No production build, deployment, migration, seeding, commit, push, or live provider mutation"
+    ],
+    "inferred": [
+      "Inspected admin fetchers derive tenant context server-side, apply permission checks and organization filters; this is not an adversarial runtime security test"
+    ]
+  },
+  "domain_workflow_implementation": {
+    "status": "implemented_static_verified",
+    "authority": "Owner request on 2026-09-08 to replace repeated generic compositions, command echoes, and non-persisting forms with domain implementation.",
+    "revision": "main working tree; no commit created",
+    "executed": [
+      "template/: pnpm exec prettier --write <changed files>: passed; final check recorded separately",
+      "template/: pnpm exec eslint <changed TypeScript files excluding generated next-env.d.ts> --max-warnings=0: passed",
+      "template/: pnpm typecheck (next typegen && tsc --noEmit): passed",
+      "template/: pnpm exec tsx --test tests/domain-workflows.test.ts: 12 passed",
+      "git diff --check: passed",
+      "Static scaffold scan: no setApplied, setReviewed, No persistent write, defaultColumns, displayValue, or invented trend arrays in features/templates",
+      "Read-only TCP listener check: no existing app listener found on ports 3000 or 3001"
+    ],
+    "skipped": [
+      "Browser and live CRUD: no existing local app listener; starting a server was not authorized by repository instructions",
+      "Production build",
+      "Live database writes and restricted-role cross-tenant RLS testing",
+      "Live provider operations, deployments, migrations, seeding, commit and push"
+    ],
+    "blocked": [],
+    "inferred": [
+      "Protected actions are wired to UI, but live persistence and provider success have not been exercised in this correction."
+    ],
+    "remaining": [
+      "Browser rendering, authenticated end-to-end CRUD and reload checks, restricted-role/cross-tenant RLS, and live provider operation are unverified. No development server, database writes, or provider operations were started."
+    ],
+    "changes": [
+      "Domain-specific compositions across CRM, projects, support, marketing, invoicing, social, AI, portal, admin, dashboard and settings",
+      "Persistent create/edit forms; task assignment/status, opportunity stage changes, ticket replies, invoice approval/issuance, campaign lifecycle, social approval/scheduling, document versions/sharing",
+      "Private workspace asset upload/download adapters with explicit limits",
+      "Removed 23 unreferenced command-echo companions; preserved owner catalog edits and public-copy deletions"
+    ],
+    "base_commit": "404d88b2bd9432058d87553e907b005ed0fe6308",
+    "limitations": [
+      "Search filters loaded bounded lists; it is not full-dataset search.",
+      "Campaign lifecycle is persisted planning; it does not send messages. Social scheduling does not establish successful external publication.",
+      "Invoice issuance opens an approved draft locally without emailing or charging customers.",
+      "Private file uploads are limited to 750 KB; downloads to 10 MB. Storage must be configured.",
+      "New administration membership form adds an already registered user; it does not send invitations.",
+      "AI usage ledger can contain zero token/cost values because the current provider adapter does not supply these measurements."
+    ],
+    "verification_note": "Initial lint reported a test formatting issue and later an intentionally ignored generated file. Both were corrected in invocation/source and focused lint passed. One accidental root-app tsc invocation failed on root-app errors; root app was not changed as part of this implementation."
+  }
+}

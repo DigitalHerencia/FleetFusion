@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0.0",
+  "file": ".agents/execution/decisions.json",
+  "product": "The Maximal Template",
+  "purpose": "Durable accepted product-specific architecture decisions derived from explicit user intent. Execution state does not override context docs or active specs.",
+  "updated_at": "2026-09-09T04:48:21.0872556Z",
+  "decisions": [
+    {
+      "id": "MAX-DEC-001",
+      "status": "accepted",
+      "title": "Public content is not the marketing domain",
+      "decision": "Static landing, features, pricing, FAQ, contact, terms, privacy, and similar pages belong to app/(public). Marketing names the marketing-automation business domain.",
+      "affected_specs": ["00", "01"]
+    },
+    {
+      "id": "MAX-DEC-002",
+      "status": "accepted",
+      "title": "Public demo browseability is separate from mutation authority",
+      "decision": "Signed-out visitors may browse seeded/read-only demo surfaces across recipe domains. Real protected mutations still require server authentication, application authorization, tenant/resource scope, validation, and RLS where applicable.",
+      "affected_specs": ["00", "01", "04", "06", "07"]
+    },
+    {
+      "id": "MAX-DEC-003",
+      "status": "accepted",
+      "title": "React Hook Form feature exception",
+      "decision": "Normal features compose blocks. React Hook Form feature forms are self-contained and compose UI primitives directly; form blocks are not required.",
+      "affected_specs": ["00", "03", "04"]
+    },
+    {
+      "id": "MAX-DEC-004",
+      "status": "accepted",
+      "title": "Use canonical domain vocabulary",
+      "decision": "Use crm, projects, support, marketing, invoicing, social, ai, portal, admin, user, common across repository organization where applicable.",
+      "affected_specs": ["00", "01", "05", "06"]
+    },
+    {
+      "id": "MAX-DEC-005",
+      "status": "accepted",
+      "title": "Blocks are grouped pure presentation categories",
+      "decision": "components/blocks is a BoldKit-like catalog organized by presentation category with useful named variations. Blocks do not own form state, auth, provider, database, or workflow logic.",
+      "affected_specs": ["03"]
+    },
+    {
+      "id": "MAX-DEC-006",
+      "status": "accepted",
+      "title": "Functional application library classifier",
+      "decision": "All persisted reads use fetchers; ordinary CRUD writes use actions; selects/DTOs/transactions live in lib/db; Clerk in auth; RBAC/ABAC in authz; provider behavior in integrations except Clerk/Neon/Prisma; webhook HTTP lifecycle in app/api; remaining domain logic in shallow workflows.",
+      "affected_specs": ["00", "04", "05", "07"]
+    },
+    {
+      "id": "MAX-DEC-007",
+      "status": "accepted",
+      "title": "Dark-only mature neo-brutalist design",
+      "decision": "The Maximal Template is dark-only with charcoal/near-black surfaces, off-white text, strong borders, restrained accents, squared geometry, controlled hard shadows, dense typography, and mechanical motion. Cartoonish candy neo-brutalism is rejected.",
+      "affected_specs": ["02", "03", "06"]
+    },
+    {
+      "id": "MAX-DEC-008",
+      "status": "accepted",
+      "title": "Admin is a real URL domain",
+      "decision": "Admin routes live beneath a real admin path segment so /admin/users, /admin/records, and /admin/audit resolve correctly. A route group may not erase the required URL segment.",
+      "affected_specs": ["01", "06"]
+    },
+    {
+      "id": "MAX-DEC-009",
+      "status": "accepted",
+      "title": "CRM contacts is the golden vertical slice",
+      "decision": "Normalize CRM contacts first as the reference list/detail/new/edit + fetcher/action/schema/type/select/DTO/auth/authz/RLS/Suspense pattern before broad recipe normalization.",
+      "affected_specs": ["04", "05"]
+    },
+    {
+      "id": "MAX-DEC-010",
+      "status": "accepted",
+      "title": "Provider work follows core architecture stabilization",
+      "decision": "Complete providers after architecture, routes, design, blocks, golden slice, library normalization, and explorer shell. Preferred order is Stripe, Blob/Cloudinary, SendGrid, Hugging Face.",
+      "affected_specs": ["07"]
+    },
+    {
+      "id": "MAX-DEC-011",
+      "status": "accepted",
+      "title": "Product-specific doctrine specializes reusable Knowledge System doctrine",
+      "decision": "The Codependent Coding Knowledge System supplies the governance model and reusable doctrine. Explicit Maximal Template context/specs control deliberate product-specific specializations and may reject generic optional layers such as query/command/webhook service structures.",
+      "affected_specs": ["00", "05"]
+    },
+    {
+      "title": "Domain implementation must match business workflows",
+      "decision": "Owner explicitly rejects repeated generic stats/table/summary pages, command echoes, and local review-only forms. Domain templates own distinct workflow compositions; real forms call validated protected persistence. Static evidence is separate from live CRUD/provider evidence.",
+      "evidence": "progress.json#domain_workflow_implementation",
+      "id": "MAX-DEC-012",
+      "date": "2026-09-08",
+      "authority": "Current owner request",
+      "status": "accepted"
+    }
+  ]
+}

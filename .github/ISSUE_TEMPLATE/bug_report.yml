@@ -1,0 +1,29 @@
+name: Bug
+description: Report behavior that is broken or violates an established contract.
+title: ""
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What is broken?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence / reproduction
+      description: Provide the smallest useful reproduction, logs, screenshots, or observed behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: contract
+    attributes:
+      label: Affected contract
+      description: Identify the relevant route, feature, presentation, data, auth/authz, integration, workflow, or recipe boundary.
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true

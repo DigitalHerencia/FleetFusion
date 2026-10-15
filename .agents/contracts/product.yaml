@@ -1,0 +1,224 @@
+schema_version: 2
+file: .agents/contracts/product.yaml
+product: The Maximal Template
+status: active
+purpose: Machine-readable translation of the current owner intent and human governance for the implemented Maximal Template.
+
+authority:
+  type: machine_interpretation
+  owner_is_final_authority: true
+  human_sources:
+    - context/docs/prd.md
+    - context/docs/architecture.md
+    - context/docs/auth.md
+    - context/docs/tech-requirements.md
+  build_instructions_root: context/specs
+  may_override_human_sources: false
+  may_require_code_refactor_for_document_symmetry: false
+
+product_model:
+  category: maximal_superset_application_template
+  one_coherent_application: true
+  generator_reference_implementation: true
+  independent_recipe_apps: false
+
+route_topology:
+  root_page:
+    path: /
+    source: app/page.tsx
+
+  groups:
+    public:
+      source: app/(public)
+      current_routes:
+        - /faq
+        - /privacy
+        - /terms
+
+    auth:
+      source: app/(auth)
+      current_routes:
+        - /sign-in
+        - /sign-up
+
+    setup:
+      source: app/(setup)
+      current_routes:
+        - /onboarding
+
+    tenant:
+      source: app/(tenant)
+      current_top_level_routes:
+        - /admin
+        - /ai
+        - /crm
+        - /dashboard
+        - /expenses
+        - /invoices
+        - /marketing
+        - /my-tasks
+        - /portal
+        - /projects
+        - /settings
+        - /social
+        - /support
+
+    api:
+      source: app/api
+      current_families:
+        - ai
+        - clerk
+        - sendgrid
+        - stripe
+
+route_rules:
+  route_groups_create_url_segments: false
+  root_page_must_live_in_public_group: false
+  conceptual_domain_name_must_equal_url_segment: false
+  invoicing_routes:
+    - /invoices
+    - /expenses
+  invented_invoicing_segment_required: false
+
+access:
+  public_routes_require_tenant_admission: false
+
+  tenant:
+    authentication_required: true
+    onboarding_completion_required: true
+    gate_owner: app/(tenant)/layout.tsx
+    authentication_helper: lib/auth/auth.ts
+    unauthenticated_redirect: /sign-in
+    incomplete_onboarding_redirect: /onboarding
+
+  resource_authorization:
+    required_after_tenant_gate: true
+    owner: lib/authz
+
+  anonymous_tenant_browsing:
+    supported: false
+
+tenancy:
+  external_identity_provider: clerk
+  application_tenancy_provider: application_database
+  reference_entities:
+    - User
+    - Organization
+    - Membership
+  product_roles_and_membership_state_are_local: true
+  clerk_identity_replaces_application_authz: false
+  rls_is_separate_security_boundary: true
+  ui_visibility_proves_authorization: false
+  ui_visibility_proves_rls: false
+
+presentation:
+  families:
+    ui: components/ui
+    blocks: components/blocks
+    templates: components/templates
+    chart: components/chart
+    brand: components/brand
+    navigation: components/nav
+    shells: components/shells
+    features: features
+
+  ui:
+    responsibility: reusable_controls_and_low_level_ui
+
+  blocks:
+    responsibility: reusable_composed_ui
+    local_presentation_state_allowed: true
+    local_demo_interaction_allowed: true
+    form_shaped_presentation_allowed: true
+    forbidden_application_authority:
+      - direct_application_database_ownership
+      - server_authorization_policy
+      - tenant_resolution_policy
+      - external_provider_account_truth
+      - cross_domain_business_orchestration
+
+  templates:
+    responsibility: complete_surface_presentation_composition
+    first_class_layer: true
+    server_data_access_owner: false
+    authorization_policy_owner: false
+
+  features:
+    responsibility: application_behavior_orchestration_and_data_adaptation
+    may_import:
+      - components/templates
+      - components/blocks
+      - components/ui
+    react_hook_form_allowed: true
+    client_provider_behavior_allowed_when_feature_specific: true
+
+  valid_flows:
+    - app_to_feature_to_template_to_blocks_or_ui
+    - app_to_template_to_blocks_or_ui
+    - feature_to_template
+    - feature_to_block
+    - feature_to_ui
+    - template_to_blocks_or_ui
+    - block_to_ui
+
+  mandatory_traversal_of_every_layer: false
+
+server_architecture:
+  persisted_reads: lib/fetchers
+  application_mutation_entrypoints: lib/actions
+  orchestration: lib/workflows
+  database_runtime: lib/db
+  runtime_validation: schemas
+  shared_types: types
+  authentication: lib/auth
+  authorization: lib/authz
+  integrations: lib/integrations
+  prisma_lifecycle: prisma
+
+database:
+  current_runtime_members:
+    - lib/db/client.ts
+    - lib/db/provider.ts
+    - lib/db/tenant.ts
+    - lib/db/selects
+    - lib/db/dto
+    - lib/db/transactions
+  remove_members_for_diagram_symmetry: false
+
+domain_organization:
+  implementation_families:
+    - admin
+    - ai
+    - crm
+    - invoicing
+    - marketing
+    - onboarding
+    - portal
+    - projects
+    - social
+    - support
+  shared_or_cross_cutting_families_may_exist: true
+  exact_symmetry_required: false
+  marketing_means_business_domain_when_used_as_domain: true
+  public_content_is_marketing_domain: false
+
+providers:
+  integrations:
+    - cloudinary
+    - hugging-face
+    - sendgrid
+    - stripe
+    - vercel-blob
+  specialized_boundaries:
+    Clerk: lib/auth
+    Neon: lib/db
+    Prisma:
+      runtime: lib/db
+      lifecycle: prisma
+  code_presence_proves_live_configuration: false
+  optional_missing_configuration_must_fail_narrowly: true
+
+implementation_alignment:
+  governance_update_may_refactor_code_without_owner_request: false
+  stale_governance_may_override_current_implementation: false
+  ambiguity_requires_owner_resolution: true

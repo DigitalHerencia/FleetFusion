@@ -1,0 +1,207 @@
+{
+  "schema_version": "1.0.0",
+  "file": ".agents/execution/handoff.json",
+  "product": "The Maximal Template",
+  "purpose": "Current handoff state for the next implementation agent.",
+  "updated_at": "2026-09-09T04:48:21.0872556Z",
+  "tenant_auth_migration": {
+    "status": "implemented",
+    "evidence": ".agents/execution/progress.json#tenant_auth_migration",
+    "resume_notes": [
+      "Owner now requires sign-in for tenant surfaces, superseding the older public-demo layout policy.",
+      "Tenant layout uses existing getIdentity and redirectToSignIn helpers; proxy no longer uses createRouteMatcher. Keep resource-level authentication and authorization checks."
+    ]
+  },
+  "tooling_configuration": {
+    "status": "implemented_with_remaining_audit_findings",
+    "evidence": ".agents/execution/progress.json#tooling_configuration",
+    "remaining": [
+      "Three pnpm audit advisories remain in Prisma transitive dependencies. No security-clean claim is supported."
+    ],
+    "resume_notes": [
+      "Work directly on main and preserve the owner's unrelated uncommitted source and design edits.",
+      "Install from template/ explicitly after package changes. verifyDepsBeforeRun is error to prevent lint/format commands from racing Prisma postinstall generation.",
+      "Current lint and typecheck passed; build, browser, and live provider checks were not run."
+    ]
+  },
+  "authority_summary": [
+    "Current explicit user instruction is highest authority.",
+    "context/docs owns durable Maximal Template human intent.",
+    "context/specs owns the canonical P0-P7 build/repair sequence.",
+    ".agents/contracts is a machine interpretation and may not override Markdown.",
+    ".agents/execution is mutable state and evidence only.",
+    "Observed code is evidence, not automatic architecture."
+  ],
+  "current_state": {
+    "governance_replacement_prepared": true,
+    "governance_applied_to_repo": true,
+    "application_implementation_changed": true,
+    "runtime_validation_executed": true
+  },
+  "active_spec": null,
+  "next_actions": [],
+  "known_repository_defects": [],
+  "evidence": {
+    "executed": [
+      "Read canonical Codependent Coding Knowledge System governance, epistemology, specification, validation, execution, architecture, and layer-contract sources from DevNotes.",
+      "Inspected current TheMaximalTemplate repository structure, package.json, route groups, Prisma schema, feature roots, and provider integration roots through connected GitHub.",
+      "Spec 00: parsed all .agents contract YAML and execution JSON successfully on 2026-08-15.",
+      "Spec 01: next typegen and pnpm typecheck passed; generated routes include canonical public, admin, and CRM contact entrypoints and exclude accidental root admin routes.",
+      "Spec 02: dark-only root tokens, restrained semantic palette, reduced-motion behavior, and active primitive color/focus rules were inspected; pnpm typecheck passed.",
+      "Spec 03: block files were normalized to presentation categories, provider and form implementations moved to features, prohibited block imports/state audit returned no matches, and pnpm typecheck passed.",
+      "Spec 04: CRM contacts now implements list/client filters/detail/new/edit/archive, domain schemas/types/fetchers/actions/selects/DTOs, authz and optimistic concurrency; pnpm typecheck and pnpm prisma:validate passed.",
+      "Spec 05: action/fetcher names, domain schemas/types, database runtime, loose utilities, and Clerk webhook persistence boundaries were normalized; pnpm typecheck and pnpm prisma:validate passed.",
+      "Spec 06: public explorer, component catalog, architecture context, integration surface, and signed-out major-domain navigation were added; next typegen and pnpm typecheck passed.",
+      "Spec 07: provider environment contracts, explicit safe status states, Stripe/Blob/Cloudinary/SendGrid/Hugging Face boundaries, and Hugging Face generation were completed.",
+      "Final validation: pnpm format:check, pnpm lint, pnpm typecheck, pnpm prisma:validate, next typegen, and pnpm build completed successfully on 2026-08-15."
+    ],
+    "skipped": [
+      "No dev server, migration, deployment, or live provider mutation was run.",
+      "No live database RLS test or external provider provisioning was run."
+    ],
+    "blocked": [],
+    "inferred": [
+      "Spec 00 acceptance criteria were mapped by direct governance inspection.",
+      "Spec 04 tenant containment is evidenced by scoped transactions and the existing CrmContact RLS policy migration; no live database RLS test was executed."
+    ]
+  },
+  "custom_auth": {
+    "status": "implemented_runtime_verification_blocked",
+    "authority": "Owner request for custom Clerk RHF auth flows, responsive swapped shell columns, and idempotent Neon user sync.",
+    "implemented": [
+      "Existing auth feature forms use RHF with Clerk hooks; existing blocks accept controlled children. No new React components.",
+      "Auth content, primary form column, logo, header, copyright, and route-dependent column order updated.",
+      "Clerk development username/password verified; required verified email enabled after CLI dry-run.",
+      "Local ignored .env.local DATABASE_URL corrected to the already migrated template database."
+    ],
+    "executed": [
+      "Focused ESLint: passed.",
+      "pnpm exec tsc --noEmit: passed.",
+      "Changed files formatted with Prettier.",
+      "Signed webhook verification and tamper rejection: passed.",
+      "Opt-in Neon transactional sync, one-membership repeat sync, webhook deduplication, identity conflict, and repeated anonymization: passed; all test writes rolled back.",
+      "Clerk dashboard: existing ngrok endpoint subscribes to user.created, user.updated, user.deleted."
+    ],
+    "skipped": [
+      "Build, development server startup, production configuration, migrations, deployment, commits and pushes."
+    ],
+    "blocked": [
+      "Browser rendering and end-to-end auth: localhost:3000 refused connection.",
+      "Fresh ngrok webhook delivery: local app is offline.",
+      "Inherited DATABASE_URL differs from corrected .env.local; launch environment must clear or align it.",
+      "Owner-deleted template/proxy.ts preserved; Clerk server session helpers require clerkMiddleware."
+    ],
+    "inferred": [
+      "Responsive column behavior and custom flow transitions are statically implemented, not browser verified."
+    ]
+  },
+  "auth_readability": {
+    "implemented": "Auth inputs use background surfaces and foreground text, including autofill styling. Form text and footer use foreground; descriptions use larger type and relaxed line height.",
+    "executed": [
+      "Visual inspection of running /sign-in and /sign-up desktop pages.",
+      "Focused ESLint and git diff --check passed; changed files formatted."
+    ],
+    "skipped": [
+      "Typecheck and tests: CSS and presentation-only changes.",
+      "Mobile viewport verification and authentication submission."
+    ]
+  },
+  "webhook_connection_repair": {
+    "cause": "Inherited DATABASE_URL targeted a database without WebhookEvent; local configuration targeted the migrated template database.",
+    "change": "Development database connection prefers explicit .env.local URL and caches Prisma by connection fingerprint; API logs bounded diagnostic codes only.",
+    "executed": [
+      "Direct invocation of actual API POST route through auth helper and Neon: signed event 200, duplicate 200, tampered signature 400; test ledger row removed.",
+      "Focused ESLint and TypeScript passed."
+    ],
+    "blocked": [
+      "HTTP/ngrok delivery could not be verified because localhost:3000 is offline."
+    ]
+  },
+  "typography_standardization": {
+    "status": "implemented_static_verified",
+    "evidence": ".agents/execution/progress.json#typography_standardization",
+    "resume_notes": [
+      "Typography authority: context/docs/design.md section 13 and app/globals.css.",
+      "Auth and shared primitives updated; copy and provider logic preserved. Browser verification remains unrun."
+    ]
+  },
+  "frontend_browser_review": {
+    "status": "visual_review_complete_functional_gaps_remaining",
+    "updated_at": "2026-09-08T19:48:22.8375118Z",
+    "screenshots": "C:/Users/scree/.codex/visualizations/2026/09/07/01a07e01-3ab4-7210-95b3-eb8480cd6b00/frontend-review/index.html",
+    "executed": [
+      "118 screenshots: 50 static/auth route requests and 9 existing record URLs at desktop and mobile widths; no detected page-error screen or document overflow",
+      "Sidebar collapse and CRM tree link navigation; mobile Escape dismissal; landing Features anchor",
+      "Computed global styles: input font 16px, minimum height 44px, token-derived card background",
+      "pnpm exec tsc --noEmit --incremental false: passed",
+      "Focused ESLint across changed tracked TypeScript files: passed",
+      "pnpm exec tsx --test tests/onboarding.test.ts: 5 passed"
+    ],
+    "changes": [
+      "Corrected /signup to /sign-up and /features to /#features",
+      "Added actual Features anchor and reduced landing primary slab to primary/10",
+      "Mobile menu uses in-flow disclosure and Escape restores trigger focus",
+      "Repeated forms use global surface and typography utilities; removed nested labels and hardcoded palette values"
+    ],
+    "blocked": [
+      "Most record detail/edit views lack records in the signed-in workspace",
+      "Completed onboarding redirects to dashboard",
+      "SendGrid and Vercel Blob missing configuration in rendered integration status"
+    ],
+    "remaining": [
+      "Generic command controls echo local input without executing search or business operations",
+      "Create/edit forms review locally without persistent writes",
+      "Full CRUD acceptance and cross-tenant negative testing remain unverified",
+      "Production performance and provider health checks not run"
+    ],
+    "skipped": [
+      "No production build, deployment, migration, seeding, commit, push, or live provider mutation"
+    ],
+    "inferred": [
+      "Inspected admin fetchers derive tenant context server-side, apply permission checks and organization filters; this is not an adversarial runtime security test"
+    ]
+  },
+  "domain_workflow_implementation": {
+    "status": "implemented_static_verified",
+    "authority": "Owner request on 2026-09-08 to replace repeated generic compositions, command echoes, and non-persisting forms with domain implementation.",
+    "revision": "main working tree; no commit created",
+    "executed": [
+      "template/: pnpm exec prettier --write <changed files>: passed; final check recorded separately",
+      "template/: pnpm exec eslint <changed TypeScript files excluding generated next-env.d.ts> --max-warnings=0: passed",
+      "template/: pnpm typecheck (next typegen && tsc --noEmit): passed",
+      "template/: pnpm exec tsx --test tests/domain-workflows.test.ts: 12 passed",
+      "git diff --check: passed",
+      "Static scaffold scan: no setApplied, setReviewed, No persistent write, defaultColumns, displayValue, or invented trend arrays in features/templates",
+      "Read-only TCP listener check: no existing app listener found on ports 3000 or 3001"
+    ],
+    "skipped": [
+      "Browser and live CRUD: no existing local app listener; starting a server was not authorized by repository instructions",
+      "Production build",
+      "Live database writes and restricted-role cross-tenant RLS testing",
+      "Live provider operations, deployments, migrations, seeding, commit and push"
+    ],
+    "blocked": [],
+    "inferred": [
+      "Protected actions are wired to UI, but live persistence and provider success have not been exercised in this correction."
+    ],
+    "remaining": [
+      "Browser rendering, authenticated end-to-end CRUD and reload checks, restricted-role/cross-tenant RLS, and live provider operation are unverified. No development server, database writes, or provider operations were started."
+    ],
+    "changes": [
+      "Domain-specific compositions across CRM, projects, support, marketing, invoicing, social, AI, portal, admin, dashboard and settings",
+      "Persistent create/edit forms; task assignment/status, opportunity stage changes, ticket replies, invoice approval/issuance, campaign lifecycle, social approval/scheduling, document versions/sharing",
+      "Private workspace asset upload/download adapters with explicit limits",
+      "Removed 23 unreferenced command-echo companions; preserved owner catalog edits and public-copy deletions"
+    ],
+    "base_commit": "404d88b2bd9432058d87553e907b005ed0fe6308",
+    "limitations": [
+      "Search filters loaded bounded lists; it is not full-dataset search.",
+      "Campaign lifecycle is persisted planning; it does not send messages. Social scheduling does not establish successful external publication.",
+      "Invoice issuance opens an approved draft locally without emailing or charging customers.",
+      "Private file uploads are limited to 750 KB; downloads to 10 MB. Storage must be configured.",
+      "New administration membership form adds an already registered user; it does not send invitations.",
+      "AI usage ledger can contain zero token/cost values because the current provider adapter does not supply these measurements."
+    ],
+    "verification_note": "Initial lint reported a test formatting issue and later an intentionally ignored generated file. Both were corrected in invocation/source and focused lint passed. One accidental root-app tsc invocation failed on root-app errors; root app was not changed as part of this implementation."
+  }
+}

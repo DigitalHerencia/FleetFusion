@@ -1,59 +1,59 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Environment and provider-local state
+.env*
+.env.local
+!.env.example
+**/.env*
+!**/.env.example
+/.clerk/
+/.vercel/
+/.stripe/
+/.neon/
+/.supabase/
+/.wrangler/
 
-# dependencies
-/node_modules
-/.pnpm-store
+# Credentials, key stores, local databases, and dumps
+**/keyless.json
+**/*service-account*.json
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+*.backup
 
-# next.js
-/.next/
-/out/
+# Generated release archives
+*.zip
+*.tar
+*.tgz
+*.tar.gz
+*.7z
+*.rar
 
-# production
-/build
-/dist
+# Framework, package, test, and generated output
+.next/
+coverage/
+dist/
+node_modules/
+out/
+playwright-report/
+test-results/
+generated/prisma/
+.pnpm-store/
+*.tsbuildinfo
 
-# debug
+# Logs
+*.log
 npm-debug.log*
+pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
 
-# env files
-.env
-.env*.local
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-!.env.example
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-# miscellaneous
+# OS / editor-local noise
 .DS_Store
-.vscode/
+Thumbs.db
 .idea/
-.hintrc*
-.eslintcache
-.turbo
-
-# testing
-/coverage
-/playwright-report
-/test-results
-/tests-examples
-
-# clerk configuration (can include secrets)
-/.clerk/
-
-# Custom directories
-.audits/
-.notes/
-.codex/
-__previewjs__/
-/generated/prisma

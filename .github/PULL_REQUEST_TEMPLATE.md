@@ -1,35 +1,42 @@
-## 📋 Executive Summary
+## Outcome
 
-<!-- Use Compressed Decision Record format -->
+Describe the bounded outcome this PR implements.
 
-`Decision: [What changed] | Rationale: [Why] | Impact: [Consequences] | Review: [Date]`
+## Spec / Issue
 
-## 🔗 Context & Intent
+- Spec:
+- Issue:
 
-- **Issue**: #
-- **Spec**: `specs/domains/[DOMAIN].md`
-- **Business Value**:
+## Architectural boundaries touched
 
-## 🛠️ Changes Implemented
+- [ ] Routes / HTTP
+- [ ] Features
+- [ ] Blocks / navigation / shells / UI
+- [ ] Fetchers
+- [ ] CRUD actions
+- [ ] DB selects / DTOs / transactions
+- [ ] Auth
+- [ ] Authz
+- [ ] Integrations
+- [ ] Workflows
+- [ ] Cache
+- [ ] Schemas / types
+- [ ] Prisma lifecycle
+- [ ] Recipe selection / shared foundation
 
-- [ ] Frontend:
-- [ ] Backend (Server Actions/Fetchers):
-- [ ] Database (Prisma):
-- [ ] Config/Infra:
+## Contract check
 
-## 🧪 Validation (Phase 4)
+- [ ] File placement follows the canonical classifier.
+- [ ] Features do not import `components/ui/*` directly.
+- [ ] Persisted reads/writes use the correct boundaries.
+- [ ] Auth/authz/tenant boundaries are preserved where applicable.
+- [ ] No unnecessary directory or client-component architecture was introduced.
+- [ ] Webhook HTTP lifecycle remains in `app/api` where applicable.
 
-- [ ] **Automated Tests**: (e.g., `pnpm test:dispatch`)
-- [ ] **Manual Verification**:
-- [ ] **Edge Cases**:
+## Validation evidence
 
-## 📸 Screenshots / Recordings
+List only checks actually run and their observed result.
 
-<!-- Required for UI changes -->
+## Remaining limitations
 
-## ✅ Spec Compliance Checklist (Phase 6: Handoff)
-
-- [ ] `PRD.md` / `TECH_REQUIREMENTS.md` updated
-- [ ] Domain Spec (`specs/domains/*.md`) updated
-- [ ] `CHANGELOG.md` entry prepared
-- [ ] Technical Debt issue created (if applicable)
+State anything intentionally not verified, not changed, or deferred.

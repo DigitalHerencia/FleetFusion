@@ -1,12 +1,18 @@
-import 'dotenv/config';
-import { defineConfig } from 'prisma/config';
+import { config } from "dotenv";
 
-const datasourceUrl = process.env['DIRECT_URL'] ?? process.env['DATABASE_URL'];
+import { defineConfig } from "prisma/config";
+
+config({ path: ".env.local", quiet: true });
+config({ quiet: true });
+
+const directDatabaseUrl =
+  process.env.DIRECT_DATABASE_URL?.trim() ?? process.env.DATABASE_URL?.trim();
 
 export default defineConfig({
-  schema: 'prisma/schema.prisma',
-  // Client generation and Next.js type generation do not need a live database.
-  // Keep the URL optional so CI/Vercel builds can run without production DB secrets;
-  // Prisma migrate commands will still require a configured database URL.
-  ...(datasourceUrl ? { datasource: { url: datasourceUrl } } : {}),
+  schema: "prisma/schema.prisma",
+  migrations: {
+    path: "prisma/migrations",
+    seed: "tsx prisma/seed.ts",
+  },
+  ...(directDatabaseUrl ? { datasource: { url: directDatabaseUrl } } : {}),
 });

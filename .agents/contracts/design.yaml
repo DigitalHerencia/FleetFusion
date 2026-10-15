@@ -1,0 +1,172 @@
+schema_version: 2
+file: .agents/contracts/design.yaml
+product: The Maximal Template
+status: active
+purpose: Machine-readable translation of the implemented Maximal Template design system.
+
+authority:
+  type: machine_interpretation
+  owner_is_final_authority: true
+  human_sources:
+    - context/docs/design.md
+    - context/docs/architecture.md
+  may_override_human_sources: false
+
+theme:
+  mode: dark_only
+  light_theme_supported: false
+  root_defaults_to_dark: true
+  color_scheme: dark
+
+typography:
+  source:
+    - app/layout.tsx
+    - app/globals.css
+  display_font: Archivo Black
+  body_font: JetBrains Mono
+  code_font: Fira Code
+  input_minimum_font_size: 1rem
+  roles:
+    - type-title
+    - type-body
+    - type-lead
+    - type-caption
+    - type-label
+    - type-action
+    - type-link
+    - eyebrow
+    - reading-copy
+    - form-field
+
+character:
+  required:
+    - technical
+    - industrial
+    - dense
+    - deliberate
+    - sharp
+    - modern
+    - mature
+    - neo_brutalist
+  avoid:
+    - cartoonish
+    - toy_like
+    - pastel_rainbow
+    - candy_palette
+    - excessive_rounding
+    - decorative_bouncy_default_motion
+
+palette:
+  source: app/globals.css
+  primary_sources:
+    - background
+    - foreground
+    - primary
+    - muted-primary
+  semantic_aliases_allowed: true
+  derived_colors_allowed: true
+  arbitrary_component_palette_preferred: false
+
+geometry:
+  global_radius: effectively_zero
+  strong_borders: true
+  hard_shadows: true
+  compact_spacing: true
+  button_like_control_border:
+    width: 3px
+    color: foreground
+    sitewide_invariant: true
+
+shared_css:
+  source: app/globals.css
+  families:
+    - type
+    - surface
+    - control
+    - navigation
+  prefer_existing_utility_before_one_off_equivalent: true
+
+motion:
+  character: mechanical
+  short_duration_preferred: true
+  reduced_motion_required: true
+  bouncy_default_motion: false
+
+presentation:
+  families:
+    ui: components/ui
+    blocks: components/blocks
+    templates: components/templates
+    chart: components/chart
+    brand: components/brand
+    navigation: components/nav
+    shells: components/shells
+    features: features
+
+  ui:
+    responsibility: reusable_controls_and_low_level_ui
+
+  blocks:
+    responsibility: reusable_composed_ui
+    local_state_allowed: true
+    local_demo_interaction_allowed: true
+    reusable_form_presentation_allowed: true
+    forbidden_application_authority:
+      - server_database_policy
+      - server_authorization_policy
+      - tenant_resolution_policy
+      - provider_account_truth
+      - cross_domain_business_orchestration
+
+  templates:
+    responsibility: full_surface_presentation
+    first_class_layer: true
+    may_compose:
+      - components/blocks
+      - components/ui
+    should_receive_prepared_data_and_callbacks: true
+
+  features:
+    responsibility: application_behavior_and_data_adaptation
+    may_compose:
+      - components/templates
+      - components/blocks
+      - components/ui
+    react_hook_form_allowed: true
+
+auth:
+  real_flow_owner: features/auth
+  reusable_auth_presentation: components/blocks/auth-forms.tsx
+  block_may_render_local_demo_state: true
+  feature_may_inject_controlled_content: true
+  clerk_workflow_belongs_in_generic_block: false
+
+navigation:
+  public_and_tenant_navigation_are_distinct: true
+  tenant_navigation_requires_tenant_admission: true
+  responsive_keyboard_operation_required: true
+  focus_restoration_required_when_implemented: true
+
+accessibility:
+  semantic_html: required
+  keyboard_navigation: required
+  visible_focus: required
+  sufficient_contrast: required
+  reduced_motion: required
+  touch_usable_controls: required
+  status_not_color_only: required
+
+implementation_alignment:
+  feature_specific_css_patchwork_preferred: false
+  flatten_presentation_layers_for_theoretical_purity: false
+  redesign_code_to_match_stale_governance: false
+
+workflow_compositions:
+  owner_directed: true
+  domain_dto_props_required: true
+  generic_record_reflection: false
+  invented_analytics: false
+  command_echo_controls: false
+  local_review_only_domain_forms: false
+  search_scope: loaded_records_unless_server_query_is_explicit
+  provider_runtime_evidence_separate: true
