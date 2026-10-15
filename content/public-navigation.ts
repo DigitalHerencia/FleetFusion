@@ -4,14 +4,16 @@ export const publicNavigation = {
   copyright: "FleetFusion. All rights reserved.",
   headerLinks: [
     { label: "Features", href: "/features" },
+    { label: "Pricing", href: "/pricing" },
     { label: "FAQ", href: "/faq" },
     { label: "Sign in", href: "/sign-in" },
-    { label: "Get started", href: "/sign-up" },
+    { label: "Start free trial", href: "/sign-up" },
   ],
   footerLinks: [
     { label: "Features", href: "/features" },
+    { label: "Pricing", href: "/pricing" },
     { label: "FAQ", href: "/faq" },
-    { label: "Terms", href: "/terms" },
+    { label: "Terms of Service", href: "/terms" },
     { label: "Privacy", href: "/privacy" },
   ],
 } as const;
