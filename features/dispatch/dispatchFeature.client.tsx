@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { DispatchTemplate } from "@/components/templates/dispatchTemplate";
 import { Input } from "@/components/ui/input";
 import type { LoadSummaryDTO } from "@/types/dispatchTypes";
@@ -67,6 +69,7 @@ export function DispatchFeatureClient({ board }: { board: DispatchBoardData }) {
       ]}
       toolbar={
         <div className="flex flex-wrap items-center gap-3">
+          <Button asChild><Link href="/dispatch/new">Book load</Link></Button>
           <Input
             aria-label="Search loads"
             placeholder="Search load, customer, driver, truck…"
