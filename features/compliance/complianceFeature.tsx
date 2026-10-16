@@ -1,4 +1,7 @@
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ComplianceArchiveButton } from "@/features/compliance/complianceArchiveButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { WorkspaceFileUpload } from "@/features/portal/workspaceFileUpload.client";
 import { ComplianceForm } from "@/features/compliance/complianceForm";
@@ -86,7 +89,15 @@ export async function ComplianceFeature() {
                     {item.asset ? ` · File: ${item.asset.filename}` : " · No file attached"}
                   </p>
                 </div>
-                <Badge variant={state.variant}>{state.label}</Badge>
+                <div className="flex flex-col items-start gap-2 sm:items-end">
+                  <Badge variant={state.variant}>{state.label}</Badge>
+                  {canWrite && (
+                    <div className="flex items-center gap-2">
+                      <Button asChild size="sm" variant="outline"><Link href={"/compliance/" + item.id + "/edit"}>Edit</Link></Button>
+                      <ComplianceArchiveButton id={item.id} version={item.version} />
+                    </div>
+                  )}
+                </div>
               </CardContent>
             </Card>
           );
