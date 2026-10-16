@@ -11,8 +11,8 @@ export const applicationProduct = {
 } as const;
 
 /**
- * Product capabilities are deliberately explicit. P0 surfaces are enabled;
- * P1 workflows remain disabled until their complete implementation is shipped.
+ * Product scope is deliberately explicit. P0 capabilities are in scope;
+ * P1 workflows remain disabled until their complete implementation ships.
  */
 export const applicationCapabilities = {
   dispatch: true,
