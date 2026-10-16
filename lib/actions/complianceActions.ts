@@ -13,22 +13,25 @@ import {
   ResourceNotFoundError,
 } from "@/lib/db/transactions/errors";
 import { withTenantTransaction } from "@/lib/db/tenant";
+import type { Prisma } from "@/generated/prisma/client";
 
 async function validateComplianceReferences(
-  tx: import("@/generated/prisma/client").Prisma.TransactionClient,
+  tx: Prisma.TransactionClient,
   organizationId: string,
   input: { subjectType: "ORGANIZATION" | "DRIVER" | "VEHICLE"; driverId?: string | null; vehicleId?: string | null; assetId?: string | null },
 ) {
   if (input.subjectType === "DRIVER") {
+    if (!input.driverId) throw new ResourceNotFoundError("Driver");
     const driver = await tx.driver.findFirst({
-      where: { id: input.driverId ?? undefined, organizationId, archivedAt: null },
+      where: { id: input.driverId!, organizationId, archivedAt: null },
       select: { id: true },
     });
     if (!driver) throw new ResourceNotFoundError("Driver");
   }
   if (input.subjectType === "VEHICLE") {
+    if (!input.vehicleId) throw new ResourceNotFoundError("Vehicle");
     const vehicle = await tx.vehicle.findFirst({
-      where: { id: input.vehicleId ?? undefined, organizationId, archivedAt: null },
+      where: { id: input.vehicleId!, organizationId, archivedAt: null },
       select: { id: true },
     });
     if (!vehicle) throw new ResourceNotFoundError("Vehicle");
