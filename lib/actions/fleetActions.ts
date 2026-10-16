@@ -34,7 +34,7 @@ async function assertNoActiveDriverLoads(
 }
 
 async function assertNoActiveVehicleLoads(
-  tx: Parameters<Parameters<typeof withTenantTransaction>[1]>[0],
+  tx: Prisma.TransactionClient,
   organizationId: string,
   vehicleId: string,
 ) {
