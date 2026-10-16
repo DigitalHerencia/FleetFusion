@@ -8,12 +8,17 @@ import {
   getComplianceWriteAccess,
 } from "@/lib/fetchers/complianceFetchers";
 
-function expiryState(expiresAt: Date | null) {
-  if (!expiresAt) return { label: "No expiry date", variant: "outline" as const };
+function daysUntilExpiry(expiresAt: Date | null) {
+  if (!expiresAt) return null;
   const now = new Date();
   const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
   const expiry = Date.UTC(expiresAt.getUTCFullYear(), expiresAt.getUTCMonth(), expiresAt.getUTCDate());
-  const days = Math.round((expiry - today) / 86_400_000);
+  return Math.round((expiry - today) / 86_400_000);
+}
+
+function expiryState(expiresAt: Date | null) {
+  const days = daysUntilExpiry(expiresAt);
+  if (days === null) return { label: "No expiry date", variant: "outline" as const };
   if (days < 0) return { label: `Expired ${Math.abs(days)}d ago`, variant: "destructive" as const };
   if (days <= 7) return { label: days === 0 ? "Expires today" : `Expires in ${days}d`, variant: "destructive" as const };
   if (days <= 30) return { label: `Expires in ${days}d`, variant: "default" as const };
@@ -27,14 +32,13 @@ export async function ComplianceFeature() {
     getComplianceWriteAccess(),
   ]);
   const options = canWrite ? await getComplianceFormOptions() : null;
-  const expired = items.filter((item) => item.expiresAt && item.expiresAt.getTime() < Date.now()).length;
+  const expired = items.filter((item) => {
+    const days = daysUntilExpiry(item.expiresAt);
+    return days !== null && days < 0;
+  }).length;
   const urgent = items.filter((item) => {
-    if (!item.expiresAt) return false;
-    const days = Math.ceil((Date.UTC(item.expiresAt.getUTCFullYear(), item.expiresAt.getUTCMonth(), item.expiresAt.getUTCDate()) - (() => {
-      const now = new Date();
-      return Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-    })()) / 86_400_000);
-    return days >= 0 && days <= 7;
+    const days = daysUntilExpiry(item.expiresAt);
+    return days !== null && days >= 0 && days <= 7;
   }).length;
 
   return (
