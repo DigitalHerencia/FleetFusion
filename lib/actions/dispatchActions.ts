@@ -107,6 +107,7 @@ export async function assignLoad(rawInput: unknown) {
       where: {
         id: input.loadId,
         organizationId: access.organizationId,
+        archivedAt: null,
         version: input.expectedVersion,
         status: { in: ["DRAFT", "BOOKED", "DISPATCHED"] },
       },
