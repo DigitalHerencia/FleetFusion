@@ -1,6 +1,6 @@
 import "server-only";
 
-import { assertPermission } from "@/lib/authz/permissions";
+import { assertPermission, hasPermission } from "@/lib/authz/permissions";
 import { withAuthenticatedRead } from "@/lib/db/tenant";
 
 export async function getComplianceItems(limit = 200) {
@@ -41,7 +41,6 @@ export async function getComplianceAssets() {
 }
 
 export async function getComplianceWriteAccess() {
-  const { hasPermission } = await import("@/lib/authz/permissions");
   return withAuthenticatedRead(async (_tx, access) =>
     hasPermission(access, "compliance:write"),
   );
