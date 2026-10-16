@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { createComplianceItem } from "@/lib/actions/complianceActions";
+import { createComplianceItem, updateComplianceItem } from "@/lib/actions/complianceActions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,6 +22,19 @@ interface ComplianceFormOptions {
   vehicles: Array<{ id: string; unitNumber: string; status: string }>;
   assets: Array<{ id: string; filename: string }>;
 }
+interface ComplianceItemEdit {
+  id: string;
+  version: number;
+  subjectType: "ORGANIZATION" | "DRIVER" | "VEHICLE";
+  driverId: string | null;
+  vehicleId: string | null;
+  type: string;
+  title: string | null;
+  referenceNumber: string | null;
+  issuedAt: Date | null;
+  expiresAt: Date | null;
+  assetId: string | null;
+}
 
 const documentTypes = [
   ["CDL", "Commercial driver's license"],
@@ -36,11 +49,28 @@ const documentTypes = [
   ["OTHER", "Other"],
 ];
 
-export function ComplianceForm({ options }: { options: ComplianceFormOptions }) {
+function dateValue(value: Date | null | undefined) {
+  return value ? value.toISOString().slice(0, 10) : "";
+}
+
+export function ComplianceForm({ options, item }: { options: ComplianceFormOptions; item?: ComplianceItemEdit }) {
   const router = useRouter();
   const [error, setError] = useState("");
+  const initialSubject = item?.subjectType === "DRIVER"
+    ? `driver:${item.driverId}`
+    : item?.subjectType === "VEHICLE"
+      ? `vehicle:${item.vehicleId}`
+      : "ORGANIZATION";
   const { register, handleSubmit, formState: { isSubmitting } } = useForm<ComplianceFormValues>({
-    defaultValues: { subject: "ORGANIZATION", type: "OTHER", title: "", referenceNumber: "", issuedAt: "", expiresAt: "", assetId: "" },
+    defaultValues: {
+      subject: initialSubject,
+      type: item?.type ?? "OTHER",
+      title: item?.title ?? "",
+      referenceNumber: item?.referenceNumber ?? "",
+      issuedAt: dateValue(item?.issuedAt),
+      expiresAt: dateValue(item?.expiresAt),
+      assetId: item?.assetId ?? "",
+    },
   });
   return (
     <form className="space-y-4 surface-card p-5" onSubmit={handleSubmit(async (values) => {
@@ -55,24 +85,30 @@ export function ComplianceForm({ options }: { options: ComplianceFormOptions }) 
         subjectType = "VEHICLE";
         vehicleId = values.subject.slice("vehicle:".length);
       }
+      const payload = {
+        subjectType,
+        driverId,
+        vehicleId,
+        type: values.type,
+        title: values.title || null,
+        referenceNumber: values.referenceNumber || null,
+        issuedAt: values.issuedAt ? new Date(values.issuedAt) : null,
+        expiresAt: values.expiresAt ? new Date(values.expiresAt) : null,
+        assetId: values.assetId || null,
+      };
       try {
-        await createComplianceItem({
-          subjectType,
-          driverId,
-          vehicleId,
-          type: values.type,
-          title: values.title || null,
-          referenceNumber: values.referenceNumber || null,
-          issuedAt: values.issuedAt ? new Date(values.issuedAt) : null,
-          expiresAt: values.expiresAt ? new Date(values.expiresAt) : null,
-          assetId: values.assetId || null,
-        });
+        if (item) {
+          await updateComplianceItem({ ...payload, complianceItemId: item.id, expectedVersion: item.version });
+        } else {
+          await createComplianceItem(payload);
+        }
+        router.push("/compliance");
         router.refresh();
       } catch {
-        setError("Compliance record could not be saved. Verify the subject, dates, and permissions.");
+        setError("Compliance record could not be saved. Verify the subject, dates, and permissions; reload if another user changed it.");
       }
     })}>
-      <h2 className="type-title">Add compliance record</h2>
+      <h2 className="type-title">{item ? "Edit compliance record" : "Add compliance record"}</h2>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="form-field">
           <Label htmlFor="compliance-subject">Applies to</Label>
@@ -98,11 +134,11 @@ export function ComplianceForm({ options }: { options: ComplianceFormOptions }) 
             <option value="">No file attached</option>
             {options.assets.map((asset) => <option key={asset.id} value={asset.id}>{asset.filename}</option>)}
           </select>
-          <p className="text-xs text-muted-foreground">Upload the file above first, then select it here.</p>
+          <p className="text-xs text-muted-foreground">Upload the file on the compliance page first, then select it here.</p>
         </div>
       </div>
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
-      <Button type="submit" disabled={isSubmitting}>{isSubmitting ? "Saving…" : "Save compliance record"}</Button>
+      <Button type="submit" disabled={isSubmitting}>{isSubmitting ? "Saving…" : item ? "Save changes" : "Save compliance record"}</Button>
     </form>
   );
 }
