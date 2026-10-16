@@ -17,11 +17,12 @@ import {
   ResourceNotFoundError,
 } from "@/lib/db/transactions/errors";
 import { withTenantTransaction } from "@/lib/db/tenant";
+import type { Prisma } from "@/generated/prisma/client";
 
 const activeLoadStatuses = ["DISPATCHED", "AT_PICKUP", "IN_TRANSIT", "AT_DELIVERY"] as const;
 
 async function assertNoActiveDriverLoads(
-  tx: Parameters<Parameters<typeof withTenantTransaction>[1]>[0],
+  tx: Prisma.TransactionClient,
   organizationId: string,
   driverId: string,
 ) {
