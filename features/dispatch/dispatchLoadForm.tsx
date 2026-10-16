@@ -44,7 +44,7 @@ export function DispatchLoadForm({ customers }: { customers: CustomerOption[] })
   const field = (name: keyof LoadFormValues, label: string, required = false, type = "text") => (
     <div className="form-field" key={name}>
       <Label htmlFor={name}>{label}</Label>
-      <Input id={name} type={type} required={required} {...register(name)} />
+      <Input id={name} type={type} step={type === "number" ? "any" : undefined} min={type === "number" ? 0 : undefined} required={required} {...register(name)} />
     </div>
   );
   return (
