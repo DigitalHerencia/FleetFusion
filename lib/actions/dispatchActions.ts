@@ -32,6 +32,8 @@ export async function createLoad(rawInput: unknown) {
       if (!customer) throw new ResourceNotFoundError("Customer");
     }
 
+    // Serialize per-organization load numbering; the unique constraint remains the final guard.
+    await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${access.organizationId}), hashtext('fleetfusion.load-number'))`;
     const last = await tx.load.aggregate({
       where: { organizationId: access.organizationId },
       _max: { number: true },
@@ -44,7 +46,7 @@ export async function createLoad(rawInput: unknown) {
         customerAccountId: input.customerAccountId ?? null,
         number,
         referenceNumber: input.referenceNumber ?? null,
-        rate: input.rate.toFixed(2),
+        rate: input.rate.toFixed(4),
         miles: input.miles ?? null,
         notes: input.notes ?? null,
         stops: {
@@ -155,7 +157,7 @@ export async function advanceLoadStatus(rawInput: unknown) {
     }
 
     const updated = await tx.load.updateMany({
-      where: { id: input.loadId, organizationId: access.organizationId, version: input.expectedVersion },
+      where: { id: input.loadId, organizationId: access.organizationId, archivedAt: null, version: input.expectedVersion },
       data: {
         status: input.status,
         deliveredAt: input.status === "DELIVERED" ? new Date() : undefined,
