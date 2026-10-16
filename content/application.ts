@@ -10,11 +10,22 @@ export const applicationProduct = {
     "Dispatch, compliance, and fleet operations for independent and growing fleets.",
 } as const;
 
+/**
+ * Product capabilities are deliberately explicit. P0 surfaces are enabled;
+ * P1 workflows remain disabled until their complete implementation is shipped.
+ */
 export const applicationCapabilities = {
   dispatch: true,
+  fleet: true,
   compliance: true,
   billing: true,
-  analytics: true,
+  customers: true,
+  dashboard: true,
+  aiRateConfirmationIntake: false,
+  iftaReporting: false,
+  driverSettlements: false,
+  customerTracking: false,
+  dragDropDispatch: false,
 } as const;
 
 export const applicationDesign = {
