@@ -27,7 +27,7 @@ export function DriverForm() {
     <form className="mx-auto max-w-2xl space-y-5 surface-card p-5" onSubmit={handleSubmit(async (values) => {
       setError("");
       try {
-        await createDriver({ ...values, email: values.email || null, phone: values.phone || null, hiredAt: values.hiredAt ? new Date(values.hiredAt) : null });
+        await createDriver({ ...values, email: values.email, phone: values.phone || null, hiredAt: values.hiredAt ? new Date(values.hiredAt) : null });
         router.push("/drivers");
         router.refresh();
       } catch {
