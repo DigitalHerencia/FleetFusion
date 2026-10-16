@@ -70,3 +70,25 @@ export async function getComplianceFormOptions() {
     return { drivers, vehicles, assets };
   });
 }
+
+export async function getComplianceItem(complianceItemId: string) {
+  return withAuthenticatedRead(async (tx, access) => {
+    assertPermission(access, "compliance:write");
+    return tx.complianceItem.findFirst({
+      where: { id: complianceItemId, organizationId: access.organizationId, archivedAt: null },
+      select: {
+        id: true,
+        subjectType: true,
+        driverId: true,
+        vehicleId: true,
+        type: true,
+        title: true,
+        referenceNumber: true,
+        issuedAt: true,
+        expiresAt: true,
+        assetId: true,
+        version: true,
+      },
+    });
+  });
+}
