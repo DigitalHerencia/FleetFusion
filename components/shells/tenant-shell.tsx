@@ -8,9 +8,12 @@ const navigationLinks = [
   { href: '/drivers', label: 'Drivers' },
   { href: '/vehicles', label: 'Vehicles' },
   { href: '/compliance', label: 'Compliance' },
+  { href: '/crm/accounts', label: 'Customers' },
+  { href: '/invoices', label: 'Invoices' },
+  { href: '/expenses', label: 'Expenses' },
 ] as const satisfies readonly { href: Route; label: string }[];
 
-export function DomainLayoutShell({ children }: { children: ReactNode }) {
+export function TenantShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <header className="border-border bg-background/95 sticky top-0 z-40 border-b backdrop-blur">

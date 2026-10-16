@@ -10,7 +10,7 @@ import { deleteBlob } from "@/lib/integrations/vercel-blob/delete";
 export async function uploadWorkspaceAssetWorkflow(formData: FormData) {
   const file = formData.get("file");
   const domain = formData.get("domain");
-  if (domain !== "portal" && domain !== "social")
+  if (domain !== "portal" && domain !== "social" && domain !== "compliance")
     throw new Error("Invalid file destination.");
   if (!(file instanceof File) || file.size === 0 || file.size > 750000)
     throw new Error("Choose a non-empty file up to 750 KB.");
@@ -18,7 +18,7 @@ export async function uploadWorkspaceAssetWorkflow(formData: FormData) {
   const access = await withTenantTransaction(identity, async (_tx, access) => {
     assertPermission(
       access,
-      domain === "portal" ? "portal:write" : "social:write",
+      domain === "portal" ? "portal:write" : domain === "social" ? "social:write" : "compliance:write",
     );
     return access;
   });
@@ -32,7 +32,7 @@ export async function uploadWorkspaceAssetWorkflow(formData: FormData) {
     return await withTenantTransaction(identity, async (tx, current) => {
       assertPermission(
         current,
-        domain === "portal" ? "portal:write" : "social:write",
+        domain === "portal" ? "portal:write" : domain === "social" ? "social:write" : "compliance:write",
       );
       if (current.organizationId !== access.organizationId)
         throw new Error("Workspace changed during upload.");

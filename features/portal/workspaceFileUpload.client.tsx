@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 export function WorkspaceFileUpload({
   domain,
 }: {
-  domain: "portal" | "social";
+  domain: "portal" | "social" | "compliance";
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();

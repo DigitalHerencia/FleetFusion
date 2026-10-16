@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { DashboardLayout, type DashboardStat } from "@/components/blocks/dashboard-layout";
 import type { LoadSummaryDTO } from "@/types/dispatchTypes";
 import type { DispatchBoardColumn } from "@/lib/workflows/dispatchWorkflows";
+import { LoadCardActions } from "@/features/dispatch/loadCardActions";
 
 function money(value: string) {
   const amount = Number(value);
@@ -17,7 +18,7 @@ function stopLabel(load: LoadSummaryDTO, type: "PICKUP" | "DELIVERY") {
   return [stop.locationName, [stop.city, stop.state].filter(Boolean).join(", ")].filter(Boolean).join(" · ");
 }
 
-function LoadCard({ load }: { load: LoadSummaryDTO }) {
+function LoadCard({ load, drivers, vehicles }: { load: LoadSummaryDTO; drivers: Array<{ id: string; firstName: string; lastName: string; status: string }>; vehicles: Array<{ id: string; unitNumber: string; status: string }> }) {
   return (
     <article className="surface-card space-y-3 p-4">
       <header className="flex flex-wrap items-start justify-between gap-2">
@@ -39,6 +40,7 @@ function LoadCard({ load }: { load: LoadSummaryDTO }) {
         {load.miles == null ? "Miles not entered" : `${load.miles.toLocaleString()} mi`}
         {load.podReceivedAt ? " · POD received" : ""}
       </p>
+      <LoadCardActions load={load} drivers={drivers} vehicles={vehicles} />
     </article>
   );
 }
@@ -47,10 +49,14 @@ export function DispatchTemplate({
   columns,
   stats,
   toolbar,
+  drivers,
+  vehicles,
 }: {
   columns: readonly DispatchBoardColumn[];
   stats: readonly DashboardStat[];
   toolbar: ReactNode;
+  drivers: Array<{ id: string; firstName: string; lastName: string; status: string }>;
+  vehicles: Array<{ id: string; unitNumber: string; status: string }>;
 }) {
   return (
     <DashboardLayout title="Dispatch" nav={[]} stats={stats} toolbar={toolbar}>
@@ -63,7 +69,7 @@ export function DispatchTemplate({
               <span className="type-caption text-muted-primary">{column.loads.length}</span>
             </header>
             <div className="space-y-3">
-              {column.loads.map((load) => <LoadCard key={load.id} load={load} />)}
+              {column.loads.map((load) => <LoadCard key={load.id} load={load} drivers={drivers} vehicles={vehicles} />)}
               {column.loads.length === 0 && (
                 <p className="surface-inset p-4 text-sm text-muted-primary">No loads in this column.</p>
               )}
