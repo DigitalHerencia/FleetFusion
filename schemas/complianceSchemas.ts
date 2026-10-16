@@ -7,7 +7,7 @@ import {
 const optionalText = (max: number) => z.string().trim().max(max).nullable().optional();
 const dateField = z.coerce.date().nullable().optional();
 
-export const complianceItemInputSchema = z.object({
+const complianceItemBaseSchema = z.object({
   subjectType: z.enum(ComplianceSubjectType),
   driverId: z.uuid().nullable().optional(),
   vehicleId: z.uuid().nullable().optional(),
@@ -17,7 +17,12 @@ export const complianceItemInputSchema = z.object({
   issuedAt: dateField,
   expiresAt: dateField,
   assetId: z.uuid().nullable().optional(),
-}).superRefine((item, context) => {
+});
+
+function validateComplianceItem(
+  item: z.output<typeof complianceItemBaseSchema>,
+  context: z.RefinementCtx,
+) {
   if (item.subjectType === "ORGANIZATION" && (item.driverId || item.vehicleId)) {
     context.addIssue({ code: "custom", message: "Organization documents cannot be assigned to a driver or vehicle.", path: ["subjectType"] });
   }
@@ -30,12 +35,16 @@ export const complianceItemInputSchema = z.object({
   if (item.issuedAt && item.expiresAt && item.expiresAt < item.issuedAt) {
     context.addIssue({ code: "custom", message: "Expiry date cannot precede the issue date.", path: ["expiresAt"] });
   }
-});
+}
 
-export const updateComplianceItemSchema = complianceItemInputSchema.extend({
-  complianceItemId: z.uuid(),
-  expectedVersion: z.number().int().positive(),
-});
+export const complianceItemInputSchema = complianceItemBaseSchema.superRefine(validateComplianceItem);
+
+export const updateComplianceItemSchema = complianceItemBaseSchema
+  .extend({
+    complianceItemId: z.uuid(),
+    expectedVersion: z.number().int().positive(),
+  })
+  .superRefine(validateComplianceItem);
 
 export const archiveComplianceItemSchema = z.object({
   complianceItemId: z.uuid(),
