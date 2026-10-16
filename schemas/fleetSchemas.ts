@@ -40,6 +40,7 @@ export const vehicleInputSchema = z.object({
   plate: optionalText(20),
   plateState: z
     .union([z.literal(""), z.string().trim().length(2)])
+    .nullable()
     .optional()
     .transform((value) => value ? value.toUpperCase() : null),
   make: optionalText(80),
