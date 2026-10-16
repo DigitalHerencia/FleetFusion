@@ -16,6 +16,8 @@ type DispatchBoardData = {
   unassigned: number;
   delivered: number;
 };
+type DriverOption = { id: string; firstName: string; lastName: string; status: string };
+type VehicleOption = { id: string; unitNumber: string; status: string };
 
 const statusOptions = [
   ["", "All statuses"],
@@ -29,7 +31,7 @@ const statusOptions = [
   ["CANCELED", "Canceled"],
 ];
 
-export function DispatchFeatureClient({ board }: { board: DispatchBoardData }) {
+export function DispatchFeatureClient({ board, drivers, vehicles }: { board: DispatchBoardData; drivers: DriverOption[]; vehicles: VehicleOption[] }) {
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("");
 
@@ -61,6 +63,8 @@ export function DispatchFeatureClient({ board }: { board: DispatchBoardData }) {
   return (
     <DispatchTemplate
       columns={columns}
+      drivers={drivers}
+      vehicles={vehicles}
       stats={[
         { label: "Loads in records", value: String(board.total) },
         { label: "Active loads", value: String(board.active) },
